@@ -251,11 +251,18 @@ ax.grid(True, alpha=0.2, axis='y')
 
 # Panel D: Rolling standard deviation
 ax = axes[1, 1]
-rolling_std = topology_intraday['h1_count'].rolling(window=30).std()
-rolling_std.plot(ax=ax, linewidth=2.0, color=COLORS['purple'], alpha=0.8)
+
+# Adaptive window size (use 1/3 of data length, min 3, max 30)
+n_samples = len(topology_intraday)
+window_size = max(3, min(30, n_samples // 3))
+
+rolling_std = topology_intraday['h1_count'].rolling(window=window_size).std()
+
+# Plot only non-NaN values
+rolling_std.dropna().plot(ax=ax, linewidth=2.0, color=COLORS['purple'], alpha=0.8)
 
 ax.set_xlabel('Date', fontsize=11, fontweight='bold')
-ax.set_ylabel('30-Day Rolling Std Dev', fontsize=11, fontweight='bold')
+ax.set_ylabel(f'{window_size}-Period Rolling Std Dev', fontsize=11, fontweight='bold')
 ax.set_title('D. Topology Volatility', fontsize=12, fontweight='bold', loc='left')
 ax.grid(True, alpha=0.2)
 
