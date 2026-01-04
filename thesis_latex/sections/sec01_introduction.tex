@@ -16,7 +16,7 @@ During the 2008 financial crisis, seemingly diversified portfolios collapsed as 
 This thesis addresses one central question:
 
 \begin{quote}
-\textbf{Can topological data analysis generate profitable trading signals by detecting regime shifts in equity market correlation structure?}
+\textbf{Can topological data analysis generate tradeable signals by detecting regime shifts in equity market correlation structure?}
 \end{quote}
 
 This deceptively simple question requires answering several sub-questions:
@@ -71,7 +71,7 @@ Our investigation proceeds through \textbf{six phases} (Sections 6--11), testing
 
 \textbf{Why This Matters}:
 \begin{itemize}
-\item First evidence that TDA can generate \textbf{profitable} trading signals (prior work only detected crises post-hoc)
+\item First evidence that TDA can generate \textbf{tradeable} signals with \positiverisk{} (prior work only detected crises post-hoc)
 \item Identifies \textbf{boundary conditions}: topology works when $\rho > 0.5$, fails when $\rho < 0.45$
 \item Transforms TDA from ``interesting visualization'' to \textbf{actionable strategy}
 \end{itemize}
@@ -156,10 +156,10 @@ Our investigation proceeds through \textbf{six phases} (Sections 6--11), testing
 
 \textbf{Our Contribution}:
 \begin{enumerate}
-\item \checkmark \textbf{First profitable TDA trading strategy} (Sharpe +0.79, sector-specific approach)
-\item \checkmark \textbf{First cross-market validation} (11 markets, 3 continents, 3 asset classes)
-\item \checkmark \textbf{First rigorous TDA vs ML comparison} (walk-forward validation, feature importance)
-\item \checkmark \textbf{First theoretical bound} relating correlation to topology stability
+\item \textbf{First TDA trading strategy with \positiverisk{}} (Sharpe +0.79, sector-specific approach)
+\item \textbf{First cross-market validation} (11 markets, 3 continents, 3 asset classes)
+\item \textbf{First rigorous TDA vs ML comparison} (walk-forward validation, feature importance)
+\item \textbf{First theoretical bound} relating correlation to topology stability
 \end{enumerate}
 
 \textbf{Novel Finding}: \textbf{Sector homogeneity is critical}. Prior work used market-wide topology (all stocks together), which our results show produces unstable features. Sector-specific topology (Financials separate from Tech) is the key methodological innovation.
@@ -207,8 +207,8 @@ This thesis demonstrates \textbf{how research should be done}: empirical discove
 \begin{enumerate}
 \item \textbf{When to use TDA}:
    \begin{itemize}
-   \item \checkmark High-correlation sectors (Financials $\rho = 0.61$, Energy $\rho = 0.60$, Tech $\rho = 0.58$)
-   \item \texttimes{} Low-correlation sectors (Real Estate $\rho = 0.39$, Consumer $\rho = 0.48$)
+   \item High-correlation sectors (Financials $\rho = 0.61$, Energy $\rho = 0.60$, Tech $\rho = 0.58$)
+   \item Low-correlation sectors (Real Estate $\rho = 0.39$, Consumer $\rho = 0.48$) --- avoid
    \item \textbf{Heuristic}: Check correlation first, only deploy TDA if $\rho > 0.5$
    \end{itemize}
 
@@ -240,10 +240,10 @@ Unlike many quantitative finance papers that cherry-pick successful backtests, t
 
 \textbf{What Doesn't Work}:
 \begin{itemize}
-\item \texttimes{} Cross-sector topology (Sharpe $-0.56$, unstable CV = 0.68)
-\item \texttimes{} Intraday-only topology without daily validation (marginal improvement, high noise)
-\item \texttimes{} Simple threshold rules without ML (F1 = 0.01, precision/recall collapse)
-\item \texttimes{} Pure directional prediction (AUC $\approx 0.52$, barely above random)
+\item Cross-sector topology (Sharpe $-0.56$, unstable CV = 0.68)
+\item Intraday-only topology without daily validation (marginal improvement, high noise)
+\item Simple threshold rules without ML (F1 = 0.01, precision/recall collapse)
+\item Pure directional prediction (AUC $\approx 0.52$, barely above random)
 \end{itemize}
 
 \textbf{Why Reporting Failures Strengthens the Thesis}:
@@ -419,9 +419,9 @@ This thesis is written for three audiences:
 
 This introduction establishes:
 \begin{enumerate}
-\item \checkmark \textbf{Clear motivation} (why TDA matters for finance)
-\item \checkmark \textbf{Specific research question} (can topology generate profitable signals?)
-\item \checkmark \textbf{Main findings} (sector-specific works, cross-market validates, ML refines, theory explains)
-\item \checkmark \textbf{Honest limitations} (acknowledges failures, simulated data, time period constraints)
-\item \checkmark \textbf{Roadmap} (guides reader through 6 empirical/theoretical sections)
+\item \textbf{Clear motivation} (why TDA matters for finance)
+\item \textbf{Specific research question} (can topology generate tradeable signals?)
+\item \textbf{Main findings} (sector-specific works, cross-market validates, ML refines, theory explains)
+\item \textbf{Honest limitations} (acknowledges failures, simulated data, time period constraints)
+\item \textbf{Roadmap} (guides reader through 6 empirical/theoretical sections)
 \end{enumerate}

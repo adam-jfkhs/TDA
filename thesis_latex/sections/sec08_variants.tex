@@ -28,8 +28,8 @@ By testing multiple variants, we determine whether positive returns depend on sp
 All strategy variants use identical infrastructure for fair comparison:
 
 \textbf{Universe}: Technology sector (20 stocks) \\
-\textbf{Training Period}: 2020--2022 \\
-\textbf{Testing Period}: 2023--2024 (out-of-sample) \\
+\textbf{Training Period}: 2020---2022 \\
+\textbf{Testing Period}: 2023---2024 (out-of-sample) \\
 \textbf{Transaction Costs}: 5 basis points per trade \\
 \textbf{Rebalance Frequency}: Every 5 days
 
@@ -200,7 +200,7 @@ Low $H_1$ (Calm) & 434 (85\%) & +0.04\% per day & $-0.01\%$ per day & +500\% \\
 
 The hybrid excels in calm regimes (85\% of test period) where it applies momentum instead of staying flat. This explains the 75\% Sharpe improvement.
 
-\textbf{Why Momentum Works in 2023--2024}:
+\textbf{Why Momentum Works in 2023---2024}:
 \begin{itemize}
 \item AI-driven rally (NVDA, MSFT, GOOGL) created persistent trends
 \item Low volatility environment (VIX $<$ 20 most of test period)
@@ -356,14 +356,14 @@ Realistic costs (10--15 bps) would reduce Sharpe by $\sim$20--30\%. Ensemble Sha
 
 Strategy is capacity-constrained at $\sim$\$50--100M AUM. Beyond that, market impact costs dominate.
 
-\textbf{Regime Dependency}: All positive results occur during 2023--2024 (low VIX, AI-driven tech rally). Performance may differ in:
+\textbf{Regime Dependency}: All positive results occur during 2023---2024 (low VIX, AI-driven tech rally). Performance may differ in:
 \begin{itemize}
 \item High volatility regimes (VIX $>$ 30, like 2020 COVID)
 \item Tech bear markets (like 2022, when tech fell 30\%+)
-\item Sideways markets (2015--2016 range-bound)
+\item Sideways markets (2015---2016 range-bound)
 \end{itemize}
 
-\textbf{Solution}: Test on longer history (2010--2024) and multiple regime types. This requires more data and is deferred to Phase 4 (cross-market validation).
+\textbf{Solution}: Test on longer history (2010---2024) and multiple regime types. This requires more data and is deferred to Phase 4 (cross-market validation).
 
 \textbf{Overfitting Risk}: We tested 4 strategy variants and selected the best (Momentum + TDA). This introduces selection bias:
 
@@ -405,11 +405,11 @@ Based on Sections 7--8 results, we propose guidelines for practitioners:
 \item Avoid: Consumer (0.43), Real Estate (0.39)
 \end{itemize}
 
-\textbf{2. Strategy Design} (from Section 8):
+\textbf{2. Strategy Design} (from Section~\ref{sec:variants}):
 \begin{itemize}
 \item Use hybrid momentum/mean-reversion (not pure mean-reversion)
-\item High $H_1$ $\rightarrow$ Mean reversion (stressed markets overreact)
-\item Low $H_1$ $\rightarrow$ Momentum (calm markets trend)
+\item High $H_1$ $\rightarrow$ mean reversion (stressed markets overreact)
+\item Low $H_1$ $\rightarrow$ momentum (calm markets trend)
 \item This addresses regime dependency
 \end{itemize}
 
@@ -528,14 +528,14 @@ The fact that \textbf{multiple independent approaches} succeed (3 out of 4 varia
 \toprule
 \textbf{Section} & \textbf{Improvement} & \textbf{Mechanism} \\
 \midrule
-Baseline (Section 5) & Sharpe $-0.56$ & Cross-sector mean-reversion \\
-Phase 1 (Section 6) & Sharpe $-0.41$ & Intraday data (sample size) \\
-Phase 2 (Section 7) & Sharpe +0.79 & Sector-specific (homogeneity) \\
-Phase 3 (Section 8) & Sharpe +0.48 & Strategy variants (robustness) \\
+Baseline (Section~\ref{sec:preliminary}) & Sharpe $-0.56$ & Cross-sector mean-reversion \\
+Phase 1 (Section~\ref{sec:intraday}) & Sharpe $-0.41$ & Intraday data (sample size) \\
+Phase 2 (Section~\ref{sec:sector}) & Sharpe +0.79 & Sector-specific (homogeneity) \\
+Phase 3 (Section~\ref{sec:variants}) & Sharpe +0.48 & Strategy variants (robustness) \\
 \bottomrule
 \end{tabular}
 \end{table}
 
 From $-0.56$ to +0.48 represents \textbf{186\% improvement} (accounting for ensemble vs single-sector comparison differences). This validates the systematic approach: identify failures $\rightarrow$ test hypotheses $\rightarrow$ iterate improvements.
 
-\textbf{Next Phase}: Section 9 tests external validity by applying sector-specific topology to international equities, cryptocurrencies, and commodities. If results generalize across asset classes, we establish topological trading as a robust, market-agnostic methodology.
+\textbf{Next Phase}: Section~\ref{sec:crossmarket} tests external validity by applying sector-specific topology to international equities, cryptocurrencies, and commodities. If results generalize across asset classes, we establish topological trading as a robust, market-agnostic methodology.

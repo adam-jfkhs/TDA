@@ -3,7 +3,7 @@
 
 \subsection{Motivation}
 
-Sections 7--10 empirically demonstrate that \textbf{mean correlation predicts topology stability} ($\rho_{\text{correlation-CV}} \approx -0.87$ across all markets). However, a fundamental question remains: \textbf{Why does this relationship exist?}
+Sections~\ref{sec:sector}---\ref{sec:ml} empirically demonstrate that \textbf{mean correlation predicts topology stability} ($\rho_{\text{correlation-CV}} \approx -0.87$ across all markets). However, a fundamental question remains: \textbf{Why does this relationship exist?}
 
 This section develops the \textbf{theoretical foundations} explaining the correlation-stability connection through:
 
@@ -36,7 +36,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 \textbf{Example}: For $n = 20$ stocks, $T = 252$ days:
 \begin{itemize}
 \item $q = 20/252 \approx 0.08$
-\item Expected range: $[0.39, 1.65]$
+\item Expected range: [0.39, 1.65]
 \end{itemize}
 
 \textbf{Empirical Observation} (Figure 11.1A):
@@ -261,13 +261,13 @@ Adjusting for conservative bound (empirical ratio $\approx 0.3$), the \textbf{ef
 \textbf{Market Segment} & $\rho$ & \textbf{CV} & \textbf{Trading Viable?} \\
 \midrule
 \multicolumn{4}{l}{\textit{Below Threshold ($\rho < 0.50$):}} \\
-\quad Cross-Sector Basket & 0.42 & 0.68 & \texttimes{} Failed (Sharpe $-0.56$) \\
-\quad Consumer Goods & 0.46 & 0.61 & \texttimes{} Marginal (Sharpe $+0.12$) \\
+\quad Cross-Sector Basket & 0.42 & 0.68 & Failed (Sharpe $-0.56$) \\
+\quad Consumer Goods & 0.46 & 0.61 & Marginal (Sharpe $+0.12$) \\
 \midrule
 \multicolumn{4}{l}{\textit{Above Threshold ($\rho > 0.50$):}} \\
-\quad Financials & 0.61 & 0.38 & \checkmark Viable (Sharpe $+0.87$) \\
-\quad Energy & 0.60 & 0.40 & \checkmark Viable (Sharpe $+0.79$) \\
-\quad Technology & 0.58 & 0.45 & \checkmark Viable (Sharpe $+0.68$) \\
+\quad Financials & 0.61 & 0.38 & Viable (Sharpe $+0.87$) \\
+\quad Energy & 0.60 & 0.40 & Viable (Sharpe $+0.79$) \\
+\quad Technology & 0.58 & 0.45 & Viable (Sharpe $+0.68$) \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -293,7 +293,7 @@ This threshold is not arbitrary---it derives from the \textbf{physics of correla
 
 \textbf{Connection to Cross-Sector Failure (Phase 1)}:
 
-The cross-sector basket (Section 3) exhibited:
+The cross-sector basket exhibited:
 \begin{itemize}
 \item $\rho_{\text{cross-sector}} = 0.42 < \rho_c$ $\rightarrow$ \textbf{below threshold}
 \item CV = 0.68 $\rightarrow$ excessive noise
@@ -407,7 +407,7 @@ The \textbf{Graph Laplacian} $\mathbf{L} = \mathbf{D} - \mathbf{A}$ captures net
 
 \subsubsection{Fast Regime Detection}
 
-\textbf{Current Approach} (Sections 7--9): Compute persistent homology $\rightarrow$ extract $H_1$ count/CV $\rightarrow$ detect regime
+\textbf{Current Approach} (Sections~\ref{sec:sector}---\ref{sec:crossmarket}): Compute persistent homology $\rightarrow$ extract $H_1$ count/CV $\rightarrow$ detect regime
 
 \textbf{Faster Alternative} (from theory): Compute correlation matrix $\rightarrow$ extract $\lambda_2$ (Fiedler) $\rightarrow$ predict CV
 
@@ -623,9 +623,9 @@ Mathematical foundations validate the empirical correlation-stability relationsh
 \textbf{Reconciliation with Earlier Sections}:
 
 \begin{itemize}
-\item \textbf{Section 7--9}: Empirical demonstration ($\rho_{\text{correlation-CV}} \approx -0.87$)
-\item \textbf{Section 10}: ML validation (correlation\_std most important)
-\item \textbf{Section 11}: Theoretical proof ($\text{CV} \leq \alpha/\sqrt{\rho(1-\rho)}$)
+\item \textbf{Sections~\ref{sec:sector}---\ref{sec:crossmarket}}: Empirical demonstration ($\rho_{\text{correlation-CV}} \approx -0.87$)
+\item \textbf{Section~\ref{sec:ml}}: ML validation (correlation dispersion most important)
+\item \textbf{Section~\ref{sec:theory}}: Theoretical proof ($\text{CV} \leq \alpha/\sqrt{\rho(1-\rho)}$)
 \end{itemize}
 
 Together, these three pillars---\textbf{empirical}, \textbf{algorithmic}, and \textbf{theoretical}---establish topology-based trading on rigorous foundations, suitable for both academic publication and institutional deployment.

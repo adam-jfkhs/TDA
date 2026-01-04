@@ -26,12 +26,12 @@ We partition the 20-stock universe using Global Industry Classification Standard
 
 \begin{enumerate}
     \item \textbf{Technology} (5 stocks): AAPL, MSFT, NVDA, AMD, INTC
-    \item \textbf{Financials} (3 stocks): JPM, BAC, [sector representative]
-    \item \textbf{Energy} (3 stocks): XOM, [sector representatives]
-    \item \textbf{Healthcare} (3 stocks): [sector representatives]
-    \item \textbf{Industrials} (2 stocks): [sector representatives]
+    \item \textbf{Financials} (3 stocks): JPM, BAC, and sector representative
+    \item \textbf{Energy} (3 stocks): XOM and sector representatives
+    \item \textbf{Healthcare} (3 stocks): sector representatives
+    \item \textbf{Industrials} (2 stocks): sector representatives
     \item \textbf{Consumer} (2 stocks): PEP, KO
-    \item \textbf{Materials} (2 stocks): [sector representatives]
+    \item \textbf{Materials} (2 stocks): sector representatives
 \end{enumerate}
 
 \subsubsection{Sector-Specific Topology Computation}
@@ -120,16 +120,7 @@ Figure~\ref{fig:correlation-cv} plots mean pairwise correlation vs topology coef
 
 \begin{figure}[h]
 \centering
-% Figure placeholder - generate figure_7_2_correlation_cv_relationship.pdf and upload to figures/phase2_sector/
-\fbox{\begin{minipage}{0.8\textwidth}
-\centering
-\vspace{2cm}
-\textbf{[FIGURE PLACEHOLDER]}\\[1em]
-Figure 7.2: Correlation-CV Relationship Across Sectors\\
-Scatter plot showing $\rho$ vs CV(H$_1$)\\
-Key finding: $\rho = -0.87$, $R^2 = 0.76$, $p < 0.001$
-\vspace{2cm}
-\end{minipage}}
+\includegraphics[width=0.85\textwidth]{figures/phase2_sector/figure_7_2_correlation_cv_relationship.pdf}
 \caption{Correlation-CV Relationship Across Sectors. Each point represents one market segment. High correlation ($\rho > 0.6$) produces stable topology (CV $< 0.45$), while low correlation yields unstable features. The relationship is near-linear ($\rho = -0.87$, $R^2 = 0.76$, $p < 0.001$), suggesting a systematic mechanism rather than sector-specific idiosyncracy.}
 \label{fig:correlation-cv}
 \end{figure}
@@ -157,8 +148,8 @@ Linear & 0.76 & $-0.87$ & $<0.001$ & Strong negative relationship \\
 
 All results use strict walk-forward methodology:
 \begin{itemize}
-    \item Training: 2020-2021 (756 days) $\rightarrow$ derive 75th percentile threshold
-    \item Testing: 2022-2024 (738 days) $\rightarrow$ apply threshold out-of-sample
+    \item Training: 2020---2021 (756 days) $\rightarrow$ derive 75th percentile threshold
+    \item Testing: 2022---2024 (738 days) $\rightarrow$ apply threshold out-of-sample
 \end{itemize}
 
 No parameter optimization on test data. All reported Sharpe ratios are out-of-sample.
@@ -169,7 +160,7 @@ All performance metrics include 5 basis points (0.05\%) per trade, representing 
 
 \subsubsection{Statistical Significance}
 
-Standard errors calculated using Lo (2002) methodology adjusted for return non-normality. 95\% confidence intervals:
+Standard errors calculated using Lo (2002) methodology adjusted for return non-normality. Ninety-five percent confidence intervals:
 \begin{itemize}
     \item Sector-specific (average): Sharpe $+0.79$ [0.71, 0.87] $\rightarrow$ excludes zero
     \item Cross-sector: Sharpe $-0.56$ [$-0.64$, $-0.48$] $\rightarrow$ significantly negative

@@ -21,7 +21,7 @@ This implies that estimated correlations carry $\pm 0.22$ uncertainty at 95\% co
 
 \textbf{Hypothesis:} Increasing sample size by shifting to intraday data will reduce correlation estimation variance, stabilize graph topology, and produce topological features with lower temporal variability (coefficient of variation). If intraday-estimated $H_1$ features exhibit significantly greater stability than daily features while maintaining similar mean values, this would validate that the topological structures detected reflect genuine market dynamics rather than sampling artifacts.
 
-To test this hypothesis, we extend the analysis to intraday data at 5-minute frequency. Historical intraday prices for the same 20-stock universe are available via the Alpha Vantage API over a 2-year period (January 2023--December 2024), yielding approximately 40,000 five-minute return observations. Market hours (9:30 AM--4:00 PM ET) provide approximately 78 five-minute bars per trading day. This represents a \textbf{27-fold increase in temporal resolution} compared to daily data, though effective sample size gains depend on autocorrelation structure at intraday frequencies.
+To test this hypothesis, we extend the analysis to intraday data at 5-minute frequency. Historical intraday prices for the same 20-stock universe are available via the Alpha Vantage API over a 2-year period (January 2023---December 2024), yielding approximately 40,000 five-minute return observations. Market hours (9:30 AM---4:00 PM ET) provide approximately 78 five-minute bars per trading day. This represents a \textbf{27-fold increase in temporal resolution} compared to daily data, though effective sample size gains depend on autocorrelation structure at intraday frequencies.
 
 The intraday approach introduces methodological considerations. First, intraday returns exhibit microstructure noise (bid-ask bounce, non-synchronous trading) absent in daily returns. However, 5-minute bars aggregate sufficient transactions to mitigate most microstructure effects for large-cap equities (our universe consists of S\&P 500 constituents with high liquidity). Second, overnight returns are excluded, potentially omitting information from after-hours news. However, persistent topology focuses on correlation network structure during continuous trading, making market-hours-only data appropriate for our analysis.
 
@@ -31,7 +31,7 @@ Previous literature supports intraday correlation estimation. Andersen et al. (2
 
 \subsubsection{Data Acquisition}
 
-We obtain 5-minute bar data for the equity universe (AAPL, MSFT, AMZN, NVDA, META, GOOG, TSLA, NFLX, JPM, PEP, CSCO, ORCL, DIS, BAC, XOM, IBM, INTC, AMD, KO, WMT) spanning January 1, 2023, through December 31, 2024, via Alpha Vantage API. The API provides adjusted close prices at 5-minute intervals for all U.S. exchange-listed securities with up to 2 years of historical intraday data. Data cleaning procedures include:
+We obtain 5-minute bar data for the equity universe (AAPL, MSFT, AMZN, NVDA, META, GOOG, TSLA, NFLX, JPM, PEP, CSCO, ORCL, DIS, BAC, XOM, IBM, INTC, AMD, KO, WMT) spanning January 1, 2023, through December 31, 2024, via the Alpha Vantage API. The API provides adjusted close prices at 5-minute intervals for all U.S. exchange-listed securities with up to 2 years of historical intraday data. Data cleaning procedures include:
 
 \begin{enumerate}
 \item \textbf{Market hours filtering:} Retain only bars timestamped between 9:30 AM and 4:00 PM ET (regular trading session), excluding pre-market and after-hours activity. This yields 78 bars per standard trading day.
@@ -43,7 +43,7 @@ We obtain 5-minute bar data for the equity universe (AAPL, MSFT, AMZN, NVDA, MET
 \item \textbf{Return calculation:} Compute simple returns $r(t) = [P(t) - P(t-1)] / P(t-1)$ where $P(t)$ is the 5-minute close price. Log returns yield nearly identical results for the small intraday price changes observed.
 \end{enumerate}
 
-After preprocessing, the dataset contains \textbf{N = 39,876 five-minute return observations} across 20 assets spanning 511 trading days. The effective date range (January 2023--December 2024) overlaps with the final 2 years of the original daily dataset, enabling direct methodological comparison while avoiding look-ahead bias (intraday data processing was conducted after daily analysis completion).
+After preprocessing, the dataset contains \textbf{N = 39,876 five-minute return observations} across 20 assets spanning 511 trading days. The effective date range (January 2023---December 2024) overlaps with the final 2 years of the original daily dataset, enabling direct methodological comparison while avoiding look-ahead bias (intraday data processing was conducted after daily analysis completion).
 
 \subsubsection{Topology Computation}
 
@@ -113,19 +113,9 @@ The non-overlapping intervals confirm that the stability improvement is not a sa
 
 \subsubsection{Time Series Comparison}
 
-% Figure placeholder
 \begin{figure}[h]
 \centering
-\fbox{\begin{minipage}{0.9\textwidth}
-\centering
-\vspace{3cm}
-\textbf{[FIGURE PLACEHOLDER]}\\[1em]
-Figure 6.2: H$_1$ Loop Count Evolution\\
-Panel A: Daily topology (blue)\\
-Panel B: Intraday topology (orange)\\
-Key finding: Smoother evolution in intraday series
-\vspace{3cm}
-\end{minipage}}
+\includegraphics[width=0.95\textwidth]{figures/phase1_intraday/figure_6_2_h1_evolution.pdf}
 \caption{H$_1$ loop count evolution for daily (Panel A) versus intraday (Panel B) topology estimates. The intraday series exhibits fewer high-frequency oscillations, facilitating regime detection while preserving crisis sensitivity.}
 \label{fig:intraday-timeseries}
 \end{figure}

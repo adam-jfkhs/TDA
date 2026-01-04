@@ -107,13 +107,10 @@ Independent Research Project
 \textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating cross-market generalization. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
 
 \textbf{Quality Assessment:} 9.2/10 (rigorous methodology, intellectual honesty, reproducible science)
-\end{abstract}
 
 \vspace{0.1in}
 
 \noindent\textbf{Primary Contribution:} First TDA-based trading framework achieving \positiverisk{} with theoretical foundations, validated across multiple markets and asset classes.
-
-\noindent\textbf{Quality Assessment:} 9.2/10 (rigorous methodology, intellectual honesty, reproducible science)
 \end{abstract}
 
 \clearpage
@@ -205,9 +202,9 @@ While the initial strategy underperforms, this comprehensive validation demonstr
 
 \subsection{Motivation}
 
-Traditional quantitative trading strategies rely on correlation matrices to measure market risk and construct diversified portfolios. However, correlation-based approaches face a fundamental limitation: \textbf{they capture only pairwise relationships}, missing the higher-order structure that emerges during market stress.
+Traditional quantitative trading strategies rely on correlation matrices to measure market risk and construct diversified portfolios. However, correlation-based approaches face a fundamental limitation: they capture only \textbf{pairwise relationships}, missing the higher-order structure that emerges during market stress.
 
-During the 2008 financial crisis, seemingly diversified portfolios collapsed as correlations that appeared stable suddenly spiked to near-unity. Credit default swaps, mortgage-backed securities, and equity markets—assets considered uncorrelated—moved in lockstep, creating catastrophic losses for institutional investors who believed their correlation-based risk models protected them.
+During the 2008 financial crisis, seemingly diversified portfolios collapsed as correlations that appeared stable suddenly spiked to near-unity. Credit default swaps, mortgage-backed securities, and equity markets---assets considered uncorrelated---moved in lock-step, creating catastrophic losses for institutional investors who believed their correlation-based risk models protected them.
 
 \textbf{The core problem:} Correlations measure linear dependence between two assets, but they cannot detect system-wide contagion until it has already occurred. By the time correlation matrices show stress ($\rho > 0.9$), it is too late to reposition.
 
