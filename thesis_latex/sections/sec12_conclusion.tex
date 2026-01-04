@@ -1,0 +1,24 @@
+\section{Conclusion}
+\label{sec:conclusion}
+
+\subsection{Summary of Findings}
+
+\textit{[Content from: thesis\_expansion/SECTION\_12\_CONCLUSION.md]}
+
+\subsection{What I Would Do Next}
+
+\textbf{Feedback applied: One-paragraph design insights (not more experiments)}
+
+If continuing this research, I would focus on three architectural directions:
+
+\paragraph{1. Multi-Horizon Regime Classifiers}
+Rather than binary stable/unstable classification, develop a continuous ``regime intensity'' score combining daily topology volatility (short-term) with monthly eigenvalue concentration (long-term). This would enable gradual position scaling rather than binary cash/invested decisions.
+
+\paragraph{2. Fiedler Value as Real-Time Proxy}
+Section~\ref{sec:theory} demonstrates Fiedler value (graph Laplacian λ$_2$) correlates ρ = -0.99 with topology CV while computing 50× faster. For intraday applications, replacing persistent homology with Fiedler-based regime detection could enable real-time risk monitoring without computational bottlenecks.
+
+\paragraph{3. Topology as Feature Selector for Multi-Strategy Portfolios}
+Rather than using topology to generate standalone trading signals, deploy it as a \textit{meta-filter} for existing strategies: scale exposure to momentum/value/quality factors based on topological regime stability. This leverages topology's strength (regime detection) while avoiding its weakness (weak directional prediction).
+
+\textbf{Common thread}: These extensions recognize topology's value lies in \textit{structural framework design}, not incremental alpha generation.
+
