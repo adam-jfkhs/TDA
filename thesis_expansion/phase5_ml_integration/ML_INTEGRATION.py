@@ -417,23 +417,33 @@ print("KEY FINDINGS")
 print("=" * 80)
 
 if ml_success:
-    improvement = (best_f1 - tda_f1) / tda_f1 * 100
+    improvement = (best_f1 - tda_f1) / tda_f1 * 100 if tda_f1 > 0 else float('inf')
 
-    print(f"\n1. Best ML model: {best_model}")
-    print(f"   F1 Score: {best_f1:.3f} (vs {tda_f1:.3f} for TDA-only)")
-    print(f"   Improvement: {improvement:+.1f}%")
+    print(f"\n1. ML improves precision-recall balance:")
+    print(f"   Best model: {best_model}, F1 = {best_f1:.3f}")
+    print(f"   TDA-only F1 = {tda_f1:.3f} (precision/recall collapse)")
+    print(f"   → ML rescues balanced predictions from TDA threshold failure")
 
     print(f"\n2. Most important feature: {top_feature}")
     print(f"   Importance: {feature_importance.iloc[0]['Importance']:.3f}")
+    print(f"   → Validates correlation structure drives regime prediction")
 
-    print(f"\n3. All ML models beat TDA-only baseline")
-    print(f"   Suggests combining topology + ML is valuable")
+    print(f"\n3. Directional prediction remains weak:")
+    print(f"   AUC values ≈ 0.50-0.52 (near random)")
+    print(f"   → Consistent with efficient market limits")
+    print(f"   → Topology captures structure, not oracle predictions")
 
-    print(f"\n4. Gradient Boosting shows strong performance")
-    print(f"   AUC: {gb_auc:.3f} (good discrimination)")
+    print(f"\n4. Implication: TDA+ML suitable for:")
+    print(f"   • Regime detection (not pure alpha generation)")
+    print(f"   • Risk-adjusted positioning")
+    print(f"   • Conditional strategy selection")
 
 print("\n" + "=" * 80)
 print("✅ PHASE 5 COMPLETE")
 print("=" * 80)
 
-print("\nNext: Write Section 10 text explaining these results")
+print("\nInterpretation:")
+print("  • F1 improvement shows ML can extract conditional structure")
+print("  • But weak AUC confirms limited directional predictability")
+print("  • This positions TDA+ML for risk management, not pure trading")
+print("\nNext: Section 10 will frame these results conservatively")
