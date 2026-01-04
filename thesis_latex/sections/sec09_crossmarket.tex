@@ -1,6 +1,566 @@
 \section{Cross-Market Validation}
 \label{sec:crossmarket}
 
-\textit{[Content from: thesis\_expansion/SECTION\_9\_TEXT.md]}
-\textit{[Convert markdown to LaTeX format]}
-\textit{[Key result: 9/11 markets viable, global $\rho = -0.82$]}
+\subsection{Introduction}
+
+The preceding sections demonstrate that sector-specific topological data analysis (TDA) produces profitable trading signals in U.S. equity markets, with the multi-sector portfolio achieving a Sharpe ratio of +0.79 (Section 7). However, a critical question remains: \textbf{Do these findings generalize to non-U.S. markets and different asset classes?}
+
+This section addresses \textbf{external validity} through cross-market validation tests. We test topology-based trading across:
+
+\begin{enumerate}
+\item \textbf{International Equities}: FTSE 100 (UK), DAX 40 (Germany), Nikkei 225 (Japan)
+\item \textbf{Cryptocurrencies}: Bitcoin, Ethereum, and top-10 altcoins by market capitalization
+\end{enumerate}
+
+If the correlation-stability relationship from Section 7 ($\rho = -0.87$ between mean correlation and topology CV) holds globally, this suggests:
+
+\begin{itemize}
+\item The mechanism is \textbf{universal}, not U.S.-specific
+\item Topology captures \textbf{fundamental} market structure, not noise
+\item Trading strategies can be \textbf{adapted} to international markets
+\end{itemize}
+
+Conversely, if relationships break down internationally, this indicates that U.S. equity market structure may have unique characteristics not shared by other markets.
+
+\subsection{Motivation: Why Cross-Market Validation Matters}
+
+\subsubsection{External Validity}
+
+Academic finance suffers from a \textbf{replication crisis}. Many ``profitable'' trading strategies fail out-of-sample or in different markets (Harvey, Liu, \& Zhu, 2016). Cross-market validation tests whether our findings are:
+
+\begin{itemize}
+\item \textbf{Robust}: Work across different market structures
+\item \textbf{Universal}: Capture fundamental principles vs. data mining
+\item \textbf{Generalizable}: Can be adapted to new markets
+\end{itemize}
+
+\subsubsection{Market Structure Differences}
+
+International markets differ from U.S. markets in several ways:
+
+\begin{table}[H]
+\centering
+\caption{Market Structure Comparison}
+\label{tab:market-structure}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Characteristic} & \textbf{U.S. Equities} & \textbf{International} & \textbf{Cryptocurrency} \\
+\midrule
+Trading Hours & 9:30am--4pm ET & Regional hours & 24/7 \\
+Market Cap & \$50T+ & Varies by region & \$2T+ \\
+Correlation Drivers & Fundamentals, sector & Country-specific, global & Bitcoin-driven \\
+Volatility & $\sim$20\% annually & $\sim$20--30\% annually & $\sim$60--100\% annually \\
+Regulation & SEC-regulated & Country-specific & Largely unregulated \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+If topology \textbf{only} works in U.S. markets, this suggests our results are market-specific. If it works \textbf{globally}, this validates the approach.
+
+\subsection{International Equities Analysis}
+
+\subsubsection{Market Selection}
+
+We test three major international equity markets:
+
+\begin{enumerate}
+\item \textbf{FTSE 100 (United Kingdom)}
+   \begin{itemize}
+   \item European financial center
+   \item 15 stocks tested (financials, energy, consumer goods)
+   \item Represents European developed markets
+   \end{itemize}
+
+\item \textbf{DAX 40 (Germany)}
+   \begin{itemize}
+   \item European industrials/manufacturing hub
+   \item 15 stocks tested (automotive, chemicals, technology)
+   \item Export-oriented economy
+   \end{itemize}
+
+\item \textbf{Nikkei 225 (Japan)}
+   \begin{itemize}
+   \item Asian technology/automotive leader
+   \item 15 stocks tested (electronics, automotive, financials)
+   \item Represents Asian developed markets
+   \end{itemize}
+\end{enumerate}
+
+Data covers 2020--2024 (5 years), matching U.S. test period.
+
+\subsubsection{Correlation Structure}
+
+\textbf{Hypothesis}: International markets should show similar correlation heterogeneity as U.S. markets.
+
+\textbf{Results} (Table 9.1):
+
+\begin{table}[H]
+\centering
+\caption{International Equity Correlations}
+\label{tab:intl-correlations}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Market} & \textbf{Mean Correlation ($\rho$)} & \textbf{Ratio vs U.S. Tech} \\
+\midrule
+US Technology & 0.578 & $1.00\times$ (baseline) \\
+FTSE 100 & 0.512 & $0.89\times$ \\
+DAX 40 & 0.543 & $0.94\times$ \\
+Nikkei 225 & 0.489 & $0.85\times$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item \checkmark All international markets show \textbf{moderate-to-high} correlations ($\rho > 0.45$)
+\item \checkmark Correlations are \textbf{comparable} to U.S. sector correlations (within 15\%)
+\item $\triangle$ Nikkei slightly weaker (0.489), possibly due to different trading hours overlap
+\end{itemize}
+
+\subsubsection{Topology Stability}
+
+\textbf{Hypothesis}: Higher correlation markets should produce more stable topology (lower CV).
+
+\textbf{Results} (Table 9.2):
+
+\begin{table}[H]
+\centering
+\caption{International Topology Stability}
+\label{tab:intl-topology}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Market} & \textbf{Mean $H_1$ Loops} & \textbf{CV} & \textbf{Correlation ($\rho$)} \\
+\midrule
+US Financials & 8.45 & 0.399 & 0.612 \\
+DAX 40 & 7.82 & 0.423 & 0.543 \\
+FTSE 100 & 7.21 & 0.461 & 0.512 \\
+Nikkei 225 & 6.94 & 0.498 & 0.489 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item \checkmark International markets show \textbf{stable} topology (all CV $<$ 0.5)
+\item \checkmark Ranking preserved: Higher correlation $\rightarrow$ Lower CV (more stable)
+\item \checkmark Validates Section 7 finding across markets
+\end{itemize}
+
+\textbf{Correlation-CV Relationship}:
+\begin{itemize}
+\item U.S. Sectors alone: $\rho = -0.87$
+\item U.S. + International: $\rho = -0.82$
+\item \textbf{Difference}: Only 0.05 (6\% change)
+\end{itemize}
+
+\textbf{Interpretation}: The correlation-stability relationship \textbf{generalizes} to international equity markets, supporting universality of the mechanism.
+
+\subsection{Cryptocurrency Market Analysis}
+
+\subsubsection{Market Characteristics}
+
+Cryptocurrencies represent a fundamentally different asset class:
+
+\begin{itemize}
+\item \textbf{24/7 Trading}: No market hours, no overnight gaps
+\item \textbf{High Volatility}: 3--5$\times$ higher than equities ($\sim$80\% annualized)
+\item \textbf{Bitcoin-Driven Correlations}: Most altcoins move with BTC, not fundamentals
+\item \textbf{Decentralized}: No central exchange, global liquidity
+\end{itemize}
+
+\textbf{Cryptocurrencies Tested} (12 major coins):
+\begin{itemize}
+\item Large Cap: BTC, ETH (combined $>$60\% of market)
+\item Top Altcoins: BNB, XRP, ADA, DOGE, SOL, MATIC, DOT, LTC, AVAX, LINK
+\end{itemize}
+
+Data: 2020--2024 (365 days/year due to 24/7 trading)
+
+\subsubsection{Correlation Structure}
+
+\textbf{Hypothesis}: Crypto correlations may be \textbf{weaker} than equities due to different drivers (BTC-dependence vs. sector fundamentals).
+
+\textbf{Results} (Table 9.3):
+
+\begin{table}[H]
+\centering
+\caption{Cryptocurrency Correlation Structure}
+\label{tab:crypto-correlations}
+\begin{tabular}{@{}lcc@{}}
+\toprule
+\textbf{Asset Class} & \textbf{Mean Correlation ($\rho$)} & \textbf{Annualized Volatility} \\
+\midrule
+US Technology & 0.578 & 28.4\% \\
+Cryptocurrency & 0.463 & 81.7\% \\
+\textbf{Difference} & $-0.115$ (20\% lower) & +53.3\% ($2.9\times$ higher) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item $\triangle$ Crypto correlations are \textbf{20\% weaker} than tech equities
+\item \checkmark Still above 0.45 threshold for viable topology
+\item 📊 Volatility is \textbf{2.9$\times$ higher}, as expected
+\end{itemize}
+
+\textbf{Why Lower Correlations?}
+\begin{enumerate}
+\item \textbf{BTC Dominance}: Some coins follow BTC closely (0.7--0.9), others don't (0.3--0.5)
+\item \textbf{Project-Specific News}: Individual coins driven by protocol updates, hacks, regulations
+\item \textbf{24/7 Trading}: Different time zones $\rightarrow$ asynchronous price discovery
+\end{enumerate}
+
+\subsubsection{Topology Stability}
+
+\textbf{Hypothesis}: Based on Section 7 relationship, \textbf{lower correlations $\rightarrow$ higher CV} (less stable topology).
+
+\textbf{Prediction}: Using correlation-CV regression from Section 7:
+\begin{itemize}
+\item Given $\rho_{\text{crypto}} = 0.463$
+\item Predicted CV $\approx 0.65 \pm 0.10$
+\end{itemize}
+
+\textbf{Results} (Table 9.4):
+
+\begin{table}[H]
+\centering
+\caption{Cryptocurrency Topology Stability}
+\label{tab:crypto-topology}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Metric} & \textbf{US Technology} & \textbf{Cryptocurrency} & \textbf{Prediction Accuracy} \\
+\midrule
+Mean Correlation & 0.578 & 0.463 & --- \\
+Topology CV & 0.451 & 0.587 & $\pm$0.06 error \\
+Mean $H_1$ Loops & 9.12 & 7.43 & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item \checkmark \textbf{Prediction validated!} Crypto CV = 0.587 vs predicted $0.65 \pm 0.10$
+\item \checkmark Crypto topology is \textbf{less stable} (CV 30\% higher than tech)
+\item \checkmark \textbf{Mechanism still holds}: Lower correlation $\rightarrow$ Higher CV
+\end{itemize}
+
+\textbf{Interpretation}: Even in extreme volatility ($3\times$ equities) and 24/7 markets, the correlation-stability relationship \textbf{generalizes}. This suggests the mechanism is robust to market microstructure.
+
+\subsection{Cross-Market Comparison}
+
+\subsubsection{Overall Results}
+
+Figure 9.1 shows the correlation-CV relationship across all 11 markets tested (7 U.S. sectors + 3 international + 1 crypto).
+
+\textbf{Global Correlation-CV Relationship}: $\rho = -0.82$ ($p < 0.001$)
+
+This is \textbf{statistically indistinguishable} from the U.S.-only result ($\rho = -0.87$), confirming that:
+
+\begin{enumerate}
+\item \checkmark Higher correlation $\rightarrow$ More stable topology (lower CV)
+\item \checkmark Relationship holds across asset classes
+\item \checkmark Relationship holds across geographic regions
+\end{enumerate}
+
+\subsubsection{Asset Class Breakdown}
+
+\textbf{By Asset Class} (Figure 9.2):
+
+\begin{table}[H]
+\centering
+\caption{Trading Viability by Asset Class}
+\label{tab:asset-class-breakdown}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Asset Class} & \textbf{Markets Tested} & \textbf{Mean $\rho$} & \textbf{Mean CV} & \textbf{Trading Viable?} \\
+\midrule
+US Equities & 7 sectors & 0.543 & 0.456 & \checkmark 6/7 markets \\
+International Equities & 3 markets & 0.515 & 0.461 & \checkmark 3/3 markets \\
+Cryptocurrency & 1 market & 0.463 & 0.587 & 🟡 Marginal \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item \checkmark \textbf{US Equities}: Most stable (CV = 0.456), highest correlations
+\item \checkmark \textbf{International Equities}: Comparable to U.S. (CV = 0.461)
+\item 🟡 \textbf{Cryptocurrency}: Less stable (CV = 0.587), but still viable
+\end{itemize}
+
+\textbf{Trading Viability Criteria} (from Section 7):
+\begin{itemize}
+\item \checkmark \textbf{Good}: $\rho > 0.5$ AND CV $< 0.6$ $\rightarrow$ 9/11 markets
+\item 🟡 \textbf{Marginal}: $\rho > 0.4$ OR CV $< 0.7$ $\rightarrow$ 2/11 markets (including crypto)
+\item \texttimes{} \textbf{Poor}: $\rho < 0.4$ AND CV $> 0.7$ $\rightarrow$ 0/11 markets
+\end{itemize}
+
+\textbf{Conclusion}: \textbf{82\% of markets tested (9/11) meet ``good'' criteria for TDA-based trading.}
+
+\subsubsection{Geographic Breakdown}
+
+\textbf{By Region} (Figure 9.4):
+
+\begin{table}[H]
+\centering
+\caption{Trading Viability by Geographic Region}
+\label{tab:geographic-breakdown}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Region} & \textbf{Markets} & \textbf{Mean $\rho$} & \textbf{Mean CV} \\
+\midrule
+North America (US) & 7 & 0.543 & 0.456 \\
+Europe (UK, Germany) & 2 & 0.528 & 0.442 \\
+Asia (Japan) & 1 & 0.489 & 0.498 \\
+Global (Crypto) & 1 & 0.463 & 0.587 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Findings}:
+\begin{itemize}
+\item \checkmark \textbf{Europe} performs comparably to North America
+\item 🟡 \textbf{Asia} (Nikkei) shows weaker correlations, likely due to time zone differences
+\item $\triangle$ \textbf{Crypto} (global, 24/7) shows weakest structure
+\end{itemize}
+
+\textbf{Interpretation}: Developed equity markets (US, Europe, Asia) show \textbf{consistent topology}, supporting trading strategies. Cryptocurrency requires \textbf{adaptation} (see Section 9.6).
+
+\subsection{Trading Strategy Implications}
+
+\subsubsection{International Equities}
+
+\textbf{Recommendation}: \checkmark \textbf{Directly apply} sector-specific topology strategies.
+
+\textbf{Rationale}:
+\begin{itemize}
+\item Correlation structure is comparable to U.S. ($\rho \approx 0.5$)
+\item Topology stability is good (CV $< 0.5$)
+\item Expected Sharpe ratios: +0.4 to +0.7 (based on Section 7 results)
+\end{itemize}
+
+\textbf{Implementation}:
+\begin{enumerate}
+\item Select high-correlation markets (DAX $>$ FTSE $>$ Nikkei)
+\item Use 60-day lookback windows (same as U.S.)
+\item Apply 75th percentile threshold from training data
+\item Test momentum-TDA hybrid (Section 8) for best results
+\end{enumerate}
+
+\subsubsection{Cryptocurrencies}
+
+\textbf{Recommendation}: 🟡 \textbf{Adapt} strategy for lower correlations.
+
+\textbf{Challenges}:
+\begin{itemize}
+\item Lower correlations ($\rho = 0.463$ vs 0.578 for tech)
+\item Higher volatility ($2.9\times$ equities)
+\item 24/7 trading $\rightarrow$ different regime shifts
+\end{itemize}
+
+\textbf{Suggested Adaptations}:
+\begin{enumerate}
+\item \textbf{Increase lookback window}: 90 days instead of 60 (more data needed for stability)
+\item \textbf{Dynamic thresholds}: Use adaptive Z-scores (Section 8.3) to handle volatility
+\item \textbf{Momentum-first}: Crypto trends strongly $\rightarrow$ prioritize momentum over mean reversion
+\item \textbf{Transaction costs}: Higher spreads in crypto $\rightarrow$ reduce rebalancing frequency
+\end{enumerate}
+
+\textbf{Expected Performance}: Sharpe +0.2 to +0.4 (lower than equities due to higher CV)
+
+\subsubsection{Multi-Market Portfolio}
+
+\textbf{Opportunity}: Combine U.S., international, and crypto strategies for \textbf{diversification}.
+
+\textbf{Expected Benefits}:
+\begin{itemize}
+\item \textbf{Geographic diversification}: Different time zones $\rightarrow$ smooth returns
+\item \textbf{Asset class diversification}: Crypto uncorrelated with equities during risk-off
+\item \textbf{Higher capacity}: Can scale AUM across multiple markets
+\end{itemize}
+
+\textbf{Example Multi-Market Portfolio}:
+\begin{itemize}
+\item 50\% U.S. Sectors (Financials, Energy, Technology)
+\item 30\% International (DAX, FTSE)
+\item 20\% Cryptocurrency (adapted strategy)
+\end{itemize}
+
+\textbf{Expected Sharpe}: +0.6 to +0.8 (similar to U.S.-only multi-sector, Section 7.5)
+
+\subsection{Discussion}
+
+\subsubsection{What Generalizes?}
+
+\textbf{Universal Findings} (hold across all 11 markets):
+
+\begin{enumerate}
+\item \checkmark \textbf{Correlation-CV Relationship}: $\rho = -0.82$ globally (vs $-0.87$ US-only)
+   \begin{itemize}
+   \item Higher correlation $\rightarrow$ More stable topology
+   \item Mechanism is \textbf{fundamental}, not noise
+   \end{itemize}
+
+\item \checkmark \textbf{Stability Threshold}: CV $< 0.6$ indicates trading viability
+   \begin{itemize}
+   \item 9/11 markets meet this threshold
+   \item Consistent across asset classes
+   \end{itemize}
+
+\item \checkmark \textbf{Correlation Threshold}: $\rho > 0.45$ produces viable topology
+   \begin{itemize}
+   \item Below 0.45: Features become too noisy
+   \item Consistent with Section 7 findings
+   \end{itemize}
+\end{enumerate}
+
+\textbf{Interpretation}: The core relationship between \textbf{correlation structure} and \textbf{topological stability} is \textbf{universal}. This suggests topology captures fundamental market properties, not US-specific quirks.
+
+\subsubsection{What Doesn't Generalize?}
+
+\textbf{Market-Specific Findings}:
+
+\begin{enumerate}
+\item $\triangle$ \textbf{Absolute Sharpe Ratios}: Need local calibration
+   \begin{itemize}
+   \item Can't assume U.S. Sharpe (+0.79) transfers directly to Nikkei
+   \item Each market needs walk-forward validation
+   \end{itemize}
+
+\item $\triangle$ \textbf{Optimal Thresholds}: Vary by market volatility
+   \begin{itemize}
+   \item 75th percentile works for U.S. equities
+   \item Crypto may need 80th--85th percentile due to higher noise
+   \end{itemize}
+
+\item $\triangle$ \textbf{Lookback Windows}: May need adjustment
+   \begin{itemize}
+   \item 60 days works for equities (252 trading days/year)
+   \item Crypto (365 days/year) may benefit from 90-day windows
+   \end{itemize}
+\end{enumerate}
+
+\textbf{Implication}: While the \textbf{mechanism} generalizes, \textbf{strategy parameters} need local tuning.
+
+\subsubsection{Comparison to Literature}
+
+\textbf{Prior Work on TDA in Finance}:
+\begin{enumerate}
+\item Gidea \& Katz (2018): TDA for crash prediction (US equities only)
+\item Yen \& Yen (2012): Network topology (no international validation)
+\item Meng et al. (2021): Correlation networks (China equities only)
+\end{enumerate}
+
+\textbf{Our Contribution}:
+\begin{itemize}
+\item \checkmark \textbf{First cross-market validation} of TDA trading signals
+\item \checkmark \textbf{First test on cryptocurrencies}
+\item \checkmark \textbf{First evidence} that correlation-stability relationship is universal
+\end{itemize}
+
+\textbf{Significance}: External validity is rare in quantitative finance. Our results suggest TDA-based trading is \textbf{not} a data-mined U.S. anomaly, but a \textbf{generalizable} approach.
+
+\subsection{Limitations}
+
+\subsubsection{Sample Size}
+
+\textbf{International Markets}: Only 15 stocks per market (vs 20 for U.S. sectors)
+\begin{itemize}
+\item Reason: Data availability, yfinance limitations
+\item Impact: Slightly noisier topology (fewer nodes)
+\item Mitigation: Future work could expand to 20+ stocks per market
+\end{itemize}
+
+\textbf{Cryptocurrencies}: Only 12 coins tested
+\begin{itemize}
+\item Reason: Top altcoins by market cap (captures 80\%+ of liquidity)
+\item Impact: May not generalize to small-cap altcoins
+\item Mitigation: Sufficient for institutional trading (top coins only)
+\end{itemize}
+
+\subsubsection{Time Period}
+
+\textbf{Data Coverage}: 2020--2024 (5 years)
+\begin{itemize}
+\item Includes: COVID crash (2020), bull market (2021), bear market (2022--2023)
+\item Missing: Pre-2020 crises, 2008 financial crisis, dot-com bubble
+\item Impact: Unknown if results hold in extreme stress (2008-style)
+\end{itemize}
+
+\textbf{Crypto Era Bias}: Only recent crypto data available
+\begin{itemize}
+\item Bitcoin launched 2009, but reliable data only from $\sim$2017
+\item Tested period (2020--2024) may not capture full crypto cycle
+\item Future work: Test across multiple full cycles (4-year halving cycles)
+\end{itemize}
+
+\subsubsection{Transaction Costs}
+
+\textbf{International Markets}: Assumed 5 bps per trade (same as U.S.)
+\begin{itemize}
+\item Reality: May be higher (10--15 bps) for less liquid stocks
+\item Impact: Could reduce Sharpe by 0.1--0.2
+\item Mitigation: Use liquid large-caps only
+\end{itemize}
+
+\textbf{Cryptocurrencies}: Assumed 5 bps (on-exchange)
+\begin{itemize}
+\item Reality: 5 bps for BTC/ETH on Coinbase/Binance, but 10--50 bps for altcoins
+\item Impact: Frequent rebalancing could eliminate profits
+\item Mitigation: Reduce rebalancing (weekly instead of 5-day)
+\end{itemize}
+
+\subsection{Conclusion}
+
+Cross-market validation demonstrates that \textbf{sector-specific topology generalizes beyond U.S. equity markets}:
+
+\textbf{Key Results}:
+
+\begin{enumerate}
+\item \checkmark \textbf{Correlation-CV relationship is universal}: $\rho = -0.82$ across 11 markets (vs $-0.87$ US-only)
+   \begin{itemize}
+   \item Holds for US equities, international equities, and cryptocurrencies
+   \item Deviation from US-only result is statistically insignificant
+   \end{itemize}
+
+\item \checkmark \textbf{9/11 markets are trading-viable}: Meet criteria ($\rho > 0.5$, CV $< 0.6$)
+   \begin{itemize}
+   \item US sectors: 6/7 viable
+   \item International: 3/3 viable
+   \item Cryptocurrency: Marginal (needs adaptation)
+   \end{itemize}
+
+\item \checkmark \textbf{Geographic diversification is feasible}: European/Asian markets show comparable stability
+   \begin{itemize}
+   \item DAX (Germany): CV = 0.423
+   \item FTSE (UK): CV = 0.461
+   \item Nikkei (Japan): CV = 0.498
+   \end{itemize}
+
+\item 🟡 \textbf{Cryptocurrencies require adaptation}: Lower correlations $\rightarrow$ less stable topology
+   \begin{itemize}
+   \item CV = 0.587 (vs 0.45 for equities)
+   \item Still viable with longer lookbacks, adaptive thresholds
+   \end{itemize}
+\end{enumerate}
+
+\textbf{Implications for Trading}:
+
+\begin{itemize}
+\item \textbf{Multi-market portfolios} can combine US, international, and crypto for diversification
+\item \textbf{Expected Sharpe ratios}: +0.4 to +0.7 internationally (comparable to US)
+\item \textbf{Strategy transferability}: Core approach works, but parameters need local tuning
+\end{itemize}
+
+\textbf{Contribution to Literature}:
+
+This is the \textbf{first cross-market validation} of TDA-based trading signals. Prior work tested TDA only in single markets (US or China). Our results demonstrate that:
+
+\begin{enumerate}
+\item Topology captures \textbf{fundamental market structure}, not noise
+\item Findings are \textbf{robust} across asset classes and geographies
+\item TDA-based trading is a \textbf{generalizable} approach, not a data-mined anomaly
+\end{enumerate}
+
+\textbf{Next Steps}: Section 10 will integrate machine learning to improve signal generation, testing whether nonlinear models can extract additional alpha from topological features.
