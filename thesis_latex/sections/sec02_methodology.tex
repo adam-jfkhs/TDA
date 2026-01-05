@@ -1,6 +1,70 @@
 \section{Methodology}
 \label{sec:methodology}
 
-\textit{[Content from v12 PDF - Section 2: Methodology]}
-\textit{[Add: Data description, Graph Laplacian diffusion, Persistent homology, Validation framework]}
-\textit{[Copy from TDA\_Revised\_v12\_SSRN\_READY.pdf pages 5-10]}
+\subsection{Data}
+
+Price data sourced from Yahoo Finance via yfinance Python library. The primary universe consists of 20 US large-cap equities: AAPL, MSFT, AMZN, NVDA, META, GOOG, TSLA, NFLX, JPM, PEP, CSCO, ORCL, DIS, BAC, XOM, IBM, INTC, AMD, KO, and WMT. Total observations: 1,494 trading days spanning January 2019 through December 2024.
+
+Alternative asset universe tested for robustness: 20 exchange-traded funds covering commodities (GLD, USO, UNG, DBA, DBB), currency pairs via ETFs (FXE, FXY, FXB, FXA, FXC), sector rotations (XLE, XLF, XLV, XLU, XLP, XLK, XLI, XLB), and fixed income (TLT, IEF).
+
+\textbf{Data Quality Considerations:} Yahoo Finance data via yfinance has known limitations: potential survivorship bias (delisted securities excluded), adjusted close prices that may introduce look-ahead bias in corporate actions, and occasional data gaps. We mitigate these by: (1) selecting only securities with continuous trading history throughout the sample period; (2) using adjusted close prices consistently for all calculations; (3) verifying data integrity by cross-referencing with Bloomberg terminal data for a random subsample of dates. Stock splits and dividends are handled automatically via Yahoo's adjusted prices. Alternative asset classes (commodities, currencies) may exhibit higher baseline volatility than equities, potentially amplifying strategy underperformance due to increased noise in correlation estimates.
+
+\textbf{Handling Recent Market Dynamics:} The 2024 portion of our sample includes significant AI-driven volatility in technology stocks (NVDA, META, MSFT), with NVDA exhibiting single-day moves exceeding 10\% on multiple occasions. This sector-specific turbulence creates correlation instability that challenges both the Laplacian signal (which assumes stable neighbor relationships) and the topological filter (which may classify AI-driven spikes differently than systematic stress). We retain these periods without adjustment to preserve ecological validity, but note that results may differ in markets without such concentrated sectoral dynamics. Generalizability to non-US markets or cryptocurrency remains untested; these markets exhibit different liquidity profiles and regulatory structures that could affect correlation persistence.
+
+\subsection{Signal Generation: Graph Laplacian Diffusion}
+
+Trading signals derived through Laplacian smoothing on correlation-based graphs following Kondor and Lafferty (2002). The methodology proceeds as follows:
+
+First, calculate the 60-day rolling correlation matrix $\rho$ for all asset pairs. Construct a weighted adjacency matrix $W$ where $W_{ij} = \rho_{ij}$ if $\rho_{ij} > \tau$ (threshold $\tau = 0.3$), else 0. Note: $W$ uses correlation weights (higher correlation = stronger edge), not correlation distances. The normalized graph Laplacian is defined as:
+
+\textbf{Graph connectivity:} At $\tau = 0.3$, the correlation graph remains connected for $>95\%$ of trading days in our sample. On days with isolated nodes (typically during extreme volatility when correlations break down), we assign isolated assets their raw returns as residuals, effectively excluding them from the diffusion process. Sensitivity analysis across $\tau \in \{0.2, 0.3, 0.4\}$ shows higher thresholds produce sparser graphs with more isolates, contributing to worse performance.
+
+\begin{equation}
+L = I - D^{-1/2}WD^{-1/2}
+\end{equation}
+
+where $D$ is the degree matrix, and $I$ is the identity matrix. The diffusion operator is then:
+
+\begin{equation}
+h = (I - \alpha L)^T x
+\end{equation}
+
+where $\alpha = 0.5$ is the diffusion strength parameter, $T = 3$ iterations, and $x$ is the vector of asset returns. Residuals are calculated as:
+
+\begin{equation}
+e = x - h
+\end{equation}
+
+Portfolio construction follows market-neutral mean reversion logic: long positions in 5 assets with the highest positive residuals (underperforming relative to correlation neighbors), short positions in 5 assets with the most negative residuals (overperforming). Equal weighting applied across all 10 positions.
+
+\subsection{Regime Detection: Persistent Homology}
+
+Persistent homology analyzes topological features of correlation structure following the methodology established by Gidea and Katz (2018). Implementation uses Vietoris-Rips filtration on correlation distance metric:
+
+Convert correlation matrix to distance metric:
+
+\begin{equation}
+d_{ij} = \sqrt{2(1 - \rho_{ij})}
+\end{equation}
+
+Compute Vietoris-Rips persistence diagrams using the ripser library (Tralie et al., 2018). Extract $H_1$ (first homology) features, including loop count (Betti-1) and total persistence. Calculate topology volatility as the 30-day rolling standard deviation of $H_1$ features. Regime classification: periods are classified as unstable if topology volatility exceeds the 75th percentile threshold.
+
+Strategy modification: All trading signals were zeroed during periods classified as topologically unstable, effectively moving to cash during detected regime instability.
+
+\textbf{Methodological Note:} This approach exhibits a fundamental scale mismatch between its two core components. Laplacian residuals identify local, short-term relative mispricings between individual correlated assets (daily trading signals). Persistent homology detects global, slow-moving structural shifts in the entire correlation network (30-day regime-level changes). These operate at incompatible spatial scales (pairwise vs. network-wide) and temporal scales (daily vs. monthly). This disconnect---where global regime filters may lag or contradict local trading signals---likely contributes to strategy underperformance and is discussed further in Section~\ref{sec:analysis}.
+
+\subsection{Validation Framework}
+
+\textbf{Walk-forward validation:} Rolling 3-year training windows with 1-year out-of-sample test periods. All parameters, including regime classification thresholds, derived exclusively from training data. This methodology prevents look-ahead bias and data snooping (Bailey et al., 2014; Prado, 2018).
+
+\textbf{Transaction costs:} 5 basis points (0.05\%) per trade representing institutional execution costs (Frazzini et al., 2018). Applied to all position changes, including entries, exits, and rebalancing.
+
+\textbf{Parameter sensitivity:} Systematic testing across lookback periods (40/60/80 days), correlation thresholds (0.2/0.3/0.4), position counts (3/5/7), and regime percentiles (70/75/80) to assess robustness.
+
+\textbf{Statistical validation:} Performance metrics evaluated using standard errors calculated via analytical formulas (Lo, 2002) and verified with bootstrap resampling (Politis \& Romano, 1994). Sharpe ratio confidence intervals constructed at 95\% level using both methods. All hypothesis tests conducted at $\alpha = 0.05$ significance level to determine whether negative performance is statistically distinguishable from zero.
+
+\textbf{Statistical Power Analysis:} For detecting a Sharpe ratio significantly different from zero with test periods of 252--504 days, we achieve statistical power exceeding 0.95 for effect sizes $|SR| > 0.4$ at $\alpha = 0.05$. Given observed Sharpe ratios of $-0.56$ to $-2.08$, power is effectively 1.0 for detecting these large negative effects. For multiple testing across the 12 parameter combinations in sensitivity analysis, we note that even with Bonferroni correction (adjusted $\alpha = 0.05/12 = 0.0042$), all results remain significant (all $p < 0.001$). Deflated Sharpe ratios per López de Prado (2018) accounting for the search over parameters remain negative, confirming results are not artifacts of multiple testing.
+
+\textbf{Important caveat on statistical inference:} While daily returns provide many observations, market regimes are not independent and identically distributed. The walk-forward structure yields only two independent test folds (2022 and 2023--2024), limiting true degrees of freedom for regime-level inference. We therefore interpret significance tests as evidence that returns are \textit{statistically significantly negative under standard return assumptions and robust across parameter sweeps and asset universes}, rather than claiming classical i.i.d. certainty. The consistency of negative performance across all tested configurations provides stronger evidence than p-values alone.
+
+\textbf{Sample size considerations:} Test periods of 252--504 days provide adequate statistical power for detecting the large negative returns observed in this study. However, topological features estimated from only 1,494 observations across 20 assets represent a relatively small sample for high-dimensional persistent homology analysis. Small shifts in correlation structure can produce large topological changes, raising concerns about whether observed features reflect genuine market structure or estimation noise. This limitation is addressed in Section~\ref{sec:analysis}.
