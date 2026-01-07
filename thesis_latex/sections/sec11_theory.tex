@@ -224,7 +224,7 @@ Inverting for a bound:
 \end{equation}
 for some constant $\alpha$ determined empirically.
 
-\subsubsection{Empirical Validation}
+\subsubsection{Simulation Evidence}
 
 \textbf{Fitted Constant}: $\alpha = 0.78$ (from Section 7--9 data)
 
@@ -232,7 +232,7 @@ for some constant $\alpha$ determined empirically.
 
 \begin{table}[H]
 \centering
-\caption{Empirical Validation of Theoretical Bound}
+\caption{Simulation Evidence of Theoretical Bound}
 \label{tab:cv-bound-validation}
 \begin{tabular}{@{}lccc@{}}
 \toprule
@@ -320,7 +320,7 @@ Adjusting for conservative bound (empirical ratio $\approx 0.3$), the \textbf{ef
    \end{itemize}
 \end{enumerate}
 
-\textbf{Empirical Validation Across Markets}:
+\textbf{Simulation Evidence Across Markets}:
 
 \begin{table}[H]
 \centering
@@ -452,7 +452,7 @@ The \textbf{Graph Laplacian} $\mathbf{L} = \mathbf{D} - \mathbf{A}$ captures net
 \begin{itemize}
 \item \checkmark \textbf{First application to topology stability} (not just covariance)
 \item \checkmark \textbf{Theoretical bound} relating correlation to persistent homology CV
-\item \checkmark \textbf{Empirical validation} across 11 markets (Sections 7--10)
+\item \checkmark \textbf{Empirical validation} across 11 simulated scenarios (Sections 7--10)
 \end{itemize}
 
 \textbf{Novel Result}: $\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$ is \textbf{new} to TDA literature.
@@ -740,7 +740,7 @@ While our theoretical framework successfully explains the correlation-stability 
 \subsubsection{Reproducibility and Generalization}
 
 \begin{enumerate}
-\item \textbf{Out-of-Sample Regions}: Cross-market validation (Section~\ref{sec:crossmarket}) covers US, UK, Japan, and emerging markets. Testing on Latin America, Africa, or frontier markets would further validate universality claims.
+\item \textbf{Out-of-Sample Regions}: Cross-market simulation (Section~\ref{sec:crossmarket}) covers US, UK, Japan, and emerging markets. Testing on Latin America, Africa, or frontier markets would further validate universality claims.
 
 \item \textbf{Alternative Topology Software}: Results use \texttt{ripser} library. Verification with \texttt{GUDHI}, \texttt{Dionysus}, or \texttt{giotto-tda} would confirm implementation robustness.
 

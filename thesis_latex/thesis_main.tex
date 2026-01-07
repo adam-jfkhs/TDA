@@ -101,17 +101,17 @@ Independent Research Project
 
 \textbf{The Problem:} Initial validation of a graph Laplacian-persistent homology trading strategy across mixed-sector equity baskets revealed severe out-of-sample failure (Sharpe $-0.56$, $p < 0.001$), stemming from correlation heterogeneity across sectors. When stocks from Technology ($\rho \approx 0.75$) and Consumer Goods ($\rho \approx 0.35$) are combined, topological features become decoherent---exhibiting excessive temporal variation (CV $> 0.65$) that overwhelms any regime signal.
 
-\textbf{The Discovery:} Through systematic investigation spanning six research phases (intraday data analysis, sector segmentation, strategy variants, cross-market validation, machine learning integration, and theoretical foundations), we identify a \textbf{critical correlation threshold} $\rho_c \approx 0.50$ below which topological noise dominates signal. Computing topology \textit{separately} per market sector (rather than cross-sector) produces stable features when within-sector correlation exceeds this threshold, enabling reliable regime detection.
+\textbf{The Discovery:} Through systematic investigation spanning six research phases (intraday data analysis, sector segmentation, strategy variants, cross-market simulation study, machine learning integration, and theoretical foundations), we identify a \textbf{critical correlation threshold} $\rho_c \approx 0.50$ below which topological noise dominates signal. Computing topology \textit{separately} per market sector (rather than cross-sector) produces stable features when within-sector correlation exceeds this threshold, enabling reliable regime detection.
 
-\textbf{The Result:} Sector-specific topological strategies achieve Sharpe ratio $+0.79$ ($p < 0.001$), validated across 11 global markets (7 US sectors, 3 international indices, 1 cryptocurrency basket). Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$), consistent with efficient market limits. Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory, providing mathematical foundations for the empirical threshold.
+\textbf{The Result:} Sector-specific topological strategies achieve Sharpe ratio $+0.79$ ($p < 0.001$) in U.S. equity markets. Calibrated simulation study across 11 market scenarios (7 US sectors, 3 international indices, 1 cryptocurrency basket) demonstrates that the correlation-stability pattern generalizes if international markets exhibit similar correlation structures. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$), consistent with efficient market limits. Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory, providing mathematical foundations for the empirical threshold.
 
-\textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating cross-market generalization. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
+\textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating theoretical generalization potential via simulation. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
 
 \textbf{Quality Assessment:} 9.2/10 (rigorous methodology, intellectual honesty, reproducible science)
 
 \vspace{0.1in}
 
-\noindent\textbf{Primary Contribution:} First TDA-based trading framework achieving \positiverisk{} with theoretical foundations, validated across multiple markets and asset classes.
+\noindent\textbf{Primary Contribution:} First TDA-based trading framework achieving \positiverisk{} with theoretical foundations and simulation-based generalization study.
 \end{abstract}
 
 \clearpage
@@ -174,8 +174,8 @@ Sector-specific universes exhibit three critical properties:
 
 This correlation-stability mechanism:
 \begin{itemize}
-    \item Generalizes across 11 global markets ($\rho = -0.82$ correlation-CV)
-    \item Is validated by machine learning ($F_1$ improves $40\times$, though AUC $\approx 0.52$ indicates weak directional predictability)
+    \item Shows consistency in simulated cross-market scenarios ($\rho \approx -0.97$ correlation-CV across 11 scenarios)
+    \item Is supported by machine learning ($F_1$ improves $40\times$, though AUC $\approx 0.52$ indicates weak directional predictability)
     \item Is grounded in mathematical theory (random matrix theory, spectral graph analysis)
 \end{itemize}
 
@@ -288,62 +288,63 @@ This deceptively simple question requires answering several sub-questions:
 
 Portions of Python code (debugging and syntax optimization) were assisted by AI programming tools (Claude and ChatGPT) under the author's direct instruction. All research design, model implementation, statistical validation, and interpretation were independently developed and verified by the author.
 
-\section{Cross-Market Validation Results}
+\section{Cross-Market Simulation Study}
 \label{app:crossmarket}
 
-Table~\ref{tab:11markets} presents the complete cross-market validation results referenced in Section~\ref{sec:crossmarket}, demonstrating the generalization of the $\rho_c \approx 0.50$ critical correlation threshold across 11 global markets.
+\textbf{Important Disclosure:} Due to data-access constraints, cross-market analysis uses a \textbf{calibrated simulation framework} designed to reproduce empirical correlation levels and noise properties from academic literature. These results are \textbf{illustrative} and demonstrate the theoretical framework's generalization potential---they are \textbf{not live-market backtests}.
 
-\textbf{Data Note:} This table uses simulated/calibrated values from the thesis figure generation framework. US sector correlations and CVs are based on empirical market characteristics; Sharpe ratios are estimated via inverse CV-Sharpe relationship ($\rho = -0.95$) observed in baseline validation. International market Sharpe ratios are interpolated from this relationship. Full methodology in \texttt{generate\_all\_thesis\_figures.py}.
+Table~\ref{tab:11markets} presents correlation and topology stability metrics across 11 simulated market scenarios, demonstrating how the $\rho$-CV relationship generalizes beyond U.S. equity sectors.
+
+\textbf{Data Source:} All values generated by \texttt{generate\_all\_thesis\_figures.py} using calibrated random correlation matrices. US sector parameters based on empirical studies; international/crypto parameters calibrated to match literature-reported correlation ranges.
 
 \begin{table}[h]
 \centering
-\caption{11-Market Validation: Correlation, Topology Stability, and Trading Viability (Simulated Data)}
+\caption{Cross-Market Simulation: Correlation Structure and Topology Stability}
 \label{tab:11markets}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lcc@{}}
 \toprule
-\textbf{Market} & \textbf{Mean $\rho$} & \textbf{Topology CV} & \textbf{Sharpe Ratio} & \textbf{Trading Viable?} \\
+\textbf{Market Scenario} & \textbf{Mean $\rho$} & \textbf{Topology CV} \\
 \midrule
-\multicolumn{5}{l}{\textit{US Sectors (N=7)}} \\
+\multicolumn{3}{l}{\textit{US Equity Sectors (N=7)}} \\
 \midrule
-Financials & 0.61 & 0.38 & +0.87 & Yes \\
-Energy & 0.60 & 0.40 & +0.79 & Yes \\
-Technology & 0.58 & 0.42 & +0.76 & Yes \\
-Healthcare & 0.56 & 0.45 & +0.71 & Yes \\
-Industrials & 0.55 & 0.46 & +0.68 & Yes \\
-Consumer & 0.54 & 0.48 & +0.65 & Yes \\
-Materials & 0.52 & 0.51 & +0.61 & Yes \\
+Financials & 0.61 & 0.38 \\
+Energy & 0.60 & 0.40 \\
+Technology & 0.58 & 0.42 \\
+Healthcare & 0.56 & 0.45 \\
+Industrials & 0.55 & 0.46 \\
+Consumer & 0.54 & 0.48 \\
+Materials & 0.52 & 0.51 \\
 \midrule
-\multicolumn{5}{l}{\textit{International Indices (N=3)}} \\
+\multicolumn{3}{l}{\textit{International Developed Markets (N=3)}} \\
 \midrule
-FTSE 100 (UK) & 0.59 & 0.43 & +0.77$^*$ & Yes \\
-DAX (Germany) & 0.57 & 0.44 & +0.75$^*$ & Yes \\
-Nikkei 225 (Japan) & 0.55 & 0.47 & +0.69$^*$ & Yes \\
+FTSE 100 (UK) & 0.59 & 0.43 \\
+DAX (Germany) & 0.57 & 0.44 \\
+Nikkei 225 (Japan) & 0.55 & 0.47 \\
 \midrule
-\multicolumn{5}{l}{\textit{Cryptocurrency (N=1)}} \\
+\multicolumn{3}{l}{\textit{Cryptocurrency (N=1)}} \\
 \midrule
-Crypto Basket & 0.48 & 0.62 & +0.39$^*$ & No \\
+Crypto Basket & 0.48 & 0.62 \\
 \midrule
-\textbf{Summary} & & & & \\
-Above threshold ($\rho \geq 0.50$) & -- & -- & +0.73 & 10/11 viable \\
-Below threshold ($\rho < 0.50$) & -- & -- & +0.39 & 0/1 viable \\
+\textbf{Pattern Summary} & & \\
+High correlation ($\rho \geq 0.50$) & 0.57 (avg) & 0.44 (avg) \\
+Low correlation ($\rho < 0.50$) & 0.48 & 0.62 \\
 \bottomrule
-\multicolumn{5}{l}{\footnotesize $^*$Sharpe ratios estimated via CV-Sharpe regression from US sectors}
 \end{tabular}
 \end{table}
 
-\textbf{Key Observations:}
+\textbf{Key Patterns:}
 
 \begin{enumerate}
-\item \textbf{Critical threshold confirmed}: All 10 markets with $\rho \geq 0.50$ achieve positive Sharpe ratios (mean +0.73), while the 1 market with $\rho < 0.50$ (crypto basket, $\rho = 0.48$) produces marginal performance (Sharpe +0.39), consistent with threshold predictions
+\item \textbf{$\rho$-CV inverse relationship}: Simulated scenarios exhibit strong negative correlation between mean $\rho$ and topology CV (Pearson $\rho \approx -0.97$), consistent with U.S. sector empirical pattern ($\rho = -0.95$, Figure 7.2)
 
-\item \textbf{CV-correlation relationship holds}: The inverse relationship between mean $\rho$ and topology CV generalizes across asset classes. US sectors exhibit Pearson correlation $\rho = -0.95$ (Figure 7.2); global cross-market validation shows $\rho \approx -0.97$ (Figure 9.1), validating the theoretical prediction from Section~\ref{sec:theory}
+\item \textbf{Critical threshold pattern}: The 10 scenarios with $\rho \geq 0.50$ show CV $< 0.55$ (stable topology regime), while the 1 scenario with $\rho < 0.50$ shows CV = 0.62 (unstable regime)
 
-\item \textbf{Cross-asset generalization}: The framework succeeds across US equity sectors (7/7 viable), international developed markets (3/3 viable), but struggles with cryptocurrency baskets (0/1 viable below threshold), suggesting universal applicability requires $\rho \geq 0.50$ regardless of asset class
+\item \textbf{Cross-asset consistency}: The correlation-stability relationship holds across simulated equity sectors, international indices, and cryptocurrency baskets, suggesting the pattern may generalize beyond U.S. markets if correlation structure is similar
 
-\item \textbf{Marginal regime at threshold}: Crypto basket ($\rho = 0.48$, just below threshold) achieves positive but weak performance (Sharpe +0.39), confirming $\rho_c \approx 0.50$ acts as gradual transition rather than sharp cutoff
+\item \textbf{Threshold transition}: Crypto basket ($\rho = 0.48$, just below threshold) shows CV = 0.62, suggesting $\rho_c \approx 0.50$ acts as gradual transition point rather than sharp cutoff
 \end{enumerate}
 
-\textbf{Methodological Transparency:} This table represents illustrative values demonstrating the theoretical framework's generalization. US sector metrics are calibrated to empirical market characteristics from academic literature; international Sharpe ratios are interpolated from observed US patterns. The critical finding---that $\rho \geq 0.50$ separates viable from non-viable regimes---is robust to these estimation choices.
+\textbf{Interpretation Caveat:} These simulated scenarios demonstrate that \textit{if} international/crypto markets exhibit correlation structures similar to calibration assumptions, \textit{then} the topology stability patterns should generalize. Actual market validation would require live data collection and backtesting, which is beyond this thesis scope.
 
 \section{Complete Results Tables}
 \label{app:tables}
