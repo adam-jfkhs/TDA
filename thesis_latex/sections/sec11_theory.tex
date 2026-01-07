@@ -703,7 +703,7 @@ While our theoretical framework successfully explains the correlation-stability 
 \subsubsection{Theoretical Gaps}
 
 \begin{enumerate}
-\item \textbf{Bound Tightness}: The derived bound $\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$ is conservative (observed values 3--10$\times$ smaller). A tighter bound incorporating correlation dispersion $\sigma(\rho_{ij})$ and spectral gap $\Delta$ would improve predictive power.
+\item \textbf{Bound Tightness via Noise Filtering}: The derived bound $\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$ is conservative (observed values 3--10$\times$ smaller). A promising refinement: apply Marchenko-Pastur (MP) eigenvalue filtering to separate signal from noise before computing the bound. Specifically, eigenvalues within the MP bulk $[\lambda_-, \lambda_+] = [(1-\sqrt{q})^2, (1+\sqrt{q})^2]$ (where $q = n/T$) likely represent sampling noise rather than genuine structure. Recomputing $\alpha$ using only eigenvalues exceeding $\lambda_+$ (the ``signal eigenvalues'') should tighten the bound toward ratio $\sim$1.0, establishing necessity in addition to sufficiency.
 
 \item \textbf{Static Networks Only}: Our analysis assumes \textbf{stationary} correlation structure within 60-day windows. Extension to time-varying correlation networks (e.g., regime-switching models, dynamic conditional correlation) remains unexplored.
 
@@ -720,11 +720,15 @@ While our theoretical framework successfully explains the correlation-stability 
 \item \textbf{Sample Period}: Data spans 2019--2024 (including COVID, 2022 bear, AI rally). Results may not generalize to other macro regimes (e.g., 1980s inflation, dot-com bubble, 2008 crisis).
 
 \item \textbf{Universe Size}: Tested on $n = 20$--30 assets. Scaling to S\&P 500 ($n = 500$) introduces computational challenges and may alter correlation-CV dynamics due to increased heterogeneity.
+
+\item \textbf{Epps Effect in Intraday Data}: Section~\ref{sec:intraday} uses 5-minute bars for high-frequency topology. The Epps effect (Epps, 1979) causes correlations to decline spuriously at high frequencies due to non-synchronous trading---stocks don't trade in identical milliseconds. This biases $\rho$ downward, potentially inflating observed CV. Applying the Hayashi-Yoshida (2005) estimator, which corrects for asynchronicity, would likely \textit{increase} intraday correlations and further reduce topology noise beyond the reported 32\% improvement.
 \end{enumerate}
 
 \subsubsection{Practical Extensions}
 
 \begin{enumerate}
+\item \textbf{Multi-Horizon Fiedler Monitoring}: Current implementation uses 30-day rolling topology volatility (Section~\ref{sec:methodology}), which lags regime shifts by weeks. An early-warning alternative: monitor the \textbf{rate of change} in Fiedler value ($\lambda_2$) over 5-day windows. A sudden drop in $\Delta\lambda_2 / \Delta t$ over 48 hours may signal impending instability \textit{before} 30-day CV exceeds thresholds, addressing the temporal scale mismatch identified in Section~\ref{sec:analysis}. This requires validating whether $d\lambda_2/dt$ Granger-causes topology volatility.
+
 \item \textbf{Multivariate Prediction}: Current ghost loop indicator uses univariate thresholds ($\rho < 0.50$ or $\sigma(\rho) > 0.20$). A multivariate logistic regression combining all spectral diagnostics could improve precision/recall.
 
 \item \textbf{Dynamic $\rho_c$}: Critical threshold $\rho_c \approx 0.50$ may vary with market regime. Conditional thresholds (e.g., $\rho_c = 0.45$ in high volatility, $\rho_c = 0.55$ in calm periods) warrant investigation.
@@ -732,6 +736,10 @@ While our theoretical framework successfully explains the correlation-stability 
 \item \textbf{Higher-Order Homology}: Analysis focuses on $H_1$ (loops). $H_2$ (voids) and higher-order Betti numbers may capture different regime structures, especially in high-dimensional portfolios.
 
 \item \textbf{Causal Mechanisms}: While we establish correlation $\rightarrow$ eigenvalue concentration $\rightarrow$ topology stability, the underlying economic drivers (sectoral shocks, liquidity cascades, volatility clustering) remain under-theorized.
+
+\item \textbf{Transaction Cost Sensitivity}: Current validation uses 5 basis points (Section~\ref{sec:methodology}). Institutional implementation requires stress-testing at 10, 15, and 20 bps to establish capacity limits. If Sharpe ratios remain positive at 12+ bps, the strategy is ``institutional grade''; if viable only at $<$8 bps, it is limited to low-latency proprietary trading. This threshold determines scalability.
+
+\item \textbf{Cross-Market Lead-Lag Topology}: Section~\ref{sec:crossmarket} validates 11 markets independently. However, topological instability may \textit{propagate} across markets due to shared risk factors. Testing whether Fiedler value drops in Nikkei 225 at time $t$ predict US Technology instability at $t+1$ (6--12 hour lag) would identify lead-lag contagion channels exploitable for global macro alpha.
 \end{enumerate}
 
 \subsubsection{Reproducibility and Generalization}
