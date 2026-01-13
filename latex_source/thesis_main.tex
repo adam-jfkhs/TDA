@@ -21,6 +21,28 @@
 \usepackage{float}
 \usepackage{xcolor}
 \usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+
+% ============== HEADER/FOOTER ==============
+\pagestyle{fancy}
+\fancyhf{} % Clear all headers and footers
+\fancyfoot[L]{\footnotesize January 2026}
+\fancyfoot[C]{}
+\fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+\fancyhead[L]{\footnotesize\leftmark}
+\fancyhead[R]{\footnotesize TDA for Market Regime Detection}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+% Plain style for chapter/section first pages
+\fancypagestyle{plain}{
+    \fancyhf{}
+    \fancyfoot[L]{\footnotesize January 2026}
+    \fancyfoot[R]{\footnotesize Page \thepage\ of \pageref{LastPage}}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0.4pt}
+}
 
 % ============== FORMATTING ==============
 \onehalfspacing
