@@ -150,11 +150,12 @@ Performance metrics computed:
 
 \begin{table}[H]
 \centering
+\small
 \caption{Strategy Variant Performance (Technology Sector, 2023--2024)}
 \label{tab:variant-performance}
 \begin{tabular}{@{}lccccc@{}}
 \toprule
-\textbf{Strategy} & \textbf{Sharpe Ratio} & \textbf{Annual Return} & \textbf{Max Drawdown} & \textbf{Win Rate} & \textbf{Active Days} \\
+\textbf{Strategy} & \textbf{Sharpe} & \textbf{Ann. Ret.} & \textbf{Max DD} & \textbf{Win Rate} & \textbf{Active} \\
 \midrule
 Baseline (Mean Rev) & 0.24 & 1.6\% & $-18.3\%$ & 50.8\% & 100\% \\
 Momentum + TDA & 0.42 & 2.8\% & $-14.2\%$ & 52.4\% & 100\% \\
@@ -186,14 +187,15 @@ The hybrid strategy achieves superior performance by capitalizing on trending co
 
 \begin{table}[H]
 \centering
+\small
 \caption{Momentum + TDA vs Baseline by Regime}
 \label{tab:momentum-regime}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Regime} & \textbf{Days} & \textbf{Momentum + TDA Return} & \textbf{Baseline Return} & \textbf{Difference} \\
+\textbf{Regime} & \textbf{Days} & \textbf{Mom+TDA Ret.} & \textbf{Baseline Ret.} & \textbf{Diff.} \\
 \midrule
-High $H_1$ (Stressed) & 78 (15\%) & +0.12\% per day & +0.09\% per day & +33\% \\
-Low $H_1$ (Calm) & 434 (85\%) & +0.04\% per day & $-0.01\%$ per day & +500\% \\
+High $H_1$ (Stressed) & 78 (15\%) & +0.12\%/day & +0.09\%/day & +33\% \\
+Low $H_1$ (Calm) & 434 (85\%) & +0.04\%/day & $-0.01\%$/day & +500\% \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -260,14 +262,15 @@ Combining all four strategies in equal-weight portfolio:
 
 \begin{table}[H]
 \centering
+\small
 \caption{Ensemble Portfolio Performance}
 \label{tab:ensemble-performance}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Portfolio} & \textbf{Sharpe} & \textbf{Annual Return} & \textbf{Max Drawdown} & \textbf{Correlation with Others} \\
+\textbf{Portfolio} & \textbf{Sharpe} & \textbf{Ann. Ret.} & \textbf{Max DD} & \textbf{Avg. Corr.} \\
 \midrule
 Best Individual (Momentum + TDA) & 0.42 & 2.8\% & $-14.2\%$ & N/A \\
-Ensemble (Equal-Weight) & 0.48 & 3.1\% & $-12.8\%$ & 0.38 (avg) \\
+Ensemble (Equal-Weight) & 0.48 & 3.1\% & $-12.8\%$ & 0.38 \\
 \bottomrule
 \end{tabular}
 \end{table}
