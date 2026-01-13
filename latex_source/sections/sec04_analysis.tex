@@ -1,0 +1,75 @@
+\section{Critical Analysis}
+\label{sec:analysis}
+
+\subsection{Root Causes of Strategy Failure}
+
+\subsubsection{Market Regime Mismatch}
+
+The 2022--2024 period exhibited persistent directional trends rather than mean-reverting behavior. The 2022 bear market, driven by Federal Reserve tightening and the 2023--2024 AI-fueled rally, created sustained momentum regimes that fundamentally penalize mean-reversion strategies (Moskowitz et al., 2012).
+
+\subsubsection{Absence of Economic Pricing Model}
+
+The strategy uses correlation-weighted neighbor averages as a baseline rather than fundamental valuation anchors. A stock diverging from correlated peers does not necessarily represent mispricing; it may reflect legitimate information asymmetry or differential fundamental prospects (Fama \& French, 2015).
+
+\subsubsection{Methodological Scale Mismatch}
+
+This represents the most fundamental conceptual flaw. The strategy combines two methodologies operating at incompatible scales:
+
+\textbf{Local signals:} Laplacian residuals identify short-term (daily) relative mispricings between small groups of correlated assets. These signals operate on pairwise correlations and respond to daily price movements.
+
+\textbf{Global filter:} Persistent homology detects slow (30-day rolling) structural changes across the entire correlation network. This operates at the system-wide level and captures regime-level shifts.
+
+These operate at incompatible spatial scales (local pairwise relationships vs. global network structure) and temporal scales (daily trading signals vs. monthly regime detection). The topology filter may flag instability when local pairs exhibit profitable mean reversion, or vice versa---the signals are not naturally synchronized. This scale inconsistency explains why regime filtering reduces but cannot eliminate losses.
+
+\subsubsection{In-Sample Overfitting}
+
+Performance likely reflects overfitting to the 2020--2021 environment characterized by stable correlations during synchronized COVID recovery (Bailey et al., 2014; Prado, 2018).
+
+\subsubsection{Summary: Architectural Flaws vs. Addressable Design Choices}
+
+Critical distinction: The problems above fall into two categories with vastly different implications:
+
+\textbf{UNFIXABLE (Architectural Flaws):}
+\begin{itemize}
+\item \textbf{Scale mismatch:} Cannot be remedied through parameter tuning. Requires fundamental redesign where signal generation and regime filtering operate at compatible spatial and temporal scales.
+\item \textbf{Sample size for topology:} Addressable only with orders of magnitude more data (10+ years or intraday frequency). Current 1,494 observations fundamentally insufficient for robust high-dimensional persistent homology.
+\end{itemize}
+
+\textbf{FIXABLE (Design Choices):}
+\begin{itemize}
+\item \textbf{Regime mismatch:} Use momentum strategies instead of mean reversion. Rather than buying oversold/shorting overbought, buy strong/short weak to align with trending regimes.
+\item \textbf{Pricing model:} Integrate fundamental factors (P/E, P/B, earnings yield). Only trade when Laplacian residuals AND valuation metrics indicate mispricing.
+\item \textbf{Overfitting:} Already addressed by walk-forward validation. This study's methodology successfully detected the overfitting present in preliminary research.
+\end{itemize}
+
+The addressable issues could form the basis for improved strategies combining regime-adaptive logic, fundamental-topology hybrids, or scale-consistent multi-timeframe architectures. However, the primary architectural flaw (scale mismatch) and critical data limitation (sample size) cannot be remedied through incremental improvements.
+
+\subsection{Statistical and Data Limitations}
+
+\subsubsection{Sample Size for Topological Analysis}
+
+\textbf{Critical limitation:} Persistent homology operates on high-dimensional correlation networks. With only 1,494 daily observations across 20 assets, topological features estimated from this data may reflect estimation noise rather than genuine structural properties of the market. Small shifts in correlation estimates---which are themselves noisy with limited samples---can produce large changes in topological features (loop counts, persistence). The distinction between signal and noise becomes ambiguous.
+
+This contrasts with the test period sample size (252--756 days), which is adequate for estimating performance metrics like Sharpe ratios with sufficient statistical power. The issue is not whether negative performance is statistically significant (it is, per Table~\ref{tab:statistical-significance}), but whether the topological features themselves are reliably estimated. Future research should employ higher-frequency data (intraday returns) or substantially longer time series (10+ years) to achieve robust topological inference.
+
+\subsubsection{Statistical Power for Performance Metrics}
+
+Test periods of 252--504 days provide adequate statistical power for detecting the large negative returns observed (all $p < 0.001$). However, the walk-forward structure yields only two independent test folds, limiting inference about cross-temporal stability of underperformance.
+
+\subsubsection{Threats to Validity}
+
+Several factors may limit generalizability of these findings. Survivorship bias from Yahoo Finance data (delisted securities excluded) may overstate universe stability. Correlation estimates are sensitive to rolling window length; our 60-day choice balances responsiveness and stability but alternatives could yield different results. Asset relationships may be non-stationary, particularly around structural breaks like the 2020 pandemic response. While walk-forward validation mitigates overfitting, results may differ under alternative market microstructure assumptions (e.g., different liquidity regimes) or execution models (e.g., VWAP vs. close-to-close). These limitations do not invalidate the core findings but should inform interpretation and future replication attempts.
+
+\subsection{Components with Partial Empirical Support}
+
+\subsubsection{Topology Provides Measurable Risk Signal}
+
+Despite failure as a trading signal, the 50\% loss reduction (Sharpe improvement from $-1.58$ to $-0.56$, both statistically significant) validates persistent homology for identifying elevated structural risk periods. This suggests value for risk management applications even when directional signals fail.
+
+\subsubsection{Comparison to Simple Risk Filters}
+
+A natural question is whether persistent homology provides value beyond simpler alternatives. We compared the TDA regime filter to: (1) a rolling volatility filter (go to cash when 20-day realized volatility exceeds 75th percentile), and (2) an average correlation filter (go to cash when mean pairwise correlation exceeds 75th percentile). Results: the volatility filter achieved Sharpe $-0.82$, the correlation filter achieved $-0.71$, versus $-0.56$ for the TDA filter. While the TDA filter outperforms both simple alternatives, the margin is modest ($\sim$0.15--0.25 Sharpe points), suggesting persistent homology captures \textit{some} additional regime information beyond simple summary statistics, but the practical advantage may not justify the computational complexity for all applications.
+
+\subsubsection{Reframing: Persistent Homology as Risk Overlay}
+
+Our evidence supports repositioning TDA's role from ``trading signal generator'' to ``market stress indicator for exposure scaling.'' Rather than using topology to time mean-reversion entries, the appropriate application may be as a portfolio risk overlay: maintain baseline strategy exposure during low topological volatility, reduce exposure (or hedge) during elevated topology readings. This framing aligns with the observed 50\% loss reduction and acknowledges that topology detects structural stress without predicting direction. Future implementations might integrate TDA readings into volatility-targeting or risk-parity frameworks rather than standalone signal generation.

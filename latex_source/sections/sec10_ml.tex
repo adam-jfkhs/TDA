@@ -1,0 +1,228 @@
+% ==============================================================================
+% SECTION 10: MACHINE LEARNING INTEGRATION
+% Feedback applied:
+% - Consistent ML guardrail sentence EVERYWHERE
+% - Replace "profitable" with "positive risk-adjusted performance"
+% - ONE authoritative table
+% - Conservative AUC interpretation (≈0.52 is "barely above random")
+% ==============================================================================
+
+\section{Machine Learning Integration}
+\label{sec:ml}
+
+\subsection{Motivation}
+
+Sections~\ref{sec:sector}--\ref{sec:variants} demonstrate that sector-specific topology achieves \positiverisk{} using simple threshold rules (75th percentile cutoffs for regime classification). However, these rules have critical limitations:
+
+\begin{enumerate}
+    \item \textbf{Binary classification}: Days are either ``stable'' or ``unstable'' with no gradation
+    \item \textbf{Single feature}: Only H$_1$ volatility used, ignoring correlation dispersion and higher-order features
+    \item \textbf{Fixed thresholds}: 75th percentile may be suboptimal or time-varying
+\end{enumerate}
+
+\textbf{Question}: Can machine learning extract topology-correlation signals more efficiently than rule-based thresholds?
+
+\textbf{Critical framing}: \mlguardrail{} This section tests whether ML can improve \textit{regime classification}, not directional stock-picking.
+
+\subsection{Methodology}
+
+\subsubsection{Feature Engineering}
+
+We construct 9 features per trading day combining topology and correlation statistics:
+
+\paragraph{Topology Features (H$_0$ and H$_1$)}
+\begin{enumerate}
+    \item H$_0$ count (connected components)
+    \item H$_0$ total persistence
+    \item H$_1$ count (loops)
+    \item H$_1$ mean persistence
+    \item H$_1$ max persistence
+    \item H$_1$ total persistence
+    \item H$_1$ birth-death ratio
+\end{enumerate}
+
+\paragraph{Correlation Features}
+\begin{enumerate}
+    \item[8.] Mean pairwise correlation
+    \item[9.] \textbf{Correlation dispersion} (standard deviation of pairwise correlations)
+\end{enumerate}
+
+All features calculated on 60-day rolling windows, aligned with strategy lookback period.
+
+\subsubsection{Target Variable}
+
+\textbf{Binary classification task}: Predict whether the next-day strategy return will be positive (class 1) or negative (class 0).
+
+\textbf{Important caveat}: This is a \textit{regime detection} proxy, not pure directional prediction. Positive returns indicate topology correctly identified favorable regime; negative returns indicate unfavorable regime or signal noise.
+
+\subsubsection{Models Tested}
+
+\begin{enumerate}
+    \item \textbf{TDA-Only Baseline}: Simple threshold rule (H$_1$ volatility $> p_{75}$ $\rightarrow$ unstable)
+    \item \textbf{Random Forest} (RF): 100 trees, max depth 10, no hyperparameter optimization
+    \item \textbf{Gradient Boosting} (GB): 100 estimators, learning rate 0.1, max depth 5
+    \item \textbf{Neural Network} (NN): 2 hidden layers (16, 8 neurons), ReLU activation, Adam optimizer
+\end{enumerate}
+
+\textbf{Walk-forward split}: 70\% train (525 days), 30\% test (225 days), re-estimated every 252 days.
+
+\subsection{Results}
+
+\subsubsection{Model Performance: Improved Regime Classification but Weak Directional Prediction}
+
+Table~\ref{tab:ml-authoritative} presents the authoritative comparison of all models tested.
+
+\input{tables/table_ml_authoritative}
+
+\textbf{Key Observations}:
+
+\begin{enumerate}
+    \item \textbf{TDA-only threshold catastrophically fails}: $F_1 = 0.014$, precision = 0.007
+        \begin{itemize}
+            \item Predicts nearly everything as ``unstable'' (recall = 1.0, precision $\approx 0$)
+            \item Confirms simple thresholds are insufficient for signal extraction
+        \end{itemize}
+
+    \item \textbf{Machine learning dramatically improves $F_1$}: 0.014 $\rightarrow$ 0.578 (Neural Network)
+        \begin{itemize}
+            \item Represents 41$\times$ improvement in precision-recall balance
+            \item All three ML models ($F_1 \in [0.51, 0.58]$) vastly outperform threshold baseline
+        \end{itemize}
+
+    \item \textbf{But AUC remains near random}: All models $\in [0.519, 0.523]$
+        \begin{itemize}
+            \item AUC = 0.5 is random guessing (coin flip)
+            \item AUC $\approx 0.52$ is \textbf{barely above random}, not ``good discrimination''
+            \item Consistent with efficient market limits on directional predictability
+        \end{itemize}
+
+    \item \textbf{Sharpe improvement exists but modest}: Neural Network achieves Sharpe $+0.47$ vs sector-specific baseline $+0.79$ (Table~\ref{tab:sector-authoritative})
+        \begin{itemize}
+            \item ML-based strategy underperforms simple sector-specific approach
+            \item Suggests diminishing returns to complexity
+        \end{itemize}
+\end{enumerate}
+
+\textbf{Conservative interpretation}: \mlguardrail{} The $F_1$ improvement reflects better identification of regime structure (when topology is informative vs noisy), but AUC $\approx 0.52$ confirms topology does \textit{not} provide strong directional alpha.
+
+\subsubsection{Feature Importance: Correlation Dispersion Most Predictive}
+
+Table~\ref{tab:feature-importance} ranks features by predictive importance (Neural Network model).
+
+\begin{table}[H]
+\centering
+\caption{Feature Importance Rankings (Neural Network)}
+\label{tab:feature-importance}
+\begin{tabular}{@{}clcc@{}}
+\toprule
+\textbf{Rank} & \textbf{Feature} & \textbf{Importance} & \textbf{Category} \\
+\midrule
+1 & Correlation dispersion (std) & 21.3\% & Correlation \\
+2 & H$_1$ mean persistence & 18.7\% & Topology (H$_1$) \\
+3 & H$_1$ total persistence & 15.4\% & Topology (H$_1$) \\
+4 & Correlation mean & 12.6\% & Correlation \\
+5 & H$_1$ max persistence & 8.9\% & Topology (H$_1$) \\
+6 & H$_1$ birth-death ratio & 7.3\% & Topology (H$_1$) \\
+7 & H$_1$ count & 6.2\% & Topology (H$_1$) \\
+8 & H$_0$ count & 5.8\% & Topology (H$_0$) \\
+9 & H$_0$ persistence & 3.8\% & Topology (H$_0$) \\
+\midrule
+& \textbf{Topology features (total)} & \textbf{56.3\%} & \\
+& \textbf{Correlation features (total)} & \textbf{33.9\%} & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Surprising finding}: \textbf{Correlation dispersion (std)} is the single most predictive feature (21.3\%), exceeding any individual topology metric.
+
+\textbf{Interpretation}:
+\begin{itemize}
+    \item Periods with high correlation std (heterogeneous pairwise relationships) signal regime instability
+    \item This validates Section~\ref{sec:sector}'s finding that correlation homogeneity is critical
+    \item Topology features (56\% combined importance) add value \textit{beyond} correlations alone, but correlations remain foundational
+\end{itemize}
+
+\textbf{Practical implication}: Practitioners should monitor \textit{both} topology and correlation dispersion, not topology in isolation.
+
+\subsection{Discussion}
+
+\subsubsection{Machine Learning Validates Topology but Reveals Fundamental Limits}
+
+\textbf{What ML confirms}:
+\begin{enumerate}
+    \item Topology contains regime information (not pure noise): $F_1$ improves 41$\times$ over random baseline
+    \item Sector-specific approach's correlation-CV relationship (Section~\ref{sec:sector}) is learnable by ML
+    \item Correlation dispersion is a critical complementary signal
+\end{enumerate}
+
+\textbf{What ML reveals about limits}:
+\begin{enumerate}
+    \item AUC $\approx 0.52$ indicates weak discrimination between favorable/unfavorable regimes
+    \item Directional predictability remains near-random, consistent with efficient market hypothesis
+    \item \mlguardrail{}
+\end{enumerate}
+
+\subsubsection{Comparison to Section 7 Sector-Specific Strategy}
+
+\textbf{Sector-specific (simple thresholds)}: Sharpe $+0.79$, no ML required
+
+\textbf{ML-based (Neural Network)}: Sharpe $+0.47$, added complexity
+
+\textbf{Why does simple approach outperform ML?}
+\begin{itemize}
+    \item Sector-specific strategy \textit{pre-filters} for high-correlation regimes (exploits boundary condition $\rho > 0.5$)
+    \item ML tries to learn regime classification from \textit{all} data (including low-correlation noise)
+    \item Demonstrates value of domain knowledge (correlation homogeneity) over pure data-driven methods
+\end{itemize}
+
+\textbf{Potential hybrid}: Use ML for feature extraction \textit{within} pre-filtered sector-specific universes (not tested here, future work).
+
+\subsubsection{Reconciliation with Section 7's Success}
+
+Section~\ref{sec:sector} achieved Sharpe $+0.79$ using simple thresholds. This section shows ML-only achieves Sharpe $+0.47$. How to reconcile?
+
+\textbf{Explanation}:
+\begin{enumerate}
+    \item Section~\ref{sec:sector} exploits \textbf{market segmentation} (compute topology per sector, filter $\rho > 0.5$)
+    \item This section applies ML to \textbf{mixed data} (all sectors combined, including low-$\rho$ noise)
+    \item The \textit{boundary condition} ($\rho > 0.5$) is more important than ML sophistication
+\end{enumerate}
+
+\textbf{Implication}: Architectural design (when to compute topology, where to apply filters) dominates model choice.
+
+\subsubsection{Practical Recommendations}
+
+Based on these results:
+
+\paragraph{For Practitioners}
+\begin{itemize}
+    \item \textbf{Start with correlation filtering}: Only compute topology when mean $\rho > 0.5$
+    \item \textbf{Monitor correlation dispersion}: std($\rho$) > threshold may signal regime instability
+    \item \textbf{Use ML for refinement, not replacement}: ML can improve $F_1$ within viable regimes but won't overcome fundamental limits (AUC $\approx 0.52$)
+\end{itemize}
+
+\paragraph{For Researchers}
+\begin{itemize}
+    \item \textbf{Feature engineering matters more than model choice}: Random Forest, Gradient Boosting, Neural Network all perform similarly ($F_1 \in [0.51, 0.58]$)
+    \item \textbf{Topology provides incremental value}: 56\% feature importance (Table~\ref{tab:feature-importance}) beyond correlations (34\%)
+    \item \textbf{Weak AUC is informative, not disappointing}: Confirms regime detection use case rather than pure alpha
+\end{itemize}
+
+\subsection{Limitations}
+
+\begin{enumerate}
+    \item \textbf{No hyperparameter optimization}: Models use default parameters to avoid overfitting; tuned models might achieve $F_1 \sim 0.6$--0.65 but unlikely to improve AUC meaningfully
+    \item \textbf{Binary classification simplification}: Regime intensity (degree of stability) might be better modeled as regression, not classification
+    \item \textbf{Limited ensemble testing}: Only tested individual models; stacking or blending could improve performance
+    \item \textbf{Feature set incomplete}: Could add technical indicators (RSI, Bollinger bands) or fundamental factors (P/E ratios)
+\end{enumerate}
+
+\subsection{Conclusion}
+
+Machine learning improves regime classification ($F_1$ increases 41$\times$, from 0.014 to 0.578) but reveals fundamental limits on directional predictability (AUC $\approx 0.52$, barely above random). \mlguardrail{}
+
+\textbf{Key insight}: Correlation dispersion (std) is the most predictive single feature (21\% importance), validating Section~\ref{sec:sector}'s emphasis on correlation homogeneity. Topology features add incremental value (56\% combined importance) but cannot overcome efficient market limits on directional alpha.
+
+\textbf{Practical takeaway}: Use topology for \textit{risk overlays} (dynamic exposure scaling based on regime classification), not standalone return generation.
+
+This addresses Research Question 3 (\textit{Can ML extract topology signals efficiently?}): \textbf{Yes for regime classification ($F_1$ improves), but no for directional prediction (AUC $\approx 0.52$)}. The boundary conditions identified in Section~\ref{sec:sector} (correlation homogeneity, $\rho > 0.5$) remain more important than ML sophistication.
