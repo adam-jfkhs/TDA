@@ -159,16 +159,23 @@ In mixed-sector portfolios (e.g., Technology $\rho \approx 0.75$ + Utilities $\r
 
 \subsection{Theoretical Bound Derivation}
 
-\subsubsection{Informal Theorem}
+\subsubsection{Formal Statement}
 
-\textbf{Theorem (Informal)}:
-
-For a correlation matrix $\mathbf{C}$ with mean correlation $\rho \in [0, 1]$, the coefficient of variation of $H_1$ persistence values satisfies:
+\begin{proposition}[Correlation-Stability Bound]
+\label{prop:cv-bound}
+Let $\mathbf{C} \in \mathbb{R}^{n \times n}$ be a correlation matrix with mean pairwise correlation $\rho \in (0, 1)$. Assume:
+\begin{enumerate}[label=(\roman*)]
+\item The correlation matrix is generated from a single-factor model with loading $\sqrt{\rho}$
+\item The Vietoris-Rips filtration is computed on the correlation distance metric $d_{ij} = \sqrt{2(1-\rho_{ij})}$
+\item The sample size $T$ satisfies $T/n \geq 10$ (adequate observations per asset)
+\end{enumerate}
+Then the coefficient of variation of $H_1$ persistence values satisfies:
 \begin{equation}
 \text{CV}(H_1) \leq \frac{\alpha}{\sqrt{\rho(1 - \rho)}}
 \label{eq:cv-bound}
 \end{equation}
-where $\alpha > 0$ is a constant depending on dimensionality $n$.
+where $\alpha > 0$ is a constant depending on dimensionality $n$, empirically fitted as $\alpha \approx 0.78$ for $n = 20$.
+\end{proposition}
 
 \textbf{Important Caveats}:
 \begin{itemize}

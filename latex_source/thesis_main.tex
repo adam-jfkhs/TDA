@@ -58,7 +58,7 @@ Merrick, New York\\
 \\
 \texttt{GitHub: github.com/adam-jfkhs/TDA}\\
 \\
-December 2025\\
+January 2026\\
 \\
 Independent Research Project
 }
@@ -74,15 +74,7 @@ Independent Research Project
 \maketitle
 \thispagestyle{empty}
 
-\vspace{0.5in}
-
-\noindent\textbf{Author's Note:} \textit{This research was conducted independently as part of my high school coursework, without institutional supervision or access to proprietary data. All analysis uses publicly available price data and open-source software. The methodology, implementation, and conclusions are solely my own work, with AI tools (Claude, ChatGPT) used only for code debugging and syntax optimization as disclosed in the appendix.}
-
-\vspace{0.15in}
-
-\noindent\textbf{Methodology Note:} \textit{This research was conducted independently without formal mentorship. The mathematical framework, including the application of persistent homology to financial correlation networks, spectral graph theory, and random matrix theory, was self-taught through systematic study of academic literature to address the limitations identified in Phase 1 of this investigation. The theoretical bound derivation (Section 11) and critical correlation threshold $\rho_c \approx 0.50$ represent original contributions developed through this independent research program.}
-
-\vspace{0.25in}
+\vspace{0.3in}
 
 \noindent\textbf{Keywords:} Topological Data Analysis, Persistent Homology, Quantitative Finance, Market Regime Detection, Sector-Specific Analysis, Walk-Forward Validation
 
@@ -106,8 +98,6 @@ Independent Research Project
 \textbf{The Result:} Sector-specific topological strategies achieve Sharpe ratio $+0.79$ ($p < 0.001$) in U.S. equity markets. Calibrated simulation study across 11 market scenarios (7 US sectors, 3 international indices, 1 cryptocurrency basket) demonstrates that the correlation-stability pattern generalizes if international markets exhibit similar correlation structures. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$), consistent with efficient market limits. Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory, providing mathematical foundations for the empirical threshold.
 
 \textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating theoretical generalization potential via simulation. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
-
-\textbf{Quality Assessment:} 9.2/10 (rigorous methodology, intellectual honesty, reproducible science)
 
 \vspace{0.1in}
 
@@ -261,6 +251,13 @@ This deceptively simple question requires answering several sub-questions:
 % ==============================================================================
 
 \appendix
+
+\section{Author's Note and Methodology Statement}
+\label{app:author-note}
+
+\textbf{Author's Note:} This research was conducted independently as part of my high school coursework, without institutional supervision or access to proprietary data. All analysis uses publicly available price data and open-source software. The methodology, implementation, and conclusions are solely my own work, with AI tools (Claude, ChatGPT) used only for code debugging and syntax optimization as disclosed in Appendix~\ref{app:technical}.
+
+\textbf{Methodology Statement:} This research was conducted independently without formal mentorship. The mathematical framework, including the application of persistent homology to financial correlation networks, spectral graph theory, and random matrix theory, was self-taught through systematic study of academic literature to address the limitations identified in Phase 1 of this investigation. The theoretical bound derivation (Section~\ref{sec:theory}) and critical correlation threshold $\rho_c \approx 0.50$ represent original contributions developed through this independent research program.
 
 \section{Technical Implementation Details}
 \label{app:technical}

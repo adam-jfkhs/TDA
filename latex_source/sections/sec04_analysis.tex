@@ -73,3 +73,9 @@ A natural question is whether persistent homology provides value beyond simpler 
 \subsubsection{Reframing: Persistent Homology as Risk Overlay}
 
 Our evidence supports repositioning TDA's role from ``trading signal generator'' to ``market stress indicator for exposure scaling.'' Rather than using topology to time mean-reversion entries, the appropriate application may be as a portfolio risk overlay: maintain baseline strategy exposure during low topological volatility, reduce exposure (or hedge) during elevated topology readings. This framing aligns with the observed 50\% loss reduction and acknowledges that topology detects structural stress without predicting direction. Future implementations might integrate TDA readings into volatility-targeting or risk-parity frameworks rather than standalone signal generation.
+
+\subsection{Looking Forward: From Failure Analysis to Systematic Investigation}
+
+The preceding analysis has identified specific failure modes---scale mismatch, sample limitations, and market regime misalignment---that explain the strategy's underperformance. However, the 50\% loss reduction achieved by the topological filter suggests that persistent homology captures genuine market structure, even when the trading logic fails to exploit it profitably. This observation raises a critical question: \textit{under what conditions might topological methods succeed?}
+
+The following section consolidates preliminary conclusions from this failure analysis and outlines a systematic research program to address each identified limitation. Rather than abandoning topological methods based on this initial negative result, we pursue a structured investigation spanning six research phases---from intraday data analysis to theoretical foundations---that ultimately transforms the failure into actionable insights about when, where, and why TDA-based strategies can achieve positive risk-adjusted performance.
