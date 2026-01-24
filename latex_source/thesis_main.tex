@@ -117,7 +117,7 @@ Independent Research Project
 
 \textbf{The Discovery:} Through systematic investigation, we identify a \textbf{correlation homogeneity requirement}: topological features become stable and interpretable only when computed on asset groups with mean pairwise correlation $\rho > 0.50$. Below this threshold, features reflect estimation noise rather than market structure.
 
-\textbf{The Result:} Computing topology \textit{within} homogeneous sectors (rather than cross-sector) yields stable features (CV $< 0.45$) that track regime shifts. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains near-random (AUC $\approx 0.52$), consistent with efficient market limits on price forecasting. A theoretical bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in spectral graph theory explains why correlation homogeneity is necessary for topological stability.
+\textbf{The Result:} Computing topology \textit{within} homogeneous sectors (rather than cross-sector) yields stable features (CV $< 0.45$) that track regime shifts. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains near-random (AUC $\approx 0.52$), consistent with efficient market limits on price forecasting. A theoretical bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) motivated by spectral graph theory provides a framework for understanding why correlation homogeneity is necessary for topological stability.
 
 \textbf{Contribution:} This work identifies \textbf{boundary conditions} for applying TDA to financial data: (1) correlation homogeneity as a necessary condition, (2) a practical threshold ($\rho_c \approx 0.50$) for deployment, and (3) theoretical foundations explaining the correlation-stability relationship. The framework is suited for \textit{regime detection and risk monitoring}, not directional trading.
 
@@ -188,7 +188,7 @@ This correlation-stability mechanism:
 \begin{itemize}
     \item Shows consistency in simulated cross-market scenarios ($\rho \approx -0.97$ correlation-CV across 11 scenarios)
     \item Is supported by machine learning ($F_1$ improves $40\times$, though AUC $\approx 0.52$ indicates weak directional predictability)
-    \item Is grounded in mathematical theory (random matrix theory, spectral graph analysis)
+    \item Is motivated by mathematical theory (random matrix theory, spectral graph analysis)
 \end{itemize}
 
 \subsection*{Intellectual Honesty}
