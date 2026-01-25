@@ -665,7 +665,7 @@ def main():
     </style>
 </head>
 <body>
-    <h1>🔮 TDA Market Topology Explorer</h1>
+    <h1>TDA Market Topology Explorer</h1>
     <p style="text-align:center; color:#888; margin-bottom:30px;">
         Interactive visualizations of Topological Data Analysis applied to financial markets
     </p>
@@ -719,7 +719,7 @@ def main():
 </html>
 """
 
-    with open('tda_dashboard.html', 'w') as f:
+    with open('tda_dashboard.html', 'w', encoding='utf-8') as f:
         f.write(dashboard_html)
 
     print("Saved: tda_dashboard.html")
