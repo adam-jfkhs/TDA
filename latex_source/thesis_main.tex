@@ -338,7 +338,26 @@ This thesis proceeds in two phases: an \textbf{initial failed strategy} (Section
 
 \subsection{AI Assistance Statement}
 
-Portions of Python code (debugging and syntax optimization) were assisted by AI programming tools (Claude and ChatGPT) under the author's direct instruction. All research design, model implementation, statistical validation, and interpretation were independently developed and verified by the author.
+\textbf{What I did independently:}
+\begin{itemize}
+    \item Conceived research question and hypothesis (correlation threshold for TDA applicability)
+    \item Designed experimental methodology and validation framework
+    \item Selected datasets and defined evaluation metrics
+    \item Interpreted all results and drew conclusions
+    \item Wrote all prose and theoretical arguments
+    \item Verified all numerical results for accuracy
+\end{itemize}
+
+\textbf{What AI tools assisted with:}
+\begin{itemize}
+    \item Python code implementation (translating my methodology into working code)
+    \item Debugging and syntax optimization
+    \item LaTeX formatting and document structure
+    \item Statistical test implementation (Chow test, bootstrap CI, null model)
+    \item Visualization code generation
+\end{itemize}
+
+\textbf{How I used AI:} All AI assistance (Claude, ChatGPT) was directive---I specified what analysis to perform, reviewed all outputs, and verified results independently. The intellectual contribution (identifying the $\rho_c \approx 0.50$ threshold, recognizing sector homogeneity as key, deriving theoretical motivation) emerged from my investigation of why TDA failed on mixed portfolios.
 
 \section{Cross-Market Simulation Study}
 \label{app:crossmarket}
@@ -593,7 +612,7 @@ Mean Correlation & 12.8\% \\
 \section{Author's Note and Methodology Statement}
 \label{app:author-note}
 
-\textbf{Author's Note:} This research was conducted independently as part of my high school coursework, without institutional supervision or access to proprietary data. All analysis uses publicly available price data and open-source software. The methodology, implementation, and conclusions are solely my own work, with AI tools (Claude, ChatGPT) used only for code debugging and syntax optimization as disclosed in Appendix~\ref{app:technical}.
+\textbf{Author's Note:} This research was conducted independently as part of my high school coursework, without institutional supervision or access to proprietary data. All analysis uses publicly available price data and open-source software. The research questions, methodology design, result interpretation, and conclusions are my own work. AI tools (Claude, ChatGPT) assisted with code implementation, debugging, and formatting as detailed in Appendix~\ref{app:technical}.
 
 \textbf{Methodology Statement:} This research was conducted independently without formal mentorship. The mathematical framework, including the application of persistent homology to financial correlation networks, spectral graph theory, and random matrix theory, was self-taught through systematic study of academic literature to address the limitations identified in Phase 1 of this investigation. The theoretical bound derivation (Section~\ref{sec:theory}) and critical correlation threshold $\rho_c \approx 0.50$ represent original contributions developed through this independent research program.
 
