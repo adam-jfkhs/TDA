@@ -587,26 +587,34 @@ Healthcare & 0.45 & 0.19 & 0.65 & 0.37 & 0.31 & 1.04 \\
 
 \subsubsection{Transaction Cost Sensitivity}
 
-Given the strategy's trading frequency, we report Sharpe ratios under various cost assumptions:
+Given the strategy's trading frequency (approximately 18--23 trades per year in active sectors), we report Sharpe ratios under various cost assumptions:
 
 \begin{table}[H]
 \centering
 \small
 \caption{Transaction Cost Sensitivity: Sharpe Ratio by Cost Assumption (2019--2024)}
 \label{tab:cost-sensitivity}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-\textbf{Sector} & \textbf{Gross} & \textbf{5 bps} & \textbf{15 bps} & \textbf{25 bps} \\
+\textbf{Sector} & \textbf{Turnover} & \textbf{Gross} & \textbf{5 bps} & \textbf{15 bps} & \textbf{25 bps} \\
 \midrule
-Technology & 0.56 & 0.54 & 0.50 & 0.46 \\
-Energy & 0.22 & 0.20 & 0.16 & 0.12 \\
-Healthcare & 1.04 & 1.01 & 0.95 & 0.89 \\
+Technology & 896\% & 0.56 & 0.50 & 0.39 & 0.28 \\
+Energy & 940\% & 0.22 & 0.18 & 0.11 & 0.04 \\
+Healthcare & 1157\% & 1.04 & 0.95 & 0.75 & 0.55 \\
 \bottomrule
-\multicolumn{5}{l}{\footnotesize Cost applied per round-trip. Only active sectors shown.}
+\multicolumn{6}{l}{\footnotesize Cost applied per round-trip. Only active sectors shown. Financials: 0\% turnover (stable).}
 \end{tabular}
 \end{table}
 
-\textbf{Interpretation}: Strategy remains profitable under realistic cost assumptions (5--15 bps) for most sectors. Healthcare shows particular robustness with Sharpe $> 0.89$ even at 25 bps costs.
+\textbf{Interpretation}:
+\begin{itemize}
+    \item \textbf{Healthcare}: Robust across all cost scenarios (Sharpe $> 0.55$ at 25 bps)
+    \item \textbf{Technology}: Profitable at realistic costs (Sharpe $> 0.28$ at 25 bps)
+    \item \textbf{Energy}: Marginal at high costs---requires careful execution or 5--10 bps costs
+    \item \textbf{Financials}: Zero turnover reflects structural stability (high-$\rho$, low-CV)
+\end{itemize}
+
+The high turnover reflects the regime-switching nature of the strategy. Average holding period is 11--14 days for active sectors, consistent with regime-based (not day-trading) frequency.
 
 \subsection{Graph Laplacian Analysis}
 
