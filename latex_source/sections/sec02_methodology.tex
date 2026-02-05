@@ -26,10 +26,10 @@ L = I - D^{-1/2}WD^{-1/2}
 where $D$ is the degree matrix, and $I$ is the identity matrix. The diffusion operator is then:
 
 \begin{equation}
-h = (I - \alpha L)^T x
+h = (I - \alpha L)^3 x
 \end{equation}
 
-where $\alpha = 0.5$ is the diffusion strength parameter, $T = 3$ iterations, and $x$ is the vector of asset returns. Residuals are calculated as:
+where $\alpha = 0.5$ is the diffusion strength parameter, and $x$ is the vector of asset returns. The superscript 3 denotes matrix exponentiation (three iterations of the diffusion process), not matrix transpose.\footnote{Standard notation would use $T$ for iterations, but we use the explicit value 3 to avoid confusion with the transpose operation.} Residuals are calculated as:
 
 \begin{equation}
 e = x - h

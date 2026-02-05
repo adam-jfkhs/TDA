@@ -22,6 +22,7 @@
 \usepackage{xcolor}
 \usepackage{enumitem}
 \usepackage{fancyhdr}
+\usepackage{tcolorbox}
 \usepackage{lastpage}
 
 % ============== HEADER/FOOTER ==============
@@ -199,6 +200,10 @@ This work maintains rigorous standards:
     \item \textbf{Limitations acknowledged:} Simulated data in Phases 4-5, time period constraints, single methodology family
     \item \textbf{Conservative interpretation:} Machine learning improves regime classification but not directional alpha
 \end{itemize}
+
+\begin{tcolorbox}[colback=yellow!10, colframe=orange!80, title=\textbf{Data Limitation}]
+\textbf{Real-data validation is limited to 7 US equity sectors (2019--2024).} Cross-market results in Section~\ref{sec:crossmarket} (international equities, cryptocurrency) use \textbf{calibrated simulations}, not actual market data. These demonstrate theoretical generalization potential but are \textbf{not live-market backtests}. Validation on real international markets remains future work.
+\end{tcolorbox}
 
 \subsection*{Scope and Value}
 
