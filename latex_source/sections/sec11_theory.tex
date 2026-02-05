@@ -552,6 +552,62 @@ For practitioners prioritizing regime detection accuracy over interpretability, 
 
 \textbf{Figure 11.2} visualizes observed CV vs theoretical bound, showing excellent agreement.
 
+\subsubsection{Temporal Robustness: 2010--2019 Validation}
+
+A critical question for any trading framework is whether results are period-specific. To address this, we tested the TDA methodology on the \textbf{2010--2019 period} (pre-COVID), using identical sector definitions and methodology.
+
+\begin{table}[H]
+\centering
+\small
+\caption{TDA Framework: 2010--2019 vs 2019--2024 Comparison}
+\label{tab:temporal-robustness}
+\begin{tabular}{@{}lcccccc@{}}
+\toprule
+& \multicolumn{3}{c}{\textbf{2010--2019}} & \multicolumn{3}{c}{\textbf{2019--2024}} \\
+\cmidrule(lr){2-4} \cmidrule(lr){5-7}
+\textbf{Sector} & \textbf{Mean $\rho$} & \textbf{CV} & \textbf{Sharpe} & \textbf{Mean $\rho$} & \textbf{CV} & \textbf{Sharpe} \\
+\midrule
+Financials & 0.69 & 0.17 & 0.29 & 0.68 & 0.09 & 0.00$^\dagger$ \\
+Technology & 0.42 & 0.20 & 0.48 & 0.49 & 0.19 & 0.56 \\
+Energy & 0.56 & 0.14 & 0.26 & 0.71 & 0.18 & 0.22 \\
+Healthcare & 0.45 & 0.19 & 0.65 & 0.37 & 0.31 & 1.04 \\
+\midrule
+\textbf{Average} & 0.53 & 0.18 & \textbf{0.42} & 0.56 & 0.19 & \textbf{0.46} \\
+\bottomrule
+\multicolumn{7}{l}{\footnotesize $^\dagger$Financials 2019--2024: No regime transitions detected (sector remained stable).}
+\end{tabular}
+\end{table}
+
+\textbf{Key findings from temporal validation:}
+\begin{itemize}
+    \item \textbf{Strategy works pre-COVID}: Average Sharpe = 0.42 across 2010--2019
+    \item \textbf{Consistent $\rho$-CV relationship}: Both periods show $\rho > 0.50 \rightarrow$ lower CV
+    \item \textbf{Financials interpretation}: The zero Sharpe in 2019--2024 reflects \textit{absence of instability signals}, not strategy failure. High-$\rho$ sectors with stable topology generate no trading activity---this is expected behavior.
+\end{itemize}
+
+\subsubsection{Transaction Cost Sensitivity}
+
+Given the strategy's trading frequency, we report Sharpe ratios under various cost assumptions:
+
+\begin{table}[H]
+\centering
+\small
+\caption{Transaction Cost Sensitivity: Sharpe Ratio by Cost Assumption (2019--2024)}
+\label{tab:cost-sensitivity}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Sector} & \textbf{Gross} & \textbf{5 bps} & \textbf{15 bps} & \textbf{25 bps} \\
+\midrule
+Technology & 0.56 & 0.54 & 0.50 & 0.46 \\
+Energy & 0.22 & 0.20 & 0.16 & 0.12 \\
+Healthcare & 1.04 & 1.01 & 0.95 & 0.89 \\
+\bottomrule
+\multicolumn{5}{l}{\footnotesize Cost applied per round-trip. Only active sectors shown.}
+\end{tabular}
+\end{table}
+
+\textbf{Interpretation}: Strategy remains profitable under realistic cost assumptions (5--15 bps) for most sectors. Healthcare shows particular robustness with Sharpe $> 0.89$ even at 25 bps costs.
+
 \subsection{Graph Laplacian Analysis}
 
 \subsubsection{Graph Connectivity and Stability}

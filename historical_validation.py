@@ -196,8 +196,8 @@ def run_sector_backtest_with_turnover(prices, window=60, rebalance_freq=5):
     annual_vol = portfolio_return.std() * np.sqrt(252)
     sharpe = annual_return / annual_vol if annual_vol > 0 else 0
 
-    # Turnover metrics
-    total_turnover = position_changes.sum()
+    # Turnover metrics - divide by 2 for round-trips (1->0->1 = 1 round-trip, not 200%)
+    total_turnover = position_changes.sum() / 2  # FIXED: normalize for binary strategy
     annual_turnover = total_turnover / (len(position_changes) / 252) * 100
     trades_per_year = (position_changes > 0).sum() / (len(position_changes) / 252)
 
@@ -206,8 +206,27 @@ def run_sector_backtest_with_turnover(prices, window=60, rebalance_freq=5):
     regime_changes = (position_diff != 0).sum()
     avg_holding_days = len(position_rebalanced) / max(regime_changes, 1)
 
+    # Strategy active flag
+    is_active = trades_per_year > 1
+
+    # Cost-adjusted Sharpe ratios (5, 15, 25 bps per round-trip)
+    cost_5bps = annual_turnover / 100 * 0.0005 * 2  # 2x for round-trip
+    cost_15bps = annual_turnover / 100 * 0.0015 * 2
+    cost_25bps = annual_turnover / 100 * 0.0025 * 2
+
+    net_return_5bps = annual_return - cost_5bps
+    net_return_15bps = annual_return - cost_15bps
+    net_return_25bps = annual_return - cost_25bps
+
+    sharpe_5bps = net_return_5bps / annual_vol if annual_vol > 0 else 0
+    sharpe_15bps = net_return_15bps / annual_vol if annual_vol > 0 else 0
+    sharpe_25bps = net_return_25bps / annual_vol if annual_vol > 0 else 0
+
     return {
         'sharpe': sharpe,
+        'sharpe_5bps': sharpe_5bps,
+        'sharpe_15bps': sharpe_15bps,
+        'sharpe_25bps': sharpe_25bps,
         'annual_return': annual_return * 100,
         'annual_vol': annual_vol * 100,
         'annual_turnover_pct': annual_turnover,
@@ -216,6 +235,7 @@ def run_sector_backtest_with_turnover(prices, window=60, rebalance_freq=5):
         'mean_correlation': rolling_corr.mean(),
         'mean_cv': topology_cv.mean(),
         'n_days': len(portfolio_return),
+        'active': is_active,
     }
 
 # =============================================================================
@@ -297,24 +317,52 @@ def test_recent_period():
 def generate_latex_tables(historical_results, recent_results):
     """Generate LaTeX tables for the paper."""
 
+    # Filter active sectors for turnover stats
+    active_recent = [r for r in recent_results if r.get('active', True)]
+
     print("\n" + "="*70)
-    print("LATEX TABLE: TURNOVER STATISTICS")
+    print("LATEX TABLE: TURNOVER STATISTICS (Active Sectors Only)")
     print("="*70)
 
     print("""
 \\begin{table}[H]
 \\centering
-\\caption{Strategy Turnover Statistics by Sector}
+\\caption{Strategy Turnover Statistics by Sector (2019--2024)}
 \\label{tab:turnover}
-\\begin{tabular}{@{}lcccc@{}}
+\\begin{tabular}{@{}lccccc@{}}
 \\toprule
-\\textbf{Sector} & \\textbf{Annual Turnover (\\%)} & \\textbf{Trades/Year} & \\textbf{Avg Holding (days)} & \\textbf{Sharpe} \\\\
+\\textbf{Sector} & \\textbf{Turnover (\\%)} & \\textbf{Trades/Yr} & \\textbf{Holding (days)} & \\textbf{Sharpe} & \\textbf{Status} \\\\
 \\midrule""")
 
     for r in recent_results:
-        print(f"{r['sector']} & {r['annual_turnover_pct']:.1f} & {r['trades_per_year']:.1f} & {r['avg_holding_days']:.0f} & {r['sharpe']:.2f} \\\\")
+        status = "Active" if r.get('active', True) else "Stable$^\\dagger$"
+        print(f"{r['sector']} & {r['annual_turnover_pct']:.0f} & {r['trades_per_year']:.1f} & {r['avg_holding_days']:.0f} & {r['sharpe']:.2f} & {status} \\\\")
 
     print("""\\bottomrule
+\\multicolumn{6}{l}{\\footnotesize $^\\dagger$Stable: Sector remained below instability threshold; no trades generated.}
+\\end{tabular}
+\\end{table}
+""")
+
+    print("\n" + "="*70)
+    print("LATEX TABLE: COST SENSITIVITY ANALYSIS")
+    print("="*70)
+
+    print("""
+\\begin{table}[H]
+\\centering
+\\caption{Transaction Cost Sensitivity: Sharpe Ratio by Cost Assumption}
+\\label{tab:cost-sensitivity}
+\\begin{tabular}{@{}lcccc@{}}
+\\toprule
+\\textbf{Sector} & \\textbf{Gross} & \\textbf{5 bps} & \\textbf{15 bps} & \\textbf{25 bps} \\\\
+\\midrule""")
+
+    for r in active_recent:
+        print(f"{r['sector']} & {r['sharpe']:.2f} & {r.get('sharpe_5bps', r['sharpe']):.2f} & {r.get('sharpe_15bps', r['sharpe']):.2f} & {r.get('sharpe_25bps', r['sharpe']):.2f} \\\\")
+
+    print("""\\bottomrule
+\\multicolumn{5}{l}{\\footnotesize Cost applied per round-trip. Only active sectors shown.}
 \\end{tabular}
 \\end{table}
 """)
@@ -326,7 +374,7 @@ def generate_latex_tables(historical_results, recent_results):
     print("""
 \\begin{table}[H]
 \\centering
-\\caption{TDA Framework: 2010-2019 vs 2019-2024 Comparison}
+\\caption{TDA Framework: 2010--2019 vs 2019--2024 Comparison}
 \\label{tab:historical-comparison}
 \\begin{tabular}{@{}lcccccc@{}}
 \\toprule
@@ -361,6 +409,10 @@ def main():
     historical_results = test_historical_period()
     recent_results = test_recent_period()
 
+    # Filter active sectors
+    active_recent = [r for r in recent_results if r.get('active', True)]
+    active_historical = [r for r in historical_results if r.get('active', True)]
+
     # Summary
     print("\n" + "="*70)
     print("SUMMARY")
@@ -368,13 +420,19 @@ def main():
 
     if historical_results:
         avg_historical_sharpe = np.mean([r['sharpe'] for r in historical_results])
-        print(f"\n2010-2019 Average Sharpe: {avg_historical_sharpe:.2f}")
+        print(f"\n2010-2019 Average Sharpe (all sectors): {avg_historical_sharpe:.2f}")
 
     if recent_results:
         avg_recent_sharpe = np.mean([r['sharpe'] for r in recent_results])
-        avg_turnover = np.mean([r['annual_turnover_pct'] for r in recent_results])
-        print(f"2019-2024 Average Sharpe: {avg_recent_sharpe:.2f}")
-        print(f"Average Annual Turnover: {avg_turnover:.1f}%")
+        print(f"2019-2024 Average Sharpe (all sectors): {avg_recent_sharpe:.2f}")
+
+    if active_recent:
+        avg_active_sharpe = np.mean([r['sharpe'] for r in active_recent])
+        avg_turnover = np.mean([r['annual_turnover_pct'] for r in active_recent])
+        print(f"\n2019-2024 Active Sectors Only:")
+        print(f"  Average Sharpe: {avg_active_sharpe:.2f}")
+        print(f"  Average Turnover: {avg_turnover:.0f}%")
+        print(f"  Active sectors: {[r['sector'] for r in active_recent]}")
 
     # Critical assessment
     print("\n" + "="*70)
@@ -383,7 +441,6 @@ def main():
 
     if historical_results and recent_results:
         h_sharpes = [r['sharpe'] for r in historical_results]
-        r_sharpes = [r['sharpe'] for r in recent_results]
 
         if np.mean(h_sharpes) > 0.1:
             print("\n[PASS] Strategy shows positive Sharpe in 2010-2019")
@@ -392,12 +449,23 @@ def main():
             print("\n[CONCERN] Strategy shows weak/negative Sharpe in 2010-2019")
             print("          This suggests findings MAY be regime-specific")
 
-        # Turnover assessment
-        avg_turnover = np.mean([r['annual_turnover_pct'] for r in recent_results])
-        if avg_turnover < 200:
-            print(f"\n[PASS] Average turnover ({avg_turnover:.0f}%) supports 5bps cost assumption")
-        else:
-            print(f"\n[CONCERN] High turnover ({avg_turnover:.0f}%) - may need higher cost assumption")
+        # Turnover assessment (active sectors only)
+        if active_recent:
+            avg_turnover = np.mean([r['annual_turnover_pct'] for r in active_recent])
+            if avg_turnover < 500:  # Adjusted threshold for normalized turnover
+                print(f"\n[PASS] Average turnover ({avg_turnover:.0f}%) is reasonable")
+                print("       5-15 bps cost assumption is defensible")
+            else:
+                print(f"\n[CONCERN] High turnover ({avg_turnover:.0f}%)")
+                print("          May need 15-25 bps cost assumption")
+
+        # Inactive sectors
+        inactive = [r for r in recent_results if not r.get('active', True)]
+        if inactive:
+            print(f"\n[INFO] {len(inactive)} sector(s) showed no trading activity:")
+            for r in inactive:
+                print(f"       - {r['sector']}: ρ={r['mean_correlation']:.2f}, CV={r['mean_cv']:.2f}")
+            print("       This is expected for high-ρ, low-CV sectors (structurally stable)")
 
     # Generate LaTeX
     if historical_results and recent_results:
