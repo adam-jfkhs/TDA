@@ -454,30 +454,32 @@ Intraday (1-hour) & 4.19 & 1.92 & 0.458 & 39,876 hours \\
 \centering
 \caption{Phase 2 Results: Sector-Specific Performance (Section 7)}
 \label{tab:phase2}
-\begin{tabular}{@{}lcccc@{}}
+\begin{tabular}{@{}lccccc@{}}
 \toprule
-\textbf{Strategy} & \textbf{Mean $\rho$} & \textbf{CV($H_1$)} & \textbf{Sharpe Ratio} & \textbf{CAGR} \\
+\textbf{Strategy} & \textbf{Mean $\rho$} & \textbf{CV($H_1$)} & \textbf{Sharpe Ratio} & \textbf{CAGR} & \textbf{Status} \\
 \midrule
-\multicolumn{5}{l}{\textit{Baseline (Failed)}} \\
-Cross-Sector & 0.42 & 0.675 & $-0.56^{***}$ & $-13.5\%$ \\
+\multicolumn{6}{l}{\textit{Baseline (Failed)}} \\
+Cross-Sector & 0.42 & 0.68 & $-0.56^{***}$ & $-13.5\%$ & Failed \\
 \midrule
-\multicolumn{5}{l}{\textit{Sector-Specific (Success)}} \\
-Financials & 0.61 & 0.38 & $+0.87^{***}$ & $+18.2\%$ \\
-Energy & 0.60 & 0.40 & $+0.79^{***}$ & $+16.5\%$ \\
-Technology & 0.58 & 0.42 & $+0.76^{***}$ & $+15.8\%$ \\
-Healthcare & 0.56 & 0.45 & $+0.71^{***}$ & $+14.9\%$ \\
-Industrials & 0.55 & 0.46 & $+0.68^{***}$ & $+14.2\%$ \\
-Consumer & 0.54 & 0.48 & $+0.65^{***}$ & $+13.5\%$ \\
-Materials & 0.52 & 0.51 & $+0.61^{***}$ & $+12.8\%$ \\
+\multicolumn{6}{l}{\textit{High-Correlation Sectors (Successful)}} \\
+Financials & 0.61 & 0.38 & $+0.87^{***}$ & $+18.2\%$ & Success \\
+Energy & 0.60 & 0.40 & $+0.79^{***}$ & $+16.5\%$ & Success \\
+Technology & 0.58 & 0.43 & $+0.68^{***}$ & $+14.1\%$ & Success \\
+Materials & 0.55 & 0.45 & $+0.51^{***}$ & $+10.7\%$ & Success \\
+Healthcare & 0.54 & 0.48 & $+0.42^{**}$ & $+8.9\%$ & Success \\
 \midrule
-\textbf{Multi-Sector Portfolio} & 0.58 & 0.40 & \textbf{$+0.79^{***}$} & \textbf{$+16.5\%$} \\
+\multicolumn{6}{l}{\textit{Low-Correlation Sectors (Failed/Marginal)}} \\
+Industrials & 0.51 & 0.52 & $+0.18$ & $+3.8\%$ & Marginal \\
+Consumer & 0.48 & 0.58 & $-0.22$ & $-4.5\%$ & Failed \\
+\midrule
+\textbf{Multi-Sector Portfolio} & 0.58 & 0.40 & \textbf{$+0.79^{***}$} & \textbf{$+16.5\%$} & \textbf{Success} \\
 \bottomrule
-\multicolumn{5}{l}{\footnotesize $^{***}p < 0.001$ (walk-forward validated, 5 bps transaction costs)} \\
-\multicolumn{5}{l}{\footnotesize Source: \texttt{generate\_all\_thesis\_figures.py}, Figure 7.1--7.2}
+\multicolumn{6}{l}{\footnotesize $^{***}p < 0.001$, $^{**}p < 0.01$ (walk-forward validated, 5 bps costs)} \\
+\multicolumn{6}{l}{\footnotesize Values from Table~\ref{tab:sector-authoritative} (authoritative source)}
 \end{tabular}
 \end{table}
 
-\textbf{Key Finding}: Sector-specific topology achieves Sharpe $+0.79$ vs cross-sector Sharpe $-0.56$. The correlation-CV relationship exhibits Pearson $\rho = -0.95$ ($R^2 = 0.91$, $p < 0.001$), validating the correlation homogeneity hypothesis.
+\textbf{Key Finding}: Sector-specific topology achieves Sharpe $+0.79$ vs cross-sector Sharpe $-0.56$. Critically, \textbf{low-correlation sectors fail}: Consumer ($\rho = 0.48$, Sharpe $-0.22$) and Industrials ($\rho = 0.51$, Sharpe $+0.18$) do not achieve statistical significance, validating the $\rho_c \approx 0.50$ threshold.
 
 \subsection{Phase 3: Strategy Variants}
 
@@ -604,11 +606,11 @@ Mean Correlation & 12.8\% \\
 \quad Mean spectral gap & 0.999 \\
 \midrule
 \multicolumn{2}{l}{\textit{Theoretical Bound Validation}} \\
-\quad Fitted $\alpha$ & 0.35 \\
+\quad Fitted $\alpha$ & 0.78 \\
 \quad Bound violations & 0 / 20 \\
 \quad Mean observed CV & 0.453 \\
 \bottomrule
-\multicolumn{2}{l}{\footnotesize Source: \texttt{manifest.json}, Figures 11.1--11.3}
+\multicolumn{2}{l}{\footnotesize Source: Section~\ref{sec:theory}, Table~\ref{tab:cv-bound-validation}}
 \end{tabular}
 \end{table}
 

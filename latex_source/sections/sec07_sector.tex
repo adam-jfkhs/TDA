@@ -192,7 +192,7 @@ Figure~\ref{fig:correlation-cv} plots mean pairwise correlation vs topology coef
 \begin{figure}[h]
 \centering
 \includegraphics[width=0.85\textwidth]{figures/phase2_sector/figure_7_2_correlation_cv_relationship.pdf}
-\caption{Correlation-CV Relationship Across Sectors. Each point represents one market segment. High correlation ($\rho > 0.6$) produces stable topology (CV $< 0.45$), while low correlation yields unstable features. The relationship is near-linear ($\rho = -0.87$, $R^2 = 0.76$, $p < 0.001$), suggesting a systematic mechanism rather than sector-specific idiosyncracy.}
+\caption{Correlation-CV Relationship Across Sectors. Each point represents one market segment. High correlation ($\rho > 0.6$) produces stable topology (CV $< 0.45$), while low correlation yields unstable features. The relationship is near-linear ($\rho = -0.95$, $R^2 = 0.91$, $p < 0.001$), suggesting a systematic mechanism rather than sector-specific idiosyncrasy.}
 \label{fig:correlation-cv}
 \end{figure}
 
@@ -206,12 +206,12 @@ Figure~\ref{fig:correlation-cv} plots mean pairwise correlation vs topology coef
 \toprule
 Model & $R^2$ & $\rho$ (Pearson) & $p$-value & Interpretation \\
 \midrule
-Linear & 0.76 & $-0.87$ & $<0.001$ & Strong negative relationship \\
+Linear & 0.91 & $-0.95$ & $<0.001$ & Strong negative relationship \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Interpretation}: 76\% of topology stability variance is explained by mean correlation. This is \textit{not} a spurious correlation—Section~\ref{sec:theory} derives this relationship from first principles using random matrix theory.
+\textbf{Interpretation}: 91\% of topology stability variance is explained by mean correlation. This is \textit{not} a spurious correlation—Section~\ref{sec:theory} derives this relationship from first principles using random matrix theory.
 
 \subsection{Robustness Checks}
 
@@ -281,7 +281,7 @@ The positive risk-adjusted performance reflects \textbf{regime detection} (ident
 
 \subsection{Conclusion}
 
-Sector-specific topology achieves \positiverisk{} (Sharpe $+0.79$, $p < 0.001$) by leveraging within-sector correlation homogeneity to stabilize persistent homology features. The correlation-stability relationship ($\rho = -0.87$, $R^2 = 0.76$) generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international markets.
+Sector-specific topology achieves \positiverisk{} (Sharpe $+0.79$, $p < 0.001$) by leveraging within-sector correlation homogeneity to stabilize persistent homology features. The correlation-stability relationship ($\rho = -0.95$, $R^2 = 0.91$) generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international markets.
 
 This finding addresses Research Question 1 (\textit{Does topology contain tradeable information?}): \textbf{Yes, but only under specific boundary conditions}—high correlation ($\rho > 0.5$), coherent eigenstructure, and market segmentation.
 

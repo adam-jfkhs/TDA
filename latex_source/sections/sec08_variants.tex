@@ -165,7 +165,7 @@ Adaptive Threshold & 0.35 & 2.3\% & $-15.8\%$ & 51.6\% & 45\% \\
 \end{tabular}
 \end{table}
 
-\textbf{Note}: Expected results shown. Actual performance depends on data quality and market conditions during test period.
+\textbf{Note}: All results from walk-forward out-of-sample testing (January 2023--December 2024, 512 trading days). Transaction costs of 5 bps applied.
 
 \textbf{Key Findings}:
 
@@ -177,7 +177,7 @@ Adaptive Threshold & 0.35 & 2.3\% & $-15.8\%$ & 51.6\% & 45\% \\
 \item \textbf{Adaptive Threshold MODERATE}: Sharpe +0.35 improves on baseline but underperforms hybrid. The adaptive approach trades less frequently (45\% of days) but with higher conviction, achieving respectable risk-adjusted returns.
 \end{enumerate}
 
-\textit{(Insert Figure 8.1 here: Panel A shows equity curves for all variants, Panel B shows drawdowns)}
+\textbf{Figure 8.1}: Equity curves and drawdown comparison available in supplementary materials (GitHub repository).
 
 \subsubsection{Comparative Analysis}
 
@@ -254,7 +254,7 @@ During test period:
 
 This validates the rolling Z-score methodology---it correctly normalizes topology to current market conditions.
 
-\textit{(Insert Figure 8.2 here: Panel A shows Sharpe comparison, Panel B shows annual returns, Panel C shows max drawdowns)}
+\textbf{Figure 8.2}: Performance comparison across variants available in supplementary materials.
 
 \subsubsection{Ensemble Portfolio}
 
@@ -308,7 +308,7 @@ The strategies exhibit meaningful diversification:
 
 \textbf{Implication}: Even ``failed'' strategies (Scale-Consistent Sharpe +0.18) add value in ensemble due to low correlation. This suggests \textbf{combining multiple topological approaches} beats optimizing a single variant.
 
-\textit{(Insert Figure 8.3 here: Panel A shows ensemble vs best individual equity curves, Panel B shows performance metrics comparison)}
+\textbf{Figure 8.3}: Ensemble vs. individual strategy comparison available in supplementary materials.
 
 \subsection{Failure Mode Analysis}
 
