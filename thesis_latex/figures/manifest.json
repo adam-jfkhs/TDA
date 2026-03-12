@@ -1,0 +1,137 @@
+[
+  {
+    "filename": "figure_6_1_intraday_overview",
+    "section": 6,
+    "description": "4-panel intraday analysis overview",
+    "stats_displayed": {
+      "Daily CV": 0.6787141823058318,
+      "Intraday CV": 0.45823963605827434,
+      "CV Reduction": "32.5%",
+      "Daily Mean": 4.23,
+      "Intraday Mean": 4.19
+    },
+    "generated": "2026-01-05T01:38:27.773163"
+  },
+  {
+    "filename": "figure_6_2_h1_evolution",
+    "section": 6,
+    "description": "H1 loop count evolution daily vs intraday",
+    "stats_displayed": {
+      "Daily Mean": 4.23,
+      "Daily Std": 2.8709609911536687,
+      "Daily CV": 0.6787141823058318,
+      "Intraday Mean": 4.19,
+      "Intraday Std": 1.9200240750841697,
+      "Intraday CV": 0.45823963605827434
+    },
+    "generated": "2026-01-05T01:38:29.605597"
+  },
+  {
+    "filename": "figure_7_1_cross_vs_sector_comparison",
+    "section": 7,
+    "description": "Cross-sector vs sector-specific performance",
+    "stats_displayed": {
+      "Cross-Sector Sharpe": -0.56,
+      "Sector-Specific Avg Sharpe": 0.7242857142857143,
+      "Best Sector": "Financials",
+      "Best Sharpe": 0.87
+    },
+    "generated": "2026-01-05T01:38:30.765468"
+  },
+  {
+    "filename": "figure_7_2_correlation_cv_relationship",
+    "section": 7,
+    "description": "Correlation-CV relationship across sectors",
+    "stats_displayed": {
+      "Pearson \u03c1": -0.9527624771946225,
+      "R\u00b2": 0.9077563379500337,
+      "p-value": "< 0.001",
+      "Cross-sector \u03c1": 0.42,
+      "Cross-sector CV": 0.674751935900966
+    },
+    "generated": "2026-01-05T01:38:31.849290"
+  },
+  {
+    "filename": "figure_8_1_strategy_variants_comparison",
+    "section": 8,
+    "description": "Strategy variant performance comparison",
+    "stats_displayed": {
+      "Best Variant": "Momentum+TDA",
+      "Best Sharpe": 0.92,
+      "Avg Sharpe": 0.86
+    },
+    "generated": "2026-01-05T01:38:32.879011"
+  },
+  {
+    "filename": "figure_9_1_cross_market_correlation_cv",
+    "section": 9,
+    "description": "Cross-market correlation-CV validation",
+    "stats_displayed": {
+      "Global Correlation": -0.9747558070484578,
+      "Total Markets": 11,
+      "Viable Markets": 10,
+      "US \u03c1 (mean)": 0.5657142857142857
+    },
+    "generated": "2026-01-05T01:38:33.804351"
+  },
+  {
+    "filename": "figure_10_1_ml_model_comparison",
+    "section": 10,
+    "description": "ML model performance comparison",
+    "stats_displayed": {
+      "Best Model": "Random Forest",
+      "Best F1": 0.578,
+      "Best AUC": 0.524,
+      "Avg AUC": 0.5195000000000001
+    },
+    "generated": "2026-01-05T01:38:34.398486"
+  },
+  {
+    "filename": "figure_10_2_ml_feature_importance",
+    "section": 10,
+    "description": "ML feature importance from Random Forest",
+    "stats_displayed": {
+      "Top Feature": "Correlation Dispersion (std)",
+      "Top Importance": 21.3,
+      "Top 3 Total": 55.2
+    },
+    "generated": "2026-01-05T01:38:34.991546"
+  },
+  {
+    "filename": "figure_11_1_eigenvalue_vs_marchenko_pastur",
+    "section": 11,
+    "description": "Eigenvalue distribution vs Marchenko-Pastur law",
+    "stats_displayed": {
+      "Q (T/N)": 20.0,
+      "\u03bb+ (upper bound)": 1.497213595499958,
+      "\u03bb- (lower bound)": 0.6027864045000421,
+      "\u03bb1 (market mode)": 25.494963154351222,
+      "Spectral gap": 24.005023339588128
+    },
+    "generated": "2026-01-05T01:38:35.879610"
+  },
+  {
+    "filename": "figure_11_2_spectral_gap_vs_cv",
+    "section": 11,
+    "description": "Spectral gap vs CV relationship",
+    "stats_displayed": {
+      "Correlation": -0.9737902702915028,
+      "R\u00b2": 0.9482674905143978,
+      "Slope": -3.206024970883862,
+      "Mean spectral gap": 0.9992644501277578
+    },
+    "generated": "2026-01-05T01:38:36.675887"
+  },
+  {
+    "filename": "figure_11_3_bound_validation",
+    "section": 11,
+    "description": "Theoretical bound validation",
+    "stats_displayed": {
+      "Violations": 0,
+      "Total points": 20,
+      "Alpha": 0.35,
+      "Mean observed CV": 0.4529613778095941
+    },
+    "generated": "2026-01-05T01:38:37.560042"
+  }
+]

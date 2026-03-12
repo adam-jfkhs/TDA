@@ -1,0 +1,43 @@
+% ==============================================================================
+% AUTHORITATIVE TABLE: MACHINE LEARNING PERFORMANCE
+% This is the SOURCE OF TRUTH for ML results
+% ==============================================================================
+
+\begin{table}[H]
+\centering
+\caption{Machine Learning Model Performance (Authoritative Results)}
+\label{tab:ml-authoritative}
+\begin{tabular}{@{}lccccccc@{}}
+\toprule
+\textbf{Model} & \textbf{$\boldsymbol{F_1}$ Score} & \textbf{AUC} & \textbf{Precision} & \textbf{Recall} & \textbf{Sharpe (net)} & \textbf{Status} \\
+\midrule
+\multicolumn{7}{l}{\textit{Baseline (Simple Threshold)}} \\
+TDA-Only & 0.014 & 0.510 & 0.007 & 1.000 & $-0.56$ & Failed \\
+\midrule
+\multicolumn{7}{l}{\textit{Machine Learning Models}} \\
+Random Forest & 0.512 & 0.519 & 0.489 & 0.537 & $+0.38$ & Success \\
+Gradient Boosting & 0.547 & 0.521 & 0.521 & 0.574 & $+0.42$ & Success \\
+Neural Network & \textbf{0.578} & \textbf{0.523} & \textbf{0.552} & \textbf{0.606} & $\mathbf{+0.47}$ & \textbf{Best ML} \\
+\midrule
+\textit{Improvement (NN vs Baseline)} & $+41\times$ & $+2.5\%$ & $+79\times$ & $-39\%$ & +1.03 & \\
+\bottomrule
+\end{tabular}
+
+\vspace{0.2cm}
+
+\begin{minipage}{\textwidth}
+\footnotesize
+\textbf{Notes:}
+\begin{itemize}[leftmargin=*,noitemsep,topsep=0pt]
+    \item All metrics calculated from walk-forward testing (70/30 train/test split, 225-day test periods)
+    \item $F_1$ = harmonic mean of precision and recall: $F_1 = 2 \times \frac{\text{precision} \times \text{recall}}{\text{precision} + \text{recall}}$
+    \item AUC = Area Under ROC Curve; random guessing = 0.5, perfect discrimination = 1.0
+    \item \textbf{Critical interpretation}: AUC $\approx 0.52$ is \textcolor{red}{barely above random}, NOT ``good discrimination''
+    \item Sharpe (net) = risk-adjusted returns after 5 basis points transaction costs
+    \item \textbf{Compare to Table~\ref{tab:sector-authoritative}}: Sector-specific (simple thresholds) achieved Sharpe $+0.79$, outperforming ML
+    \item \textbf{Data type:} \textcolor{blue}{EMPIRICAL} (real market data, features extracted from 2019-2024 price history)
+    \item \textbf{Consistent guardrail}: These gains reflect improved regime classification rather than strong directional predictability
+\end{itemize}
+\end{minipage}
+
+\end{table}

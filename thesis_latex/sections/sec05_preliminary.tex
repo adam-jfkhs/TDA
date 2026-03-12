@@ -1,0 +1,95 @@
+\section{Preliminary Conclusions and Future Work}
+\label{sec:preliminary}
+
+This section presents conclusions from the initial validation study (Sections~\ref{sec:methodology}--\ref{sec:analysis}), setting the stage for the expanded investigation in Sections~\ref{sec:intraday}--\ref{sec:conclusion}.
+
+\subsection{Principal Findings}
+
+\begin{enumerate}
+\item The topology-based trading strategy fails comprehensive out-of-sample validation with statistically significant negative performance ($p < 0.001$)
+
+\item Fundamental methodological scale mismatch between local trading signals and global topological regime detection explains persistent underperformance
+
+\item Sample size limitations for high-dimensional topological estimation warrant caution in interpreting regime features
+
+\item Persistent homology detects regime instability but cannot overcome flawed mean-reversion logic; provides value for risk management (50\% loss reduction)
+
+\item Market regime dominates strategy sophistication in determining performance; walk-forward validation is essential for credible results
+\end{enumerate}
+
+\subsection{Principal Contributions}
+
+This study makes two methodological contributions to the literature on topological data analysis in quantitative finance:
+
+\textbf{1. Identification of scale incompatibility as fundamental design flaw:} We demonstrate that combining local mean-reversion signals with global topological regime detection creates an architectural inconsistency that no amount of parameter optimization can resolve. Local Laplacian residuals operate on daily pairwise correlations to identify short-term relative mispricings. Persistent homology detects monthly network-wide structural shifts to classify regime stability. These operate at incompatible spatial scales (individual asset pairs vs. entire correlation network) and temporal scales (daily trading frequency vs. 30-day regime smoothing). The global filter may signal instability when local pairs exhibit profitable mean reversion, or stability when local signals deteriorate---the components are not naturally synchronized. This scale mismatch represents the primary explanation for strategy failure and generalizes to any multi-scale quantitative approach.
+
+\textbf{2. Quantification of sample size requirements for topological inference:} We show that 1,494 daily observations across 20 assets is insufficient for robust high-dimensional persistent homology analysis. Correlation matrices estimated from limited samples contain substantial noise; small estimation errors propagate into large topological changes (loop counts, persistence values). The observed topological features may reflect estimation noise rather than genuine market structure, making it impossible to distinguish signal from sampling variation. This finding has important implications for practical applications of TDA in finance: \textit{higher-frequency data (intraday returns) or substantially longer time series (10+ years) are required for reliable topological inference}. Performance metrics (Sharpe ratios) can be statistically validated with 252--756 day test periods, but the topological features themselves require orders of magnitude more data.
+
+\subsection{Economic Interpretation of Results}
+
+The strategy's failure underscores that market structure detection without an economic anchor can misclassify legitimate price trends as arbitrage opportunities. Persistent homology captures structural stress---changes in the topology of correlation networks---but not directional bias or fundamental valuation. In practice, mean reversion failed because the market regimes of 2022--2024 were dominated by macroeconomic momentum (Federal Reserve policy, AI sector rotation) rather than noise-trading corrections that would revert to fair value. The topology filter correctly identified elevated structural instability but could not distinguish between instability that precedes crashes (where cash is optimal) and instability accompanying strong trends (where momentum, not mean reversion, is rewarded). This economic interpretation reinforces the architectural critique: effective quantitative strategies require not just sophisticated signal detection, but alignment between the signal's economic meaning and the trading logic applied.
+
+\subsection{Methodological Lessons}
+
+\begin{itemize}
+\item Implement walk-forward validation with realistic transaction costs and rigorous statistical inference
+\item Question results that lack proper validation methodology or statistical significance testing
+\item Negative results provide learning value when properly documented with statistical rigor
+\item Ensure methodological coherence: components must operate at compatible spatial and temporal scales
+\item Conduct regime analysis before strategy selection
+\end{itemize}
+
+\subsection{Transition to Expanded Investigation}
+
+While the baseline cross-sector strategy failed validation, the partial empirical support for topological regime detection (50\% loss reduction) motivated a systematic investigation across six research phases:
+
+\begin{itemize}
+\item \textbf{Phase 1 (Section~\ref{sec:intraday}):} Addressing sample size limitations through intraday data analysis
+\item \textbf{Phase 2 (Section~\ref{sec:sector}):} Resolving scale mismatch through sector-specific topology
+\item \textbf{Phase 3 (Section~\ref{sec:variants}):} Testing alternative strategy architectures
+\item \textbf{Phase 4 (Section~\ref{sec:crossmarket}):} Validating generalization across global markets
+\item \textbf{Phase 5 (Section~\ref{sec:ml}):} Integrating machine learning for regime prediction
+\item \textbf{Phase 6 (Section~\ref{sec:theory}):} Deriving theoretical foundations for empirical findings
+\end{itemize}
+
+The following sections document this comprehensive expansion, transforming a failed baseline strategy into a theoretically-grounded framework with cross-market validation.
+
+\subsection{Future Research Directions (Expanded Framework)}
+
+The specific failure modes identified in this study suggest a structured research agenda. We organize future directions as a thesis-level expansion framework, noting that the current work establishes rigorous methodology for one strategy class, one topology construction, and one dataset scale. Extending to multiple architectures, datasets, and frequencies would constitute a complete graduate-level investigation.
+
+\subsubsection{Expansion Axis 1: Multiple Strategy Architectures}
+
+\textbf{Hypothesis 1 (Regime-Adaptive Strategies):} Given the failure of mean-reversion logic in trending markets (2022--2024), we hypothesize that applying the TDA-based regime filter to a time-series momentum strategy (Moskowitz et al., 2012) would yield improved performance during periods of low topological stability. \textit{Testable prediction:} A momentum strategy filtered by persistent homology should exhibit positive Sharpe ratios in trending regimes, with the topological filter successfully identifying periods requiring defensive positioning.
+
+\textbf{Hypothesis 2 (Fundamental-Topology Integration):} The absence of economic pricing models undermined mean-reversion signals. We hypothesize that a hybrid approach combining Laplacian residuals with fundamental value factors (Fama \& French, 2015) would produce statistically significant positive returns by ensuring divergences reflect mispricing rather than information asymmetry. \textit{Testable prediction:} Mean-reversion trades filtered by both topological regime stability AND fundamental value screens (P/E, P/B below historical quintiles) should achieve Sharpe ratios exceeding 0.5 in walk-forward validation.
+
+\subsubsection{Expansion Axis 2: Multiple Topology Constructions}
+
+\textbf{Hypothesis 3 (Scale-Consistent Architecture):} The scale mismatch between daily local signals and monthly global topology was fundamental to failure. We hypothesize that a multi-timeframe approach---computing Laplacian residuals at both daily and monthly frequencies, paired with corresponding persistent homology at each scale---would eliminate temporal inconsistency. \textit{Testable prediction:} Daily Laplacian signals filtered by daily topology, combined with monthly signals filtered by monthly topology, should outperform single-scale approaches by 0.3+ Sharpe points.
+
+\textbf{Hypothesis 3b (Alternative Filtrations):} This study used Vietoris-Rips filtration on correlation distance. Alternative constructions---alpha complexes, witness complexes, or mapper-based approaches---may capture different aspects of market structure. \textit{Testable prediction:} Comparing $H_1$ features across filtration types during the 2020 crash and 2022 bear market would reveal whether topology detection is filtration-dependent or robust.
+
+\subsubsection{Expansion Axis 3: Multiple Datasets and Frequencies}
+
+\textbf{Hypothesis 4 (Sample Size via Intraday Data) [PRIORITY]:} Given that 1,494 daily observations proved insufficient for robust topological inference, we hypothesize that intraday data (5-minute bars over 2+ years, yielding $\sim$50,000 observations) would produce stable topological features that generalize out-of-sample. \textit{Testable prediction:} Persistent homology computed from intraday correlation networks should exhibit consistent regime classifications across walk-forward folds, with less than 20\% variance in $H_1$ feature stability compared to 40\%+ observed in daily data. \textbf{This hypothesis directly addresses the study's primary limitation.}
+
+\textbf{Hypothesis 4b (Cross-Market Generalization):} Results are currently limited to US large-cap equities. Testing on international markets (FTSE, Nikkei, emerging markets), cryptocurrencies, and fixed income would establish whether topological regime detection generalizes or is market-specific. \textit{Testable prediction:} Topology volatility should spike during local crises (e.g., 2022 UK gilt crisis, 2021 crypto crash) if the methodology captures universal stress signatures.
+
+\subsubsection{Expansion Axis 4: Generalized Framework}
+
+\textbf{Hypothesis 5 (Pure Risk Management Application):} Despite trading failure, topology reduced losses by 50\%. We hypothesize that persistent homology has value purely for portfolio risk management rather than signal generation. \textit{Testable prediction:} A traditional 60/40 equity/bond portfolio dynamically de-risked during high topological volatility periods should exhibit 15--20\% lower maximum drawdown with minimal impact on long-term returns compared to static allocation.
+
+\textbf{Hypothesis 5b (Integration with ML Frameworks):} TDA features may serve as inputs to machine learning models rather than standalone signals. \textit{Testable prediction:} Adding $H_0$/$H_1$ persistence statistics to a gradient boosting classifier (alongside technical indicators) should improve regime prediction accuracy by 5--10\% AUC compared to models without topological features, providing value through ensemble integration rather than direct signal generation.
+
+\subsubsection{Summary: From Paper to Thesis}
+
+This study represents one cell in a $3 \times 3 \times 2$ research matrix: (strategy: MR vs momentum vs hybrid) $\times$ (topology: VR vs alpha vs mapper) $\times$ (data: daily vs intraday). Completing this matrix with consistent walk-forward methodology would constitute a comprehensive Master's thesis on ``Topological Data Analysis for Quantitative Finance: A Systematic Evaluation.'' The current work provides the methodological foundation, failure analysis framework, and reproducible codebase upon which such expansion can build.
+
+These hypotheses are directly testable using walk-forward validation, statistical significance testing, and the methodological framework established in this study. Each addresses a specific failure mode identified in Section~\ref{sec:analysis}, ensuring research continuity and cumulative knowledge building.
+
+\subsection{On the Value of Negative Results}
+
+This study contributes to a growing recognition that negative empirical results, when obtained through rigorous validation, provide essential information for methodological progress. By documenting a systematic failure mode---the scale mismatch between local trading signals and global topological regime detection---this work helps delimit the domain of applicability for topological methods in finance. The quantitative finance literature suffers from publication bias toward positive results; rigorous negative findings are arguably more valuable for preventing wasted research effort and guiding future investigation toward promising directions.
+
+Ultimately, this study underscores that elegance in mathematical structure does not guarantee economic validity---an insight equally relevant to machine learning models, deep learning architectures, and topological frameworks alike.
