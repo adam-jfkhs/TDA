@@ -29,7 +29,7 @@
     linkcolor=blue,
     citecolor=blue,
     urlcolor=blue,
-    pdftitle={TDA Trading Strategy: From Failure to Breakthrough},
+    pdftitle={TDA Trading Strategy: From Failure to Success Through Systematic Investigation},
     pdfauthor={Adam Levine}
 }
 
@@ -106,10 +106,6 @@ Independent Research Project
 \textbf{The Result:} Sector-specific topological strategies achieve Sharpe ratio $+0.79$ ($p < 0.001$) in U.S. equity markets. Calibrated simulation study across 11 market scenarios (7 US sectors, 3 international indices, 1 cryptocurrency basket) demonstrates that the correlation-stability pattern generalizes if international markets exhibit similar correlation structures. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$), consistent with efficient market limits. Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory, providing mathematical foundations for the empirical threshold.
 
 \textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating theoretical generalization potential via simulation. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
-
-\textbf{Quality Assessment:} 9.2/10 (rigorous methodology, intellectual honesty, reproducible science)
-
-\vspace{0.1in}
 
 \noindent\textbf{Primary Contribution:} First TDA-based trading framework achieving \positiverisk{} with theoretical foundations and simulation-based generalization study.
 \end{abstract}
@@ -198,41 +194,7 @@ While the initial strategy underperforms, this comprehensive validation demonstr
 % MAIN CONTENT BEGINS
 % ==============================================================================
 
-\section{Introduction}
-\label{sec:intro}
-
-\subsection{Motivation}
-
-Traditional quantitative trading strategies rely on correlation matrices to measure market risk and construct diversified portfolios. However, correlation-based approaches face a fundamental limitation: they capture only \textbf{pairwise relationships}, missing the higher-order structure that emerges during market stress.
-
-During the 2008 financial crisis, seemingly diversified portfolios collapsed as correlations that appeared stable suddenly spiked to near-unity. Credit default swaps, mortgage-backed securities, and equity markets---assets considered uncorrelated---moved in lock-step, creating catastrophic losses for institutional investors who believed their correlation-based risk models protected them.
-
-\textbf{The core problem:} Correlations measure linear dependence between two assets, but they cannot detect system-wide contagion until it has already occurred. By the time correlation matrices show stress ($\rho > 0.9$), it is too late to reposition.
-
-\textbf{Topological Data Analysis (TDA)} offers an alternative: instead of measuring pairwise relationships, TDA examines the \textbf{shape of the correlation network}—detecting loops, voids, and connected components that signal when markets transition from calm to stressed regimes. Persistent homology, the core mathematical tool of TDA, can identify structural instability \textit{before} correlations spike, providing a potential early-warning system for regime shifts.
-
-\subsection{Research Question}
-
-This thesis addresses one central question:
-
-\begin{quote}
-\textit{Can topological data analysis generate tradeable signals through detecting regime shifts in equity market correlation structure?}
-\end{quote}
-
-This deceptively simple question requires answering several sub-questions:
-
-\begin{enumerate}[label=\arabic*.]
-    \item \textbf{Does topology contain tradeable information?} (Section~\ref{sec:sector}) Or is it merely a noisy re-parameterization of correlations?
-
-    \item \textbf{What drives topology stability?} (Sections~\ref{sec:sector}--\ref{sec:crossmarket}) Why do some markets produce stable topological features while others do not?
-
-    \item \textbf{Can machine learning extract topology signals efficiently?} (Section~\ref{sec:ml}) Is topology fundamentally limited, or poorly exploited?
-
-    \item \textbf{Why does the correlation-stability relationship exist?} (Section~\ref{sec:theory}) Is this an empirical accident or a mathematical necessity?
-\end{enumerate}
-
-% This file continues...
-% For brevity showing structure - full content follows similar pattern
+\input{sections/sec01_introduction}
 
 \clearpage
 

@@ -7,8 +7,8 @@ Sections 6--7 demonstrated that sector-specific topology produces \positiverisk{
 
 \begin{enumerate}
 \item \checkmark \textbf{Correlation heterogeneity} $\rightarrow$ Solved by sector-specific analysis (Section 7)
-\item \texttimes{} \textbf{Scale mismatch} $\rightarrow$ Daily signals filtered by monthly topology remain unaddressed
-\item \texttimes{} \textbf{Mean-reversion incompatibility} $\rightarrow$ Strategy assumes mean reversion, but 2022--2024 markets trended
+\item $\times$ \textbf{Scale mismatch} $\rightarrow$ Daily signals filtered by monthly topology remain unaddressed
+\item $\times$ \textbf{Mean-reversion incompatibility} $\rightarrow$ Strategy assumes mean reversion, but 2022--2024 markets trended
 \end{enumerate}
 
 This section explores three alternative strategy designs to address the remaining failure modes and test robustness:
@@ -500,7 +500,7 @@ Our results suggest topology captures \textbf{market microstructure changes} not
 
 \textbf{Alternative Interpretation}: $H_1$ loops measure correlation regime stability. High loops = unstable correlations (regime shift) $\rightarrow$ mean reversion. Low loops = stable correlations (regime continuation) $\rightarrow$ momentum.
 
-This interpretation aligns with regime-switching literature (Hamilton 1989, Ang \& Bekaert 2002) but uses topological features instead of Hidden Markov Models.
+This interpretation aligns with regime-switching literature \citep{Hamilton1989, Ang2002} but uses topological features instead of Hidden Markov Models.
 
 \subsection{Conclusion}
 

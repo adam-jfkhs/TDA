@@ -36,7 +36,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 \textbf{Example}: For $n = 20$ stocks, $T = 252$ days:
 \begin{itemize}
 \item $q = 20/252 \approx 0.08$
-\item Expected range: [0.39, 1.65]
+\item Expected range: $[(1-\sqrt{0.08})^2, (1+\sqrt{0.08})^2] \approx [0.51, 1.65]$
 \end{itemize}
 
 \textbf{Empirical Observation} (Figure 11.1A):
@@ -49,7 +49,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 \toprule
 \textbf{Mean $\rho$} & $\lambda_1$ \textbf{(largest)} & $\lambda_n$ \textbf{(smallest)} & \textbf{Exceeds MP?} \\
 \midrule
-0.3 & 2.14 & 0.48 & \texttimes{} No (near random) \\
+0.3 & 2.14 & 0.48 & $\times$ No (near random) \\
 0.5 & 4.52 & 0.31 & \checkmark Yes (structured) \\
 0.7 & 8.91 & 0.18 & \checkmark Yes (highly structured) \\
 0.9 & 16.34 & 0.09 & \checkmark Yes (extreme structure) \\
@@ -59,7 +59,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 
 \textbf{Interpretation}:
 \begin{itemize}
-\item \textbf{Low correlation ($\rho = 0.3$)}: $\lambda_1 \approx 2.14$ is close to MP upper bound (1.65) $\rightarrow$ near-random
+\item \textbf{Low correlation ($\rho = 0.3$)}: $\lambda_1 \approx 2.14$ slightly exceeds MP upper bound (1.65) $\rightarrow$ weakly structured
 \item \textbf{High correlation ($\rho \geq 0.5$)}: $\lambda_1 \gg$ MP bounds $\rightarrow$ \textbf{structured}, not noise
 \item As $\rho$ increases, eigenvalues \textbf{concentrate} in first eigenmode ($\lambda_1$ dominates)
 \end{itemize}
@@ -200,7 +200,7 @@ For correlation matrices:
 
 \textbf{Step 2: Eigenvalue Dispersion} $\propto \sqrt{\text{Var}[\text{Correlations}]}$
 
-From random matrix perturbation theory (Tao \& Vu, 2011):
+From random matrix perturbation theory \citep{Tao2011}:
 \begin{equation}
 \sigma(\lambda) \propto \sqrt{\text{Var}[C_{ij}]}
 \end{equation}
@@ -443,9 +443,9 @@ The \textbf{Graph Laplacian} $\mathbf{L} = \mathbf{D} - \mathbf{A}$ captures net
 
 \textbf{Prior Work}:
 \begin{itemize}
-\item Laloux et al. (1999): Eigenvalue cleaning for covariance estimation
-\item Potters \& Bouchaud (2020): \textit{Theory of Financial Risk} (eigenvalue spectra)
-\item Tao \& Vu (2011): Random matrix perturbation theory
+\item \citet{Laloux1999}: Eigenvalue cleaning for covariance estimation
+\item \citet{Potters2020}: \textit{A First Course in Random Matrix Theory} (eigenvalue spectra)
+\item \citet{Tao2011}: Random matrix perturbation theory
 \end{itemize}
 
 \textbf{Our Contribution}:
@@ -461,9 +461,9 @@ The \textbf{Graph Laplacian} $\mathbf{L} = \mathbf{D} - \mathbf{A}$ captures net
 
 \textbf{Prior Work}:
 \begin{itemize}
-\item Fiedler (1973): Algebraic connectivity and graph partitioning
-\item Chung (1997): \textit{Spectral Graph Theory} (Laplacian eigenvalues)
-\item Von Luxburg (2007): Tutorial on spectral clustering
+\item \citet{Fiedler1973}: Algebraic connectivity and graph partitioning
+\item \citet{Chung1997}: \textit{Spectral Graph Theory} (Laplacian eigenvalues)
+\item \citet{VonLuxburg2007}: Tutorial on spectral clustering
 \end{itemize}
 
 \textbf{Our Contribution}:
@@ -574,7 +574,7 @@ Updated every quarter based on recent data.
 \item Bound may need \textbf{tail-adjusted} version
 \end{itemize}
 
-\textbf{Extension}: Incorporate \textbf{generalized MP laws} for power-law distributed data (Burda et al., 2004).
+\textbf{Extension}: Incorporate \textbf{generalized MP laws} for power-law distributed data \citep{Burda2004}.
 
 \subsection{Discussion}
 
@@ -716,7 +716,7 @@ While our theoretical framework successfully explains the correlation-stability 
 
 \item \textbf{Universe Size}: Tested on $n = 20$--30 assets. Scaling to S\&P 500 ($n = 500$) introduces computational challenges and may alter correlation-CV dynamics due to increased heterogeneity.
 
-\item \textbf{Epps Effect in Intraday Data}: Section~\ref{sec:intraday} uses 5-minute bars for high-frequency topology. The Epps effect (Epps, 1979) causes correlations to decline spuriously at high frequencies due to non-synchronous trading---stocks don't trade in identical milliseconds. This biases $\rho$ downward, potentially inflating observed CV. Applying the Hayashi-Yoshida (2005) estimator, which corrects for asynchronicity, would likely \textit{increase} intraday correlations and further reduce topology noise beyond the reported 32\% improvement.
+\item \textbf{Epps Effect in Intraday Data}: Section~\ref{sec:intraday} uses 5-minute bars for high-frequency topology. The Epps effect \citep{Epps1979} causes correlations to decline spuriously at high frequencies due to non-synchronous trading---stocks don't trade in identical milliseconds. This biases $\rho$ downward, potentially inflating observed CV. Applying the \citet{HayashiYoshida2005} estimator, which corrects for asynchronicity, would likely \textit{increase} intraday correlations and further reduce topology noise beyond the reported 32\% improvement.
 \end{enumerate}
 
 \subsubsection{Practical Extensions}

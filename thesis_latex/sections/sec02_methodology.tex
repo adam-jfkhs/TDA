@@ -13,7 +13,7 @@ Alternative asset universe tested for robustness: 20 exchange-traded funds cover
 
 \subsection{Signal Generation: Graph Laplacian Diffusion}
 
-Trading signals derived through Laplacian smoothing on correlation-based graphs following Kondor and Lafferty (2002). The methodology proceeds as follows:
+Trading signals derived through Laplacian smoothing on correlation-based graphs following \citet{Kondor2002}. The methodology proceeds as follows:
 
 First, calculate the 60-day rolling correlation matrix $\rho$ for all asset pairs. Construct a weighted adjacency matrix $W$ where $W_{ij} = \rho_{ij}$ if $\rho_{ij} > \tau$ (threshold $\tau = 0.3$), else 0. Note: $W$ uses correlation weights (higher correlation = stronger edge), not correlation distances. The normalized graph Laplacian is defined as:
 
@@ -39,7 +39,7 @@ Portfolio construction follows market-neutral mean reversion logic: long positio
 
 \subsection{Regime Detection: Persistent Homology}
 
-Persistent homology analyzes topological features of correlation structure following the methodology established by Gidea and Katz (2018). Implementation uses Vietoris-Rips filtration on correlation distance metric:
+Persistent homology analyzes topological features of correlation structure following the methodology established by \citet{Gidea2018}. Implementation uses Vietoris-Rips filtration on correlation distance metric:
 
 Convert correlation matrix to distance metric:
 
@@ -47,7 +47,7 @@ Convert correlation matrix to distance metric:
 d_{ij} = \sqrt{2(1 - \rho_{ij})}
 \end{equation}
 
-Compute Vietoris-Rips persistence diagrams using the ripser library (Tralie et al., 2018). Extract $H_1$ (first homology) features, including loop count (Betti-1) and total persistence. Calculate topology volatility as the 30-day rolling standard deviation of $H_1$ features. Regime classification: periods are classified as unstable if topology volatility exceeds the 75th percentile threshold.
+Compute Vietoris-Rips persistence diagrams using the ripser library \citep{Tralie2018}. Extract $H_1$ (first homology) features, including loop count (Betti-1) and total persistence. Calculate topology volatility as the 30-day rolling standard deviation of $H_1$ features. Regime classification: periods are classified as unstable if topology volatility exceeds the 75th percentile threshold.
 
 Strategy modification: All trading signals were zeroed during periods classified as topologically unstable, effectively moving to cash during detected regime instability.
 
@@ -55,15 +55,15 @@ Strategy modification: All trading signals were zeroed during periods classified
 
 \subsection{Validation Framework}
 
-\textbf{Walk-forward validation:} Rolling 3-year training windows with 1-year out-of-sample test periods. All parameters, including regime classification thresholds, derived exclusively from training data. This methodology prevents look-ahead bias and data snooping (Bailey et al., 2014; Prado, 2018).
+\textbf{Walk-forward validation:} Rolling 3-year training windows with 1-year out-of-sample test periods. All parameters, including regime classification thresholds, derived exclusively from training data. This methodology prevents look-ahead bias and data snooping \citep{Bailey2014, dePrado2018}.
 
-\textbf{Transaction costs:} 5 basis points (0.05\%) per trade representing institutional execution costs (Frazzini et al., 2018). Applied to all position changes, including entries, exits, and rebalancing.
+\textbf{Transaction costs:} 5 basis points (0.05\%) per trade representing institutional execution costs \citep{Frazzini2018}. Applied to all position changes, including entries, exits, and rebalancing.
 
 \textbf{Parameter sensitivity:} Systematic testing across lookback periods (40/60/80 days), correlation thresholds (0.2/0.3/0.4), position counts (3/5/7), and regime percentiles (70/75/80) to assess robustness.
 
-\textbf{Statistical validation:} Performance metrics evaluated using standard errors calculated via analytical formulas (Lo, 2002) and verified with bootstrap resampling (Politis \& Romano, 1994). Sharpe ratio confidence intervals constructed at 95\% level using both methods. All hypothesis tests conducted at $\alpha = 0.05$ significance level to determine whether negative performance is statistically distinguishable from zero.
+\textbf{Statistical validation:} Performance metrics evaluated using standard errors calculated via analytical formulas \citep{Lo2002} and verified with bootstrap resampling \citep{Politis1994}. Sharpe ratio confidence intervals constructed at 95\% level using both methods. All hypothesis tests conducted at $\alpha = 0.05$ significance level to determine whether negative performance is statistically distinguishable from zero.
 
-\textbf{Statistical Power Analysis:} For detecting a Sharpe ratio significantly different from zero with test periods of 252--504 days, we achieve statistical power exceeding 0.95 for effect sizes $|SR| > 0.4$ at $\alpha = 0.05$. Given observed Sharpe ratios of $-0.56$ to $-2.08$, power is effectively 1.0 for detecting these large negative effects. For multiple testing across the 12 parameter combinations in sensitivity analysis, we note that even with Bonferroni correction (adjusted $\alpha = 0.05/12 = 0.0042$), all results remain significant (all $p < 0.001$). Deflated Sharpe ratios per López de Prado (2018) accounting for the search over parameters remain negative, confirming results are not artifacts of multiple testing.
+\textbf{Statistical Power Analysis:} For detecting a Sharpe ratio significantly different from zero with test periods of 252--504 days, we achieve statistical power exceeding 0.95 for effect sizes $|SR| > 0.4$ at $\alpha = 0.05$. Given observed Sharpe ratios of $-0.56$ to $-2.08$, power is effectively 1.0 for detecting these large negative effects. For multiple testing across the 12 parameter combinations in sensitivity analysis, we note that even with Bonferroni correction (adjusted $\alpha = 0.05/12 = 0.0042$), all results remain significant (all $p < 0.001$). Deflated Sharpe ratios per \citet{dePrado2018} accounting for the search over parameters remain negative, confirming results are not artifacts of multiple testing.
 
 \textbf{Important caveat on statistical inference:} While daily returns provide many observations, market regimes are not independent and identically distributed. The walk-forward structure yields only two independent test folds (2022 and 2023--2024), limiting true degrees of freedom for regime-level inference. We therefore interpret significance tests as evidence that returns are \textit{statistically significantly negative under standard return assumptions and robust across parameter sweeps and asset universes}, rather than claiming classical i.i.d. certainty. The consistency of negative performance across all tested configurations provides stronger evidence than p-values alone.
 
