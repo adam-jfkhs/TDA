@@ -241,6 +241,80 @@ def sector_returns(signal_df: pd.DataFrame, tickers: list,
     return pd.DataFrame(rows).set_index("date")
 
 
+# ── STRATEGY D: BETA-SPREAD + FIEDLER REGIME (Section 7 logic) ────────────────
+
+def beta_spread_strategy(returns: pd.DataFrame, tickers: list,
+                         signal_df: pd.DataFrame,
+                         train_end: str) -> pd.Series:
+    """
+    Replicates Phase 2 / Section 7 strategy:
+      - Compute betas vs sector-equal-weight from training data
+      - Split into top-3 high-beta, bottom-3 low-beta
+      - Fiedler < 25th pct (stressed) → long high-beta spread
+      - Fiedler ≥ 25th pct (calm)     → short high-beta spread
+      - 5-day rebalance, 1-day signal lag, 5 bps TC
+    """
+    sect_ret = returns[tickers].dropna()
+    market   = sect_ret.mean(axis=1)
+
+    # Compute betas from training period only
+    train_ret = sect_ret.loc[:train_end]
+    train_mkt = market.loc[:train_end]
+    betas = {}
+    for tk in tickers:
+        cov = train_ret[tk].cov(train_mkt)
+        var = train_mkt.var()
+        betas[tk] = cov / var if var > 0 else 1.0
+    betas = pd.Series(betas).sort_values(ascending=False)
+
+    n_pairs   = min(3, len(tickers) // 2)
+    high_beta = betas.index[:n_pairs].tolist()
+    low_beta  = betas.index[-n_pairs:].tolist()
+
+    # Calibrate Fiedler threshold from training period
+    fv_train = signal_df["fiedler"].loc[:train_end]
+    fiedler_threshold = np.nanpercentile(fv_train, 25)
+
+    dates = signal_df.index
+    prev_position = 0.0
+    rows = []
+
+    for i in range(1, len(dates)):
+        signal_date = dates[i - 1]
+        trade_date  = dates[i]
+
+        if trade_date not in sect_ret.index:
+            continue
+
+        fv = signal_df.loc[signal_date, "fiedler"]
+
+        # Regime: low Fiedler = fragmented graph ≈ high H1 loops = stressed
+        if fv < fiedler_threshold:
+            position = 1.0     # stressed → long high-beta spread
+        else:
+            position = -1.0    # calm → short high-beta spread
+
+        # Only rebalance every 5 days
+        day_idx = (i - 1)
+        if day_idx % 5 != 0 and prev_position != 0:
+            position = prev_position
+
+        hb_ret = sect_ret.loc[trade_date, high_beta].mean()
+        lb_ret = sect_ret.loc[trade_date, low_beta].mean()
+        spread = hb_ret - lb_ret
+
+        strat_ret = position * spread
+
+        # TC on position changes
+        if position != prev_position:
+            strat_ret -= 2 * n_pairs * TC_BPS / 10_000
+
+        prev_position = position
+        rows.append({"date": trade_date, "D": strat_ret})
+
+    return pd.DataFrame(rows).set_index("date")["D"]
+
+
 # ── FACTOR REGRESSION ─────────────────────────────────────────────────────────
 
 def load_ff_factors(start: str, end: str) -> pd.DataFrame:
@@ -332,6 +406,7 @@ def plot_report(combined: dict, spy_ret: pd.Series,
     retA = combined["A"].loc[TEST_START:]
     retB = combined["B"].loc[TEST_START:]
     retC = combined["C"].loc[TEST_START:]
+    retD = combined["D"].loc[TEST_START:]
     spy  = spy_ret.loc[TEST_START:]
 
     fig = plt.figure(figsize=(18, 20))
@@ -343,7 +418,8 @@ def plot_report(combined: dict, spy_ret: pd.Series,
                            hspace=0.40, wspace=0.30,
                            top=0.94, bottom=0.05)
 
-    colors = {"A": "#1f77b4", "B": "#ff7f0e", "C": "#2ca02c", "SPY": "#d62728"}
+    colors = {"A": "#1f77b4", "B": "#ff7f0e", "C": "#2ca02c",
+              "D": "#9467bd", "SPY": "#d62728"}
 
     # ── Panel 0: equity curves ─────────────────────────────────────────────
     ax0 = fig.add_subplot(gs[0, 0])
@@ -351,6 +427,7 @@ def plot_report(combined: dict, spy_ret: pd.Series,
             ("A: Laplacian+Fiedler", retA, colors["A"]),
             ("B: Laplacian+Vol",     retB, colors["B"]),
             ("C: Laplacian only",    retC, colors["C"]),
+            ("D: Beta-spread (Sec7)",retD, colors["D"]),
             ("SPY",                  spy,  colors["SPY"])]:
         cum = (1 + ret).cumprod()
         ax0.plot(cum.index, cum.values, label=label, color=col, linewidth=1.5)
@@ -525,6 +602,8 @@ def main():
     print("[3/5] Applying regime filters and building portfolios …")
     sector_rets_list = {"A": [], "B": [], "C": []}
 
+    sector_d_list = []
+
     for sec_name, (sig, tickers) in sector_signals.items():
         uf = fiedler_filter(sig, TRAIN_END)
         uv = vol_filter(sig, TRAIN_END)
@@ -532,11 +611,20 @@ def main():
         for s in ["A", "B", "C"]:
             sector_rets_list[s].append(sr[s])
 
+        # Strategy D: beta-spread + Fiedler regime (Section 7 logic)
+        d_ret = beta_spread_strategy(all_ret, tickers, sig, TRAIN_END)
+        sector_d_list.append(d_ret)
+        print(f"    {sec_name} D: high/low-beta spread, "
+              f"{(sig['fiedler'].loc[:TRAIN_END] < np.nanpercentile(sig['fiedler'].loc[:TRAIN_END], 25)).mean():.0%} stressed days")
+
     # Equal-weight across sectors
     combined = {}
     for s in ["A", "B", "C"]:
         stacked = pd.concat(sector_rets_list[s], axis=1).dropna()
         combined[s] = stacked.mean(axis=1)
+
+    stacked_d = pd.concat(sector_d_list, axis=1).dropna()
+    combined["D"] = stacked_d.mean(axis=1)
 
     # 4. Download Fama-French factors
     print("[4/5] Fetching Fama-French factors …")
@@ -547,6 +635,7 @@ def main():
         performance_metrics(combined["A"], "A: Laplacian+Fiedler (TDA)"),
         performance_metrics(combined["B"], "B: Laplacian+Vol filter"),
         performance_metrics(combined["C"], "C: Laplacian only"),
+        performance_metrics(combined["D"], "D: Beta-spread+Fiedler (Sec7)"),
         performance_metrics(spy_ret,       "SPY benchmark"),
     ]
 
@@ -557,6 +646,8 @@ def main():
                           factors, "B: Laplacian+Vol filter"),
         factor_regression(combined["C"].loc[TEST_START:],
                           factors, "C: Laplacian only"),
+        factor_regression(combined["D"].loc[TEST_START:],
+                          factors, "D: Beta-spread+Fiedler (Sec7)"),
     ]
 
     print_summary(all_metrics, factor_results)
