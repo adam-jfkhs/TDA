@@ -13,7 +13,7 @@ After six phases of empirical testing, algorithmic refinement, and theoretical i
 
 \subsubsection{The Core Discovery: Sector Homogeneity Matters}
 
-The breakthrough came in \textbf{Section 7} when we discovered that \textbf{market segmentation} fundamentally determines topology stability:
+The key finding came in \textbf{Section 7} when we discovered that \textbf{market segmentation} fundamentally determines topology stability:
 
 \textbf{What Fails}:
 \begin{itemize}
@@ -78,7 +78,7 @@ This inequality transforms the empirical correlation-stability relationship ($\r
 
 \paragraph{Random Matrix Theory Validation:}
 \begin{itemize}
-\item High-correlation eigenvalues ($\lambda_1 = 13.5$) violate Marchenko-Pastur law (theoretical $\lambda_{\text{max}} \approx 1.6$)
+\item High-correlation eigenvalues (empirical $\lambda_1 \approx 25.5$ for our $Q = T/n = 20$ universe) exceed the Marchenko-Pastur upper bound ($\lambda_+ \approx 1.50$) by more than an order of magnitude
 \item Confirms markets are \textbf{structured}, not random noise
 \item Provides confidence in out-of-sample generalization
 \end{itemize}
@@ -104,9 +104,9 @@ This inequality transforms the empirical correlation-stability relationship ($\r
 
 \textbf{Prior TDA-Finance Literature}:
 \begin{itemize}
-\item Gidea \& Katz (2018): TDA detects crashes retrospectively (no trading strategy)
-\item Meng et al. (2021): Network topology descriptive analysis (no profitability test)
-\item Macocco et al. (2023): TDA + ML for crypto (limited validation)
+\item \citet{Gidea2018}: TDA detects crashes retrospectively (no trading strategy)
+\item \citet{Meng2021}: Network topology descriptive analysis (no profitability test)
+\item \citet{Macocco2023}: TDA + ML for crypto (limited validation)
 \end{itemize}
 
 \textbf{Our Four Firsts}:
@@ -217,7 +217,7 @@ This inequality transforms the empirical correlation-stability relationship ($\r
 \begin{enumerate}
 \item \textbf{Can the CV bound be tightened?}
    \begin{itemize}
-   \item Current: CV $\leq \alpha/\sqrt{\rho(1-\rho)}$ with empirical $\alpha \approx 1.5$
+   \item Current: CV $\leq \alpha/\sqrt{\rho(1-\rho)}$ with empirical $\alpha \approx 0.35$
    \item Can we derive \textbf{exact} $\alpha$ from matrix dimension and sample size?
    \item Does the bound extend to \textbf{time-varying} correlation (non-stationary)?
    \end{itemize}
@@ -320,7 +320,7 @@ This inequality transforms the empirical correlation-stability relationship ($\r
 
 \textbf{Advanced Implementation} (Full ML Pipeline):
 \begin{itemize}
-\item Build \textbf{Neural Network} with topology + correlation features (Section 10 architecture)
+\item Build \textbf{Random Forest} with topology + correlation features (Section 10 architecture; best-performing model in our tests)
 \item Target: F1 $\approx 0.5$--$0.6$ (regime classification, not directional prediction)
 \item Integrate with existing risk models (VaR, expected shortfall)
 \end{itemize}

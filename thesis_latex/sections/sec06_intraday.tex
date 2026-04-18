@@ -25,7 +25,7 @@ To test this hypothesis, we extend the analysis to intraday data at 5-minute fre
 
 The intraday approach introduces methodological considerations. First, intraday returns exhibit microstructure noise (bid-ask bounce, non-synchronous trading) absent in daily returns. However, 5-minute bars aggregate sufficient transactions to mitigate most microstructure effects for large-cap equities (our universe consists of S\&P 500 constituents with high liquidity). Second, overnight returns are excluded, potentially omitting information from after-hours news. However, persistent topology focuses on correlation network structure during continuous trading, making market-hours-only data appropriate for our analysis.
 
-Previous literature supports intraday correlation estimation. Andersen et al. (2003) demonstrate that realized covariance matrices computed from high-frequency data provide more efficient estimates than daily-return-based methods, with estimation error decreasing as $O(1/\sqrt{m})$ where $m$ is the number of intraday observations. For our application, $m = 780$ five-minute bars per 60-day window (compared to $m = 60$ daily observations), suggesting approximately 3.6-fold reduction in estimation standard error under i.i.d. assumptions. While intraday returns exhibit serial correlation and volatility clustering that violate i.i.d. assumptions, empirical covariance estimates remain consistent and asymptotically normal under weaker regularity conditions (Barndorff-Nielsen \& Shephard, 2004).
+Previous literature supports intraday correlation estimation. \citet{Andersen2003} demonstrate that realized covariance matrices computed from high-frequency data provide more efficient estimates than daily-return-based methods, with estimation error decreasing as $O(1/\sqrt{m})$ where $m$ is the number of intraday observations. For our application, $m = 780$ five-minute bars per 60-day window (compared to $m = 60$ daily observations), suggesting approximately 3.6-fold reduction in estimation standard error under i.i.d. assumptions. While intraday returns exhibit serial correlation and volatility clustering that violate i.i.d. assumptions, empirical covariance estimates remain consistent and asymptotically normal under weaker regularity conditions \citep{BarndorffNielsen2004}.
 
 \subsection{Methodology}
 
@@ -64,7 +64,7 @@ d_{ij} = \sqrt{2(1 - \rho_{ij})}
 This metric satisfies the triangle inequality and produces distance matrices suitable for Vietoris-Rips filtration (distances $\in [0, 2]$, with $d = 0$ for $\rho = 1$ and $d = 2$ for $\rho = -1$).
 
 \paragraph{Step 3: Persistent Homology}
-Apply Vietoris-Rips filtration to the distance matrix using the ripser library (Tralie et al., 2018). Extract $H_0$ (connected components) and $H_1$ (loops) persistence diagrams. For each diagram, record:
+Apply Vietoris-Rips filtration to the distance matrix using the ripser library \citep{Tralie2018}. Extract $H_0$ (connected components) and $H_1$ (loops) persistence diagrams. For each diagram, record:
 \begin{itemize}
 \item \textbf{Feature count:} Number of $H_1$ (birth, death) pairs
 \item \textbf{Total persistence:} Sum of lifetimes (death $-$ birth) across all $H_1$ features
