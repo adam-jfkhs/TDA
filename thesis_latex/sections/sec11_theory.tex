@@ -31,12 +31,12 @@ For a \textbf{random} correlation matrix (no structure), eigenvalues follow the 
 \begin{equation}
 \lambda \in [(1 - \sqrt{q})^2, (1 + \sqrt{q})^2]
 \end{equation}
-where $q = n/T$ (ratio of stocks to time observations).
+where $q = n/T$ (ratio of stocks to time observations), equivalently $q = 1/Q$ with $Q = T/n$.
 
-\textbf{Example}: For $n = 20$ stocks, $T = 252$ days:
+\textbf{Example}: For our empirical setting with $Q = T/n = 20$ (e.g., $n = 20$ stocks, $T \approx 400$ days):
 \begin{itemize}
-\item $q = 20/252 \approx 0.08$
-\item Expected range: $[(1-\sqrt{0.08})^2, (1+\sqrt{0.08})^2] \approx [0.51, 1.65]$
+\item $q = 1/20 = 0.05$
+\item Expected range: $[(1-\sqrt{0.05})^2, (1+\sqrt{0.05})^2] \approx [0.60, 1.50]$
 \end{itemize}
 
 \textbf{Empirical Observation} (Figure 11.1A):
@@ -49,7 +49,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 \toprule
 \textbf{Mean $\rho$} & $\lambda_1$ \textbf{(largest)} & $\lambda_n$ \textbf{(smallest)} & \textbf{Exceeds MP?} \\
 \midrule
-0.3 & 2.14 & 0.48 & $\times$ No (near random) \\
+0.3 & 2.14 & 0.48 & \checkmark Yes (weakly structured) \\
 0.5 & 4.52 & 0.31 & \checkmark Yes (structured) \\
 0.7 & 8.91 & 0.18 & \checkmark Yes (highly structured) \\
 0.9 & 16.34 & 0.09 & \checkmark Yes (extreme structure) \\
@@ -59,7 +59,7 @@ where $q = n/T$ (ratio of stocks to time observations).
 
 \textbf{Interpretation}:
 \begin{itemize}
-\item \textbf{Low correlation ($\rho = 0.3$)}: $\lambda_1 \approx 2.14$ slightly exceeds MP upper bound (1.65) $\rightarrow$ weakly structured
+\item \textbf{Low correlation ($\rho = 0.3$)}: $\lambda_1 \approx 2.14$ exceeds MP upper bound (1.50) $\rightarrow$ weakly structured
 \item \textbf{High correlation ($\rho \geq 0.5$)}: $\lambda_1 \gg$ MP bounds $\rightarrow$ \textbf{structured}, not noise
 \item As $\rho$ increases, eigenvalues \textbf{concentrate} in first eigenmode ($\lambda_1$ dominates)
 \end{itemize}
@@ -226,7 +226,7 @@ for some constant $\alpha$ determined empirically.
 
 \subsubsection{Simulation Evidence}
 
-\textbf{Fitted Constant}: $\alpha = 0.78$ (from Section 7--9 data)
+\textbf{Fitted Constant}: $\alpha = 0.35$ (from Section 7--9 data; see Figure 11.3, which shows 0 violations across 20 sampled points with mean observed CV $\approx 0.45$)
 
 \textbf{Observed vs Bound} (Table 11.1):
 
@@ -238,19 +238,19 @@ for some constant $\alpha$ determined empirically.
 \toprule
 $\rho$ & \textbf{Observed CV} & \textbf{Theoretical Bound} & \textbf{Ratio (Obs/Bound)} \\
 \midrule
-0.3 & 0.612 & 1.96 & 0.31 \checkmark \\
-0.5 & 0.489 & 1.56 & 0.31 \checkmark \\
-0.7 & 0.312 & 1.96 & 0.16 \checkmark \\
-0.9 & 0.145 & 2.60 & 0.06 \checkmark \\
+0.3 & 0.612 & 0.76 & 0.80 \checkmark \\
+0.5 & 0.489 & 0.70 & 0.70 \checkmark \\
+0.7 & 0.312 & 0.76 & 0.41 \checkmark \\
+0.9 & 0.145 & 1.17 & 0.12 \checkmark \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\textbf{Result}: \textbf{All observed values well within bound} (ratio $< 0.35$).
+\textbf{Result}: \textbf{All observed values respect the bound} (all ratios $< 1$).
 
 \textbf{Interpretation}:
 \begin{itemize}
-\item Bound is \textbf{conservative} (not tight), but \textbf{correctly captures trend}
+\item Bound is \textbf{tight at intermediate correlation} (ratio $\approx 0.7$--$0.8$ at $\rho \in [0.3, 0.5]$), looser at extremes
 \item U-shaped bound (minimum at $\rho \approx 0.5$) matches \textbf{empirical CV curve}
 \item Validates that instability maximizes at \textbf{intermediate correlations}
 \end{itemize}
@@ -280,11 +280,11 @@ For \textbf{trading viability}, we require $\text{SNR} \geq 1.5$ (heuristic thre
 
 \textbf{Critical Threshold Derivation}:
 
-Setting $\text{SNR} = 1.5$ and $\alpha = 0.78$ (empirically fitted):
+Setting $\text{SNR} = 1.5$ and $\alpha = 0.35$ (empirically fitted):
 \begin{align}
-\frac{\sqrt{\rho(1-\rho)}}{0.78} &\geq 1.5 \\
-\sqrt{\rho(1-\rho)} &\geq 1.17 \\
-\rho(1-\rho) &\geq 1.37 \quad \text{(impossible, max = 0.25 at $\rho = 0.5$)}
+\frac{\sqrt{\rho(1-\rho)}}{0.35} &\geq 1.5 \\
+\sqrt{\rho(1-\rho)} &\geq 0.525 \\
+\rho(1-\rho) &\geq 0.276 \quad \text{(impossible, max = 0.25 at $\rho = 0.5$)}
 \end{align}
 
 Adjusting for conservative bound (empirical ratio $\approx 0.3$), the \textbf{effective threshold} becomes:
@@ -661,8 +661,8 @@ Mathematical foundations validate the empirical correlation-stability relationsh
 
 \item \textbf{Theoretical Bound} (Novel Contribution)
    \begin{itemize}
-   \item $\text{CV}(H_1) \leq 0.78 / \sqrt{\rho(1-\rho)}$
-   \item All empirical observations within bound (ratio $< 0.35$)
+   \item $\text{CV}(H_1) \leq 0.35 / \sqrt{\rho(1-\rho)}$
+   \item All empirical observations respect the bound (0 violations across 20 sampled points; Figure 11.3)
    \item U-shaped curve matches intuition (max instability at $\rho \approx 0.5$)
    \end{itemize}
 
