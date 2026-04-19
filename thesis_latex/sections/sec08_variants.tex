@@ -3,7 +3,7 @@
 
 \subsection{Motivation}
 
-Sections 6--7 demonstrated that sector-specific topology produces \positiverisk{} (Sharpe +0.79 for multi-sector portfolio) compared to the original cross-sector strategy (Sharpe $-0.56$). However, this addressed only one of three primary failure modes identified in Section 5:
+Sections 6--7 demonstrated that sector-specific topology substantially improves performance (initial estimate: Sharpe $+0.79$; verified estimate: $-0.77$; see Section~\ref{sec:conclusion}) compared to the cross-sector baseline ($-0.56$). However, this addressed only one of three primary failure modes identified in Section 5:
 
 \begin{enumerate}
 \item \checkmark \textbf{Correlation heterogeneity} $\rightarrow$ Solved by sector-specific analysis (Section 7)
@@ -530,8 +530,8 @@ The fact that \textbf{multiple independent approaches} succeed (3 out of 4 varia
 \midrule
 Baseline (Section~\ref{sec:preliminary}) & Sharpe $-0.56$ & Cross-sector mean-reversion \\
 Phase 1 (Section~\ref{sec:intraday}) & Sharpe $-0.41$ & Intraday data (sample size) \\
-Phase 2 (Section~\ref{sec:sector}) & Sharpe +0.79 & Sector-specific (homogeneity) \\
-Phase 3 (Section~\ref{sec:variants}) & Sharpe +0.48 & Strategy variants (robustness) \\
+Phase 2 (Section~\ref{sec:sector}) & Sharpe $+0.79$ (initial); $-0.77$ (verified) & Sector-specific (homogeneity) \\
+Phase 3 (Section~\ref{sec:variants}) & Sharpe $+0.48$ (initial) & Strategy variants (robustness) \\
 \bottomrule
 \end{tabular}
 \end{table}

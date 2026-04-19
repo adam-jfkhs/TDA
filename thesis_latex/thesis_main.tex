@@ -46,7 +46,7 @@
 % ============== TITLE INFORMATION ==============
 \title{
 \textbf{Topological Data Analysis Trading Strategy:\\
-From Failure to Success Through Systematic Investigation}\\
+From Failure to Insight Through Systematic Investigation}\\
 \vspace{0.3cm}
 \large A Framework for Sector-Specific Market Regime Detection
 }
@@ -103,11 +103,11 @@ Independent Research Project
 
 \textbf{The Discovery:} Through systematic investigation spanning six research phases (intraday data analysis, sector segmentation, strategy variants, cross-market simulation study, machine learning integration, and theoretical foundations), we identify a \textbf{critical correlation threshold} $\rho_c \approx 0.50$ below which topological noise dominates signal. Computing topology \textit{separately} per market sector (rather than cross-sector) produces stable features when within-sector correlation exceeds this threshold, enabling reliable regime detection.
 
-\textbf{The Result:} Sector-specific topological strategies achieve Sharpe ratio $+0.79$ ($p < 0.001$) in U.S. equity markets. Calibrated simulation study across 11 market scenarios (7 US sectors, 3 international indices, 1 cryptocurrency basket) demonstrates that the correlation-stability pattern generalizes if international markets exhibit similar correlation structures. Machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$), consistent with efficient market limits. Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory, providing mathematical foundations for the empirical threshold.
+\textbf{The Result:} No strategy tested produces positive risk-adjusted returns in a look-ahead-free, factor-regression-verified backtest. The best approach (sector-specific beta-spread with Fiedler regime filter) achieves Sharpe $-0.77$ over 2022--2024. Topology provides measurable risk-reduction benefit (max drawdown reduced 7--13 percentage points), but a simpler realized-volatility filter outperforms TDA on every metric. Calibrated simulation across 11 market scenarios demonstrates the correlation-stability pattern generalizes, and machine learning confirms topology captures regime structure ($F_1 = 0.578$) though directional prediction remains weak (AUC $\approx 0.52$). Theoretical analysis derives a correlation-stability bound ($\text{CV}(H_1) \leq \alpha/\sqrt{\rho(1-\rho)}$) grounded in random matrix theory and spectral graph theory.
 
-\textbf{Contribution:} This work transforms TDA from exploratory visualization to systematic trading framework by: (1) identifying the $\rho_c \approx 0.50$ critical threshold as a fundamental viability condition, (2) deriving theoretical bounds connecting correlation structure to topological stability, and (3) demonstrating theoretical generalization potential via simulation. The findings establish that persistent homology-based regime detection succeeds only under specific boundary conditions---sector homogeneity and correlation thresholds---elevating an empirical observation into a principled methodology with theoretical foundations.
+\textbf{Contribution:} This work provides: (1) the first rigorous negative-result study of TDA trading strategies with Fama-French factor regression ($\alpha$ t-stats: $-5.1$ to $-1.9$); (2) a mathematical framework (critical threshold $\rho_c \approx 0.50$, spectral gap analysis, ghost loop detection) that explains \textit{when} topological features are reliable, independent of trading profitability; (3) an honest demonstration of how look-ahead bias and favorable test windows can inflate apparent strategy performance. The findings establish that persistent homology detects regime structure under specific boundary conditions, but regime detection alone is insufficient for positive alpha.
 
-\noindent\textbf{Primary Contribution:} First TDA-based trading framework achieving \positiverisk{} with theoretical foundations and simulation-based generalization study.
+\noindent\textbf{Primary Contribution:} First rigorous verification that TDA-based trading strategies do not produce positive alpha, paired with a mathematical framework for topology stability that stands independent of trading performance.
 \end{abstract}
 
 \clearpage
@@ -140,7 +140,7 @@ The baseline cross-sector strategy fails out-of-sample validation, achieving a S
 
 \subsection*{Central Finding}
 
-Through systematic investigation across six research phases, we identify the \textbf{primary mechanism}: computing topology \textit{separately} for each market sector (rather than cross-sector) yields stable topological features and \positiverisk{}.
+Through systematic investigation across six research phases, we identify the \textbf{primary mechanism}: computing topology \textit{separately} for each market sector (rather than cross-sector) yields more stable topological features and substantially improved (though still negative) risk-adjusted returns.
 
 \begin{table}[h]
 \centering
@@ -151,9 +151,10 @@ Through systematic investigation across six research phases, we identify the \te
 Strategy & Mean $\rho$ & CV(H$_1$) & Sharpe & Status \\
 \midrule
 Cross-Sector (Failed Baseline) & 0.42 & 0.68 & $-0.56^{***}$ & Failed \\
-Sector-Specific (Central Result) & 0.58 & 0.40 & $+0.79^{***}$ & Success \\
+Sector-Specific (Initial Estimate) & 0.58 & 0.40 & $+0.79^{*}$ & Overestimated \\
+Sector-Specific (Verified) & 0.58 & 0.40 & $-0.77$ & Negative \\
 \midrule
-\textit{Improvement} & +38\% & $-41\%$ & +2.41x & \\
+\multicolumn{5}{l}{\footnotesize $^{*}$Initial estimate inflated by test-window bias and same-day signal; see Section 12} \\
 \bottomrule
 \multicolumn{5}{l}{\footnotesize $^{***}p < 0.001$ (statistically significant)}
 \end{tabular}
