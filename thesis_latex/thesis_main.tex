@@ -339,16 +339,16 @@ Intraday (1-hour) & 4.19 & 1.92 & 0.458 & 39,876 hours \\
 
 \begin{table}[H]
 \centering
-\caption{Phase 2 Results: Sector-Specific Performance (Section 7)}
+\caption{Phase 2 Results: Sector-Specific Performance (Section 7) --- Initial Estimates$^\dagger$}
 \label{tab:phase2}
 \begin{tabular}{@{}lcccc@{}}
 \toprule
-\textbf{Strategy} & \textbf{Mean $\rho$} & \textbf{CV($H_1$)} & \textbf{Sharpe Ratio} & \textbf{CAGR} \\
+\textbf{Strategy} & \textbf{Mean $\rho$} & \textbf{CV($H_1$)} & \textbf{Sharpe Ratio$^\dagger$} & \textbf{CAGR} \\
 \midrule
 \multicolumn{5}{l}{\textit{Baseline (Failed)}} \\
 Cross-Sector & 0.42 & 0.675 & $-0.56^{***}$ & $-13.5\%$ \\
 \midrule
-\multicolumn{5}{l}{\textit{Sector-Specific (Success)}} \\
+\multicolumn{5}{l}{\textit{Sector-Specific (Initial Estimates)}} \\
 Financials & 0.61 & 0.38 & $+0.87^{***}$ & $+18.2\%$ \\
 Energy & 0.60 & 0.40 & $+0.79^{***}$ & $+16.5\%$ \\
 Technology & 0.58 & 0.42 & $+0.76^{***}$ & $+15.8\%$ \\
@@ -360,21 +360,22 @@ Materials & 0.52 & 0.51 & $+0.61^{***}$ & $+12.8\%$ \\
 \textbf{Multi-Sector Portfolio} & 0.58 & 0.40 & \textbf{$+0.79^{***}$} & \textbf{$+16.5\%$} \\
 \bottomrule
 \multicolumn{5}{l}{\footnotesize $^{***}p < 0.001$ (walk-forward validated, 5 bps transaction costs)} \\
+\multicolumn{5}{l}{\footnotesize $^\dagger$Initial estimates; independent verification yields Sharpe $-0.77$ (Section~\ref{sec:conclusion})} \\
 \multicolumn{5}{l}{\footnotesize Source: \texttt{generate\_all\_thesis\_figures.py}, Figure 7.1--7.2}
 \end{tabular}
 \end{table}
 
-\textbf{Key Finding}: Sector-specific topology achieves Sharpe $+0.79$ vs cross-sector Sharpe $-0.56$. The correlation-CV relationship exhibits Pearson $\rho = -0.95$ ($R^2 = 0.91$, $p < 0.001$), validating the correlation homogeneity hypothesis.
+\textbf{Key Finding}: Sector-specific topology initially estimated Sharpe $+0.79$ vs cross-sector Sharpe $-0.56$; however, independent verification with look-ahead-free methodology yields Sharpe $-0.77$ (Section~\ref{sec:conclusion}). The correlation-CV relationship ($\rho = -0.95$, $R^2 = 0.91$, $p < 0.001$) is robust: sector homogeneity stabilizes topology, but stable topology does not guarantee positive alpha.
 
 \subsection{Phase 3: Strategy Variants}
 
 \begin{table}[H]
 \centering
-\caption{Phase 3 Results: Strategy Variant Performance (Section 8)}
+\caption{Phase 3 Results: Strategy Variant Performance (Section 8) --- Initial Estimates$^\dagger$}
 \label{tab:phase3}
 \begin{tabular}{@{}lccc@{}}
 \toprule
-\textbf{Variant} & \textbf{Sharpe Ratio} & \textbf{CAGR} & \textbf{Max Drawdown} \\
+\textbf{Variant} & \textbf{Sharpe Ratio$^\dagger$} & \textbf{CAGR} & \textbf{Max Drawdown} \\
 \midrule
 Baseline TDA & $+0.79^{***}$ & $+16.5\%$ & $-12.3\%$ \\
 Momentum + TDA & $+0.92^{***}$ & $+19.2\%$ & $-10.8\%$ \\
@@ -384,11 +385,12 @@ Adaptive Threshold & $+0.88^{***}$ & $+18.5\%$ & $-11.0\%$ \\
 \textbf{Average (All Variants)} & \textbf{$+0.86$} & \textbf{$+18.0\%$} & \textbf{$-11.4\%$} \\
 \bottomrule
 \multicolumn{4}{l}{\footnotesize $^{***}p < 0.001$ (walk-forward validated, 5 bps transaction costs)} \\
+\multicolumn{4}{l}{\footnotesize $^\dagger$Initial estimates; subject to same biases as Phase 2 (see Section~\ref{sec:conclusion})} \\
 \multicolumn{4}{l}{\footnotesize Source: \texttt{generate\_all\_thesis\_figures.py}, Figure 8.1}
 \end{tabular}
 \end{table}
 
-\textbf{Key Finding}: All 4 variants achieve positive Sharpe ratios ($> +0.79$), with Momentum+TDA best (Sharpe $+0.92$). This robustness validates that sector-specific topology is not parameter-dependent.
+\textbf{Key Finding}: All 4 variants show positive initial Sharpe estimates, but these are subject to the same test-window and signal-lag biases identified in Section~\ref{sec:conclusion}. The variant analysis demonstrates that performance is not parameter-dependent, though the absolute level is overestimated.
 
 \subsection{Phase 4: Cross-Market Simulation Study}
 
