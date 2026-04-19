@@ -5,43 +5,70 @@
 
 This thesis set out to answer a deceptively simple question: \textbf{Can topological data analysis generate profitable trading signals by detecting regime shifts in equity market correlation structure?}
 
-After six phases of empirical testing, algorithmic refinement, and theoretical investigation, the answer is nuanced but definitive:
+After six phases of empirical testing, algorithmic refinement, theoretical investigation, and independent verification, the answer is clear:
 
 \begin{quote}
-\textbf{Yes---but only under specific boundary conditions that we now understand mathematically.}
+\textbf{No strategy tested produced positive risk-adjusted returns in a fully verified, look-ahead-free backtest. However, topology provides measurable structural insight into market regimes, and the mathematical framework developed here represents a genuine contribution to understanding correlation networks.}
 \end{quote}
 
-\subsubsection{The Core Discovery: Sector Homogeneity Matters}
+\subsubsection{Verified Backtest Results}
 
-The key finding came in \textbf{Section 7} when we discovered that \textbf{market segmentation} fundamentally determines topology stability:
+An independent verification backtest (\texttt{risk\_report.py}) was conducted using real Yahoo Finance data, proper 1-day signal lag, and Fama-French factor regression to control for known risk premia. Four strategies were tested on a 2022--2024 out-of-sample period with 5 basis point transaction costs:
 
-\textbf{What Fails}:
+\begin{table}[H]
+\centering
+\caption{Verified Out-of-Sample Performance (2022--2024)}
+\label{tab:verified-backtest}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Strategy} & \textbf{Ann. Return} & \textbf{Sharpe} & \textbf{Max DD} & \textbf{Factor $\alpha$ (t-stat)} \\
+\midrule
+A: Laplacian + Fiedler filter  & $-30.8\%$ & $-2.57$ & $-61.6\%$ & $-34.98\%$ ($-5.13$) \\
+B: Laplacian + Vol filter      & $-26.9\%$ & $-2.42$ & $-56.3\%$ & $-31.48\%$ ($-5.24$) \\
+C: Laplacian only              & $-37.9\%$ & $-2.75$ & $-69.0\%$ & $-42.17\%$ ($-5.66$) \\
+D: Beta-spread + Fiedler       & $-9.8\%$  & $-0.77$ & $-40.4\%$ & $-14.00\%$ ($-1.88$) \\
+SPY benchmark                  & $+8.6\%$  & $+0.49$ & $-26.2\%$ & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\textbf{Key observations}:
 \begin{itemize}
-\item Cross-sector topology (mixing Tech, Energy, Healthcare): CV = 0.68, Sharpe = $-0.56$
-\item Low-correlation markets (Real Estate $\rho = 0.39$): Unstable features, negative returns
+\item Strategies A, B, C (Laplacian mean-reversion) generate highly significant negative alpha ($t \approx -5$). The signal actively destroys value.
+\item Strategy D (beta-spread with topology regime filter, replicating Section 7 logic) achieves Sharpe $-0.77$ --- substantially better, but still negative.
+\item Strategy D's factor alpha ($t = -1.88$) is borderline and not statistically significant at $p < 0.05$. This means the result is not definitively negative either --- the strategy may break even in different market conditions.
+\item The Fiedler-value filter reduces losses relative to no filter (Strategy A vs C), confirming topology's value as a \textbf{risk indicator}. However, a simple realized-volatility filter (Strategy B) achieves a better result at lower computational cost.
 \end{itemize}
 
-\textbf{What Succeeds}:
-\begin{itemize}
-\item Sector-specific topology (Financials, Energy, Tech separately): CV = 0.40, Sharpe = $+0.79$
-\item High-correlation markets ($\rho > 0.5$): Stable features, positive risk-adjusted returns
-\end{itemize}
+\subsubsection{Why Earlier Sharpe Estimates Were Optimistic}
+
+Section 7's reported Sharpe of $+0.79$ reflects three compounding advantages not present in the verification backtest:
+
+\begin{enumerate}
+\item \textbf{Favorable test window}: Section 7 tests on 2023--2024 (bull market). The verification test includes 2022, a severe bear market, in the out-of-sample period.
+\item \textbf{Larger stock universe}: Section 7 uses 20 stocks per sector; the verification uses 6. More stocks improve beta separation and reduce noise in the spread.
+\item \textbf{Subtle look-ahead}: The original phase 2 code applied today's topology signal to today's returns. The verification code imposes a strict 1-day lag.
+\end{enumerate}
+
+This is not data fraud --- it is a common methodological pitfall in quantitative finance research \citep{Bailey2014, dePrado2018}. The verification exercise is itself a contribution: it demonstrates the importance of independent replication with clean methodology.
+
+\subsubsection{What the Mathematical Framework Genuinely Contributes}
+
+Although the trading strategy does not produce positive returns, the theoretical contributions of Sections 9--11 remain valid independent of strategy performance:
 
 \textbf{The Mechanism} (demonstrated across Sections 7--11):
 \begin{enumerate}
 \item \textbf{High within-sector correlation} ($\rho > 0.6$) $\rightarrow$ eigenvalue concentration
 \item \textbf{Eigenvalue concentration} $\rightarrow$ spectral gap widening ($\lambda_1 - \lambda_2$)
 \item \textbf{Spectral gap} $\rightarrow$ stable persistent homology (CV $< 0.5$)
-\item \textbf{Stable topology} $\rightarrow$ predictable regime signals $\rightarrow$ tradeable strategy
+\item \textbf{Stable topology} $\rightarrow$ predictable regime signals (though not sufficient for positive alpha)
 \end{enumerate}
 
-This is \textbf{not} a data-mined accident. Section 11 derives the mathematical bound:
-
+The theoretical bound derived in Section 11:
 \begin{equation}
 \textbf{CV}(H_1) \leq \frac{\alpha}{\sqrt{\rho(1-\rho)}}
 \end{equation}
-
-This inequality transforms the empirical correlation-stability relationship ($\rho = -0.87$ between correlation and CV) into a \textbf{mathematical necessity}, grounded in random matrix theory and spectral graph analysis.
+remains mathematically valid and grounded in random matrix theory and spectral graph analysis. It explains \textit{when} topology is measurable --- even if measurable topology does not guarantee tradeable alpha.
 
 \subsubsection{Theoretical Generalization via Simulation}
 
@@ -109,9 +136,9 @@ This inequality transforms the empirical correlation-stability relationship ($\r
 \item \citet{Macocco2023}: TDA + ML for crypto (limited validation)
 \end{itemize}
 
-\textbf{Our Four Firsts}:
+\textbf{Our Four Contributions}:
 \begin{enumerate}
-\item \checkmark \textbf{First profitable TDA trading strategy} (Sharpe $+0.79$ post-cost, walk-forward validated)
+\item \checkmark \textbf{First rigorous negative-result study} of TDA trading strategies with factor regression and look-ahead-free verification (Sharpe $-0.77$ best case, not profitable)
 \item \checkmark \textbf{First cross-market simulation study} (11 scenarios demonstrating theoretical generalization potential)
 \item \checkmark \textbf{First rigorous TDA vs ML comparison} (feature importance, conservative AUC interpretation)
 \item \checkmark \textbf{First theoretical bound} relating correlation to topology stability
@@ -380,17 +407,17 @@ Perhaps the true contribution of this thesis is not ``TDA works for trading'' bu
 
 \subsection{Closing Statement}
 
-This thesis set out to answer whether topology can generate profitable trading signals. The answer---\textbf{yes, under specific correlation conditions}---is simultaneously more constrained and more profound than anticipated.
+This thesis set out to answer whether topology can generate profitable trading signals. The verified answer is \textbf{no} --- none of the strategies tested produced positive risk-adjusted returns under clean out-of-sample conditions.
 
-\textbf{More constrained}: TDA is not a panacea. It fails for low-correlation portfolios, produces weak directional predictions (AUC $\approx 0.52$), and requires careful sector segmentation.
+This is not a failure of the research. Rigorous negative results are a contribution to knowledge. The field of quantitative finance is littered with strategies that appear profitable in initial backtests and fail under scrutiny \citep{Harvey2016, Bailey2014}. This thesis demonstrates that scrutiny --- factor regressions, look-ahead-free methodology, independent verification --- and reports honestly what it finds.
 
-\textbf{More profound}: The correlation-stability mechanism shows consistency across 11 simulated market scenarios, three asset classes, and fiat-to-digital baskets. It is grounded in random matrix theory, supported by machine learning, and derivable from spectral graph principles. This theoretical consistency suggests we have identified a \textbf{structural pattern} in networked systems that merits further empirical validation across live markets.
+\textbf{What remains true}: The correlation-stability mechanism (CV $\leq \alpha/\sqrt{\rho(1-\rho)}$) is mathematically valid. Sector homogeneity does produce more stable topology. The Fiedler value does correlate $-0.991$ with topology CV. Topology does provide a measurable risk signal that reduces drawdowns, even if it cannot overcome transaction costs and adverse market regimes to produce positive net returns.
 
-For practitioners, the takeaway is pragmatic: use topology for \textbf{regime detection}, not \textbf{price prediction}. For researchers, the challenge is theoretical: prove (or disprove) the CV bound rigorously, extend to non-stationary regimes, and investigate why $H_1$ works while $H_2$ does not.
+\textbf{For practitioners}: Use topology (or equivalently, the Fiedler value of the correlation graph) as a \textbf{risk indicator} to scale exposure on strategies that already work. Do not use it as a standalone signal generator.
 
-For the field of quantitative finance, this work demonstrates that \textbf{topological data analysis can transition from academic curiosity to operational strategy}---but only when deployed with mathematical rigor, empirical discipline, and intellectual honesty about limitations.
+\textbf{For researchers}: The mathematical framework developed here --- spectral gap, CV bound, ghost loop detection --- provides tools for understanding when topological features are reliable signals versus noise. Proving (or disproving) the CV bound rigorously remains an open and worthwhile problem.
 
-The shape of markets is real. We now know when, where, and why it matters.
+The shape of markets is real and measurable. Measuring it accurately is harder than generating alpha from it.
 
 \subsection{What I Would Do Next}
 

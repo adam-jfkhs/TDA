@@ -55,25 +55,27 @@ Our investigation proceeds through \textbf{six phases} (Sections 6--11), testing
 
 \subsection{Key Findings}
 
-\subsubsection{Main Result: Sector-Specific Topology Works (But Not Everywhere)}
+\subsubsection{Main Result: No Strategy Produced Positive Returns — But the Mathematical Framework Is Real}
 
-\textbf{Empirical Discovery} (Section 7):
+\textbf{Empirical Discovery} (Sections 4, 7, verified in \texttt{risk\_report.py}):
 \begin{itemize}
-\item \textbf{Cross-sector topology fails}: Mixing tech, energy, healthcare stocks produces unstable topology (CV = 0.68), negative Sharpe ratios ($-0.56$)
-\item \textbf{Sector-specific topology succeeds}: Computing topology separately for each sector yields stable features (CV = 0.40) and \textbf{\positiverisk{} (+0.79)}
+\item \textbf{Cross-sector topology fails}: Mixing tech, energy, healthcare stocks produces unstable topology (CV = 0.68), Sharpe $-0.56$
+\item \textbf{Sector-specific approach improves substantially}: Computing topology separately per sector yields stable features (CV = 0.40) and Sharpe $-0.77$ (verified) --- much better, but still negative
+\item \textbf{All strategies fail to produce positive alpha} after proper signal lag, transaction costs, and Fama-French factor regression
 \end{itemize}
 
-\textbf{The Mechanism} (Sections 7, 10, 11):
+\textbf{The Mechanism} (Sections 7, 10, 11 — structurally valid independent of alpha):
 \begin{itemize}
-\item High within-sector correlation ($\rho > 0.6$) $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ predictable regime signals
-\item Cross-sector mixing ($\rho \approx 0.4$) $\rightarrow$ eigenvalue dispersion $\rightarrow$ unstable topology $\rightarrow$ noisy, untradeable signals
+\item High within-sector correlation ($\rho > 0.6$) $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ measurable regime signals
+\item Cross-sector mixing ($\rho \approx 0.4$) $\rightarrow$ eigenvalue dispersion $\rightarrow$ unstable topology $\rightarrow$ noisy signals
+\item Stable topology reduces strategy losses (Fiedler filter: Sharpe $-2.75 \rightarrow -2.57$) but cannot overcome the absence of a profitable core signal
 \end{itemize}
 
 \textbf{Why This Matters}:
 \begin{itemize}
-\item First evidence that TDA can generate \textbf{tradeable} signals with \positiverisk{} (prior work only detected crises post-hoc)
-\item Identifies \textbf{boundary conditions}: topology works when $\rho > 0.5$, fails when $\rho < 0.45$
-\item Transforms TDA from ``interesting visualization'' to \textbf{actionable strategy}
+\item Rigorous negative result with factor regression: topology does not generate alpha (factor $\alpha$ t-stats: $-5.1$ to $-5.7$)
+\item Identifies \textbf{boundary conditions} for topology stability: $\rho > 0.5$ necessary but not sufficient
+\item Demonstrates how look-ahead bias and favorable test windows can inflate apparent strategy performance
 \end{itemize}
 
 \subsubsection{Theoretical Generalization via Simulation (Section 9)}
@@ -157,7 +159,7 @@ Our investigation proceeds through \textbf{six phases} (Sections 6--11), testing
 
 \textbf{Our Contribution}:
 \begin{enumerate}
-\item \textbf{First TDA trading strategy with \positiverisk{}} (Sharpe +0.79, sector-specific approach)
+\item \textbf{First rigorous factor-regression verification of TDA trading strategies} (all approaches negative after look-ahead-free backtest; best verified Sharpe $-0.77$)
 \item \textbf{First cross-market simulation study} (11 scenarios spanning equity sectors, international indices, cryptocurrency)
 \item \textbf{First rigorous TDA vs ML comparison} (walk-forward validation, feature importance)
 \item \textbf{First theoretical bound} relating correlation to topology stability
@@ -396,7 +398,7 @@ This thesis is written for three audiences:
 \midrule
 1 & Introduction & 5 & Research question, contributions \\
 6 & Intraday Data & 10 & 32\% CV improvement, Sharpe still negative \\
-7 & Sector-Specific Topology & 12 & \textbf{Sharpe +0.79} (central result) \\
+7 & Sector-Specific Topology & 12 & Sharpe $-0.77$ (verified); initial estimate $+0.79$ inflated by test-window and signal-lag bias \\
 8 & Strategy Variants & 10 & 3/4 variants succeed (robustness) \\
 9 & Cross-Market Simulation Study & 10 & $\rho = -0.82$ globally (generalization) \\
 10 & ML Integration & 10 & F1 +$40\times$, but AUC $\approx 0.52$ (bounded) \\
