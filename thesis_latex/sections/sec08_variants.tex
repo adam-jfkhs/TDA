@@ -504,19 +504,19 @@ This interpretation aligns with regime-switching literature \citep{Hamilton1989,
 
 \subsection{Conclusion}
 
-Alternative strategy variants demonstrate that sector-specific topological trading produces \textbf{robust positive returns} (Sharpe +0.18 to +0.48) across multiple design choices:
+Alternative strategy variants show initial Sharpe estimates of +0.18 to +0.48 across multiple design choices. However, like the Section~\ref{sec:sector} results, these estimates are subject to the test-window and signal-lag biases identified in Section~\ref{sec:conclusion} and require independent verification:
 
 \begin{enumerate}
-\item \textbf{Momentum + TDA Hybrid} achieves best standalone performance (Sharpe +0.42), addressing mean-reversion failure in trending markets.
+\item \textbf{Momentum + TDA Hybrid}: best initial standalone estimate (Sharpe +0.42), addressing mean-reversion failure in trending markets.
 
-\item \textbf{Adaptive Threshold} provides modest improvement (Sharpe +0.35) via dynamic regime detection.
+\item \textbf{Adaptive Threshold}: modest initial improvement (Sharpe +0.35) via dynamic regime detection.
 
-\item \textbf{Scale-Consistent Architecture} underperforms (Sharpe +0.18) due to excessive noise from short windows, demonstrating that \textbf{topology requires minimum sample size} (reinforcing Section 6 conclusion).
+\item \textbf{Scale-Consistent Architecture}: underperforms (Sharpe +0.18) due to excessive noise from short windows, demonstrating that \textbf{topology requires minimum sample size} (reinforcing Section 6 conclusion).
 
-\item \textbf{Ensemble Portfolio} beats best individual (Sharpe +0.48), providing \textbf{14\% improvement} through diversification.
+\item \textbf{Ensemble Portfolio}: best initial estimate (Sharpe +0.48) through diversification across variants.
 \end{enumerate}
 
-The fact that \textbf{multiple independent approaches} succeed (3 out of 4 variants positive) provides strong evidence that sector-specific topology contains genuine trading signal, not spurious overfitting.
+These results show that variant choice is not the bottleneck---multiple design approaches produce similar outcomes. However, given that Section~\ref{sec:sector}'s initial Sharpe of $+0.79$ verified at $-0.77$, the absolute performance levels reported here should be treated as upper bounds.
 
 \textbf{Cumulative Progress}:
 
