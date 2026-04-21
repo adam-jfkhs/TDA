@@ -46,6 +46,7 @@ Consumer & 0.48 & 0.58 & $-0.22$ & $-4.5\%$ & $-36.1\%$ & 0.09 & Failed \\
     \item Mean $\rho$ = average pairwise correlation within sector/universe over test period
     \item Status: ``Success'' = Sharpe $> 0.15$ and $p < 0.05$; ``Marginal'' = Sharpe $> 0$ but $p > 0.05$; ``Failed'' = Sharpe $< 0$
     \item \textbf{Data type:} \textcolor{blue}{EMPIRICAL} (real market data, January 2019 - December 2024)
+    \item \textbf{Verification}: Independent backtest with look-ahead-free methodology, 1-day signal lag, and test window including the 2022 bear market yields Sharpe $-0.77$ (see Section~\ref{sec:conclusion} and \texttt{risk\_report.py}). The positive Sharpe ratios above reflect initial estimates inflated by favorable test-window selection and same-day signal bias.
 \end{itemize}
 \end{minipage}
 

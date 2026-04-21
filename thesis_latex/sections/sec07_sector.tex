@@ -183,7 +183,7 @@ The combination of high correlation and coherent eigenstructure produces:
 
 This 41\% reduction in coefficient of variation means topological features (loop counts, persistence) are more \textbf{predictable}, enabling reliable regime classification.
 
-\textbf{Causality}: High correlation $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ reliable regime signals $\rightarrow$ \positiverisk{}.
+\textbf{Causality}: High correlation $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ reliable regime signals. However, as independent verification demonstrates (Section~\ref{sec:conclusion}), reliable regime signals do not guarantee positive alpha.
 
 \subsection{Correlation-CV Relationship}
 
@@ -281,9 +281,11 @@ The positive risk-adjusted performance reflects \textbf{regime detection} (ident
 
 \subsection{Conclusion}
 
-Sector-specific topology achieves \positiverisk{} (Sharpe $+0.79$, $p < 0.001$) by leveraging within-sector correlation homogeneity to stabilize persistent homology features. The correlation-stability relationship ($\rho = -0.87$, $R^2 = 0.76$) generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international markets.
+Sector-specific topology produces Sharpe $+0.79$ in the initial backtest. However, independent verification using a look-ahead-free implementation, strict 1-day signal lag, and a test window that includes the 2022 bear market yields Sharpe $-0.77$ (Strategy D in \texttt{risk\_report.py}). The discrepancy arises from a favorable test window, larger stock universe, and a subtle same-day signal bias in the original code---common pitfalls in quantitative research \citep{Bailey2014}.
 
-This finding addresses Research Question 1 (\textit{Does topology contain tradeable information?}): \textbf{Yes, but only under specific boundary conditions}—high correlation ($\rho > 0.5$), coherent eigenstructure, and market segmentation.
+The correlation-stability relationship ($\rho = -0.87$, $R^2 = 0.76$) is genuine and robust: sector homogeneity does stabilize persistent homology features. This structural finding generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international market scenarios. What does not generalize is the leap from \textit{stable topology} to \textit{positive alpha}: stable topological features are a necessary but not sufficient condition for a profitable strategy.
+
+This finding addresses Research Question 1 (\textit{Does topology contain tradeable information?}): \textbf{Partially}---topology reliably detects regime structure, but the beta-spread strategy built on that detection does not produce positive returns after transaction costs in out-of-sample testing.
 
 Remaining questions:
 \begin{itemize}

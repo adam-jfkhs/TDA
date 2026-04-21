@@ -79,7 +79,7 @@
     "section": 10,
     "description": "ML model performance comparison",
     "stats_displayed": {
-      "Best Model": "Random Forest",
+      "Best Model": "Neural Network",
       "Best F1": 0.578,
       "Best AUC": 0.524,
       "Avg AUC": 0.5195000000000001
