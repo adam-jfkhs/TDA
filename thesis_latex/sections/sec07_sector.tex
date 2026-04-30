@@ -10,6 +10,10 @@
 \section{Sector-Specific Topology: The Central Result}
 \label{sec:sector}
 
+\begin{quote}
+\noindent\textbf{Verification Notice.} The Sharpe ratios reported in this section ($+0.79$ aggregate; $+0.87$ Financials; $+0.79$ Energy; $+0.68$ Technology) are \textit{pre-verification estimates} from the original Phase 2 analysis (\texttt{thesis\_expansion/phase2\_sector\_topology/}). An independent verification backtest with strict 1-day signal lag, 2022 included in out-of-sample, and Fama-French 5-factor regression yields Sharpe $-0.77$ for the closest replication (Strategy D in \texttt{risk\_report.py}). See Section~\ref{sec:conclusion} for the verified results table. The correlation-stability mechanism (CV vs $\rho$ relationship) reported below is independent of the trading-strategy claim and remains valid.
+\end{quote}
+
 \subsection{Motivation}
 
 Section~\ref{sec:intraday} demonstrated that increased sample size (intraday data) reduces topology volatility by 32\% but fails to produce \positiverisk{} (Sharpe improved from $-0.56$ to $-0.41$, both significantly negative). This suggests sample size is necessary but insufficient.
@@ -267,7 +271,7 @@ These boundary conditions generalize beyond this dataset (Section~\ref{sec:cross
 
 \subsubsection{Economic Interpretation}
 
-The positive risk-adjusted performance reflects \textbf{regime detection} (identifying when volatility structure shifts) rather than \textbf{directional alpha} (predicting which stocks will outperform). Section~\ref{sec:ml} confirms this interpretation: machine learning improves regime classification ($F_1 = 0.58$) but directional prediction remains weak (AUC $\approx 0.52$).
+The pre-verification estimates suggested topology detected \textbf{regime structure} (identifying when volatility structure shifts) rather than \textbf{directional alpha} (predicting which stocks will outperform). Section~\ref{sec:ml} confirms this interpretation: machine learning improves regime classification ($F_1 = 0.58$) but directional prediction remains weak (AUC $\approx 0.52$). The verified backtest (Section~\ref{sec:conclusion}) confirms regime detection alone is insufficient for positive alpha after transaction costs and proper signal lag.
 
 \textbf{Practical use case}: TDA should be deployed as a \textit{risk overlay} for dynamic exposure scaling, not as a standalone return generator.
 
