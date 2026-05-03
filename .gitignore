@@ -1,1 +1,5 @@
 __pycache__/
+*.csv
+ml_integration_real.txt
+strategy_variants_real.txt
+risk_report.pdf
