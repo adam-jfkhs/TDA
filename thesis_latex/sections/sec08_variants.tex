@@ -1,6 +1,10 @@
 \section{Alternative Strategy Variants}
 \label{sec:variants}
 
+\begin{quote}
+\noindent\textbf{Projection Disclosure.} The Sharpe ratios reported in this section ($+0.42$ Momentum+TDA, $+0.18$ Scale-Consistent, $+0.35$ Adaptive Threshold, $+0.48$ Ensemble) are \textbf{projected outcomes} from the strategy designs in \texttt{thesis\_expansion/phase3\_strategy\_variants/}. The scripts also inherit the look-ahead bias identified in Section~\ref{sec:sector} (Phase 2): signals at date $t$ are applied to returns at date $t$ rather than $t+1$. The strategy logic is presented as an exploration of design choices; the numerical results were not reproduced under the stricter verification methodology applied in Section~\ref{sec:conclusion}. Treat figures below as upper bounds on what these designs could achieve; the only verified result is Strategy D (Sharpe $-0.77$) in the conclusion.
+\end{quote}
+
 \subsection{Motivation}
 
 Sections 6--7 demonstrated that sector-specific topology substantially improves performance (initial estimate: Sharpe $+0.79$; verified estimate: $-0.77$; see Section~\ref{sec:conclusion}) compared to the cross-sector baseline ($-0.56$). However, this addressed only one of three primary failure modes identified in Section 5:
