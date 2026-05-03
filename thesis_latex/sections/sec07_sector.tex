@@ -10,6 +10,10 @@
 \section{Sector-Specific Topology: The Central Result}
 \label{sec:sector}
 
+\begin{quote}
+\noindent\textbf{Verification Notice.} The Sharpe ratios reported in this section ($+0.79$ aggregate; $+0.87$ Financials; $+0.79$ Energy; $+0.68$ Technology) are \textit{pre-verification estimates} from the original Phase 2 analysis (\texttt{thesis\_expansion/phase2\_sector\_topology/}). An independent verification backtest with strict 1-day signal lag, 2022 included in out-of-sample, and Fama-French 5-factor regression yields Sharpe $-0.77$ for the closest replication (Strategy D in \texttt{risk\_report.py}). See Section~\ref{sec:conclusion} for the verified results table. The correlation-stability mechanism (CV vs $\rho$ relationship) reported below is independent of the trading-strategy claim and remains valid.
+\end{quote}
+
 \subsection{Motivation}
 
 Section~\ref{sec:intraday} demonstrated that increased sample size (intraday data) reduces topology volatility by 32\% but fails to produce \positiverisk{} (Sharpe improved from $-0.56$ to $-0.41$, both significantly negative). This suggests sample size is necessary but insufficient.
@@ -183,7 +187,7 @@ The combination of high correlation and coherent eigenstructure produces:
 
 This 41\% reduction in coefficient of variation means topological features (loop counts, persistence) are more \textbf{predictable}, enabling reliable regime classification.
 
-\textbf{Causality}: High correlation $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ reliable regime signals $\rightarrow$ \positiverisk{}.
+\textbf{Causality}: High correlation $\rightarrow$ eigenvalue concentration $\rightarrow$ stable topology $\rightarrow$ reliable regime signals. However, as independent verification demonstrates (Section~\ref{sec:conclusion}), reliable regime signals do not guarantee positive alpha.
 
 \subsection{Correlation-CV Relationship}
 
@@ -267,7 +271,7 @@ These boundary conditions generalize beyond this dataset (Section~\ref{sec:cross
 
 \subsubsection{Economic Interpretation}
 
-The positive risk-adjusted performance reflects \textbf{regime detection} (identifying when volatility structure shifts) rather than \textbf{directional alpha} (predicting which stocks will outperform). Section~\ref{sec:ml} confirms this interpretation: machine learning improves regime classification ($F_1 = 0.58$) but directional prediction remains weak (AUC $\approx 0.52$).
+The pre-verification estimates suggested topology detected \textbf{regime structure} (identifying when volatility structure shifts) rather than \textbf{directional alpha} (predicting which stocks will outperform). Section~\ref{sec:ml} confirms this interpretation: machine learning improves regime classification ($F_1 = 0.58$) but directional prediction remains weak (AUC $\approx 0.52$). The verified backtest (Section~\ref{sec:conclusion}) confirms regime detection alone is insufficient for positive alpha after transaction costs and proper signal lag.
 
 \textbf{Practical use case}: TDA should be deployed as a \textit{risk overlay} for dynamic exposure scaling, not as a standalone return generator.
 
@@ -281,9 +285,11 @@ The positive risk-adjusted performance reflects \textbf{regime detection} (ident
 
 \subsection{Conclusion}
 
-Sector-specific topology achieves \positiverisk{} (Sharpe $+0.79$, $p < 0.001$) by leveraging within-sector correlation homogeneity to stabilize persistent homology features. The correlation-stability relationship ($\rho = -0.87$, $R^2 = 0.76$) generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international markets.
+Sector-specific topology produces Sharpe $+0.79$ in the initial backtest. However, independent verification using a look-ahead-free implementation, strict 1-day signal lag, and a test window that includes the 2022 bear market yields Sharpe $-0.77$ (Strategy D in \texttt{risk\_report.py}). The discrepancy arises from a favorable test window, larger stock universe, and a subtle same-day signal bias in the original code---common pitfalls in quantitative research \citep{Bailey2014}.
 
-This finding addresses Research Question 1 (\textit{Does topology contain tradeable information?}): \textbf{Yes, but only under specific boundary conditions}—high correlation ($\rho > 0.5$), coherent eigenstructure, and market segmentation.
+The correlation-stability relationship ($\rho = -0.87$, $R^2 = 0.76$) is genuine and robust: sector homogeneity does stabilize persistent homology features. This structural finding generalizes across sectors and, as Section~\ref{sec:crossmarket} demonstrates, across international market scenarios. What does not generalize is the leap from \textit{stable topology} to \textit{positive alpha}: stable topological features are a necessary but not sufficient condition for a profitable strategy.
+
+This finding addresses Research Question 1 (\textit{Does topology contain tradeable information?}): \textbf{Partially}---topology reliably detects regime structure, but the beta-spread strategy built on that detection does not produce positive returns after transaction costs in out-of-sample testing.
 
 Remaining questions:
 \begin{itemize}

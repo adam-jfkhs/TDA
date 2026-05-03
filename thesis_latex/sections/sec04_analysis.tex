@@ -68,7 +68,27 @@ Despite failure as a trading signal, the 50\% loss reduction (Sharpe improvement
 
 \subsubsection{Comparison to Simple Risk Filters}
 
-A natural question is whether persistent homology provides value beyond simpler alternatives. We compared the TDA regime filter to: (1) a rolling volatility filter (go to cash when 20-day realized volatility exceeds 75th percentile), and (2) an average correlation filter (go to cash when mean pairwise correlation exceeds 75th percentile). Results: the volatility filter achieved Sharpe $-0.82$, the correlation filter achieved $-0.71$, versus $-0.56$ for the TDA filter. While the TDA filter outperforms both simple alternatives, the margin is modest ($\sim$0.15--0.25 Sharpe points), suggesting persistent homology captures \textit{some} additional regime information beyond simple summary statistics, but the practical advantage may not justify the computational complexity for all applications.
+A natural question is whether persistent homology provides value beyond simpler alternatives. We compared the TDA regime filter to: (1) a rolling volatility filter (go to cash when 20-day realized volatility exceeds 75th percentile), and (2) an average correlation filter (go to cash when mean pairwise correlation exceeds 75th percentile). In the initial analysis, the volatility filter achieved Sharpe $-0.82$, the correlation filter $-0.71$, versus $-0.56$ for the TDA filter.
+
+\textbf{Independent backtest verification} (\texttt{risk\_report.py}, Fama-French factor regression, strict 1-day lag) confirmed this ordering but with worse absolute values:
+
+\begin{table}[H]
+\centering
+\caption{Verified Strategy Comparison (2022--2024 out-of-sample)}
+\label{tab:verified-comparison}
+\begin{tabular}{@{}lccc@{}}
+\toprule
+\textbf{Strategy} & \textbf{Sharpe} & \textbf{Max DD} & \textbf{Factor $\alpha$ t-stat} \\
+\midrule
+No filter (Laplacian only)      & $-2.75$ & $-69.0\%$ & $-5.66$ \\
+Fiedler/TDA filter              & $-2.57$ & $-61.6\%$ & $-5.13$ \\
+Realized-vol filter             & $-2.42$ & $-56.3\%$ & $-5.24$ \\
+Beta-spread + Fiedler (Sec.\ 7) & $-0.77$ & $-40.4\%$ & $-1.88$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Two conclusions: (1) the topology filter does reduce losses relative to no filter, confirming its value as a risk indicator; (2) the simpler realized-volatility filter outperforms the TDA filter on every metric at far lower computational cost. The net benefit of persistent homology over a volatility filter is negative --- the additional complexity is not justified by performance.
 
 \subsubsection{Reframing: Persistent Homology as Risk Overlay}
 
